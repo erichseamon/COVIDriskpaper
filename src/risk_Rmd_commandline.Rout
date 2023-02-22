@@ -1,0 +1,6661 @@
+
+R version 4.0.5 (2021-03-31) -- "Shake and Throw"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> Sys.setenv(RSTUDIO_PANDOC="/opt/rstudio-server/bin/pandoc")
+> rmarkdown::render("/mnt/ceph/erichs/git/IMCI-covid-risk/Rmd/Risk_SupplementalA_ordered2.Rmd")
+
+
+processing file: Risk_SupplementalA_ordered2.Rmd
+  |                                                                              |                                                                      |   0%
+  ordinary text without R code
+
+
+label: setup (with options) 
+List of 1
+ $ include: logi FALSE
+
+  |                                                                              |                                                                      |   1%
+  ordinary text without R code
+
+  |                                                                              |.                                                                     |   1%
+label: unnamed-chunk-1 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+Loading required package: lme4
+Loading required package: Matrix
+
+Attaching package: 'lmerTest'
+
+The following object is masked from 'package:lme4':
+
+    lmer
+
+The following object is masked from 'package:stats':
+
+    step
+
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: snow
+
+Attaching package: 'snow'
+
+The following objects are masked from 'package:parallel':
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, clusterSplit, makeCluster, parApply,
+    parCapply, parLapply, parRapply, parSapply, splitIndices,
+    stopCluster
+
+------------------------------------------------------------------------------
+You have loaded plyr after dplyr - this is likely to cause problems.
+If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
+library(plyr); library(dplyr)
+------------------------------------------------------------------------------
+
+Attaching package: 'plyr'
+
+The following objects are masked from 'package:dplyr':
+
+    arrange, count, desc, failwith, id, mutate, rename, summarise,
+    summarize
+
+Registered S3 methods overwritten by 'parameters':
+  method                           from      
+  as.double.parameters_kurtosis    datawizard
+  as.double.parameters_skewness    datawizard
+  as.double.parameters_smoothness  datawizard
+  as.numeric.parameters_kurtosis   datawizard
+  as.numeric.parameters_skewness   datawizard
+  as.numeric.parameters_smoothness datawizard
+  print.parameters_distribution    datawizard
+  print.parameters_kurtosis        datawizard
+  print.parameters_skewness        datawizard
+  summary.parameters_kurtosis      datawizard
+  summary.parameters_skewness      datawizard
+Learn more about sjPlot with 'browseVignettes("sjPlot")'.
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-2 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: Linear_models (with options) 
+List of 5
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+ $ fig.cap: chr "State Categorization by Legislative and Governorship Alignment."
+
+Loading required package: sp
+Please note that rgdal will be retired by the end of 2023,
+plan transition to sf/stars/terra functions using GDAL and PROJ
+at your earliest convenience.
+
+rgdal: version: 1.5-32, (SVN revision 1176)
+Geospatial Data Abstraction Library extensions to R successfully loaded
+Loaded GDAL runtime: GDAL 3.0.4, released 2020/01/28
+Path to GDAL shared files: /usr/share/gdal
+GDAL binary built with GEOS: TRUE 
+Loaded PROJ runtime: Rel. 6.3.2, May 1st, 2020, [PJ_VERSION: 632]
+Path to PROJ shared files: /usr/share/proj
+Linking to sp version:1.4-7
+To mute warnings of possible GDAL/OSR exportToProj4() degradation,
+use options("rgdal_show_exportToProj4_warnings"="none") before loading sp or rgdal.
+rgeos version: 0.5-7, (SVN revision 676)
+ GEOS runtime version: 3.7.2-CAPI-1.11.2 
+ Please note that rgeos will be retired by the end of 2023,
+plan transition to sf functions using GEOS at your earliest convenience.
+ Linking to sp version: 1.4-5 
+ Polygon checking: TRUE 
+
+Checking rgeos availability: TRUE
+Please note that 'maptools' will be retired by the end of 2023,
+plan transition at your earliest convenience;
+some functionality will be moved to 'sp'.
+Loading required package: spData
+To access larger datasets in this package, install the spDataLarge
+package with: `install.packages('spDataLarge',
+repos='https://nowosad.github.io/drat/', type='source')`
+
+Attaching package: 'spData'
+
+The following object is masked _by_ '.GlobalEnv':
+
+    polys
+
+Loading required package: sf
+Linking to GEOS 3.7.2, GDAL 3.0.4, PROJ 6.3.2; sf_use_s2() is TRUE
+Spherical geometry (s2) switched off
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+starting worker pid=3820294 on localhost:11612 at 10:36:52.142
+starting worker pid=3820301 on localhost:11612 at 10:36:52.142
+starting worker pid=3820308 on localhost:11612 at 10:36:52.142
+starting worker pid=3820292 on localhost:11612 at 10:36:52.142
+starting worker pid=3820310 on localhost:11612 at 10:36:52.142
+starting worker pid=3820307 on localhost:11612 at 10:36:52.142
+starting worker pid=3820312 on localhost:11612 at 10:36:52.146
+starting worker pid=3820293 on localhost:11612 at 10:36:52.146
+starting worker pid=3820298 on localhost:11612 at 10:36:52.146
+starting worker pid=3820297 on localhost:11612 at 10:36:52.146
+starting worker pid=3820309 on localhost:11612 at 10:36:52.147
+starting worker pid=3820302 on localhost:11612 at 10:36:52.156
+starting worker pid=3820305 on localhost:11612 at 10:36:52.160
+starting worker pid=3820304 on localhost:11612 at 10:36:52.160
+starting worker pid=3820296 on localhost:11612 at 10:36:52.171
+starting worker pid=3820299 on localhost:11612 at 10:36:52.178
+starting worker pid=3820300 on localhost:11612 at 10:36:52.236
+starting worker pid=3820303 on localhost:11612 at 10:36:52.236
+starting worker pid=3820295 on localhost:11612 at 10:36:52.236
+starting worker pid=3820306 on localhost:11612 at 10:36:52.236
+starting worker pid=3821446 on localhost:11612 at 10:48:37.820
+starting worker pid=3821445 on localhost:11612 at 10:48:37.820
+starting worker pid=3821442 on localhost:11612 at 10:48:37.820
+starting worker pid=3821458 on localhost:11612 at 10:48:37.820
+starting worker pid=3821450 on localhost:11612 at 10:48:37.820
+starting worker pid=3821454 on localhost:11612 at 10:48:37.820
+starting worker pid=3821461 on localhost:11612 at 10:48:37.820
+starting worker pid=3821449 on localhost:11612 at 10:48:37.820
+starting worker pid=3821448 on localhost:11612 at 10:48:37.821
+starting worker pid=3821455 on localhost:11612 at 10:48:37.821
+starting worker pid=3821451 on localhost:11612 at 10:48:37.822
+starting worker pid=3821452 on localhost:11612 at 10:48:37.822
+starting worker pid=3821453 on localhost:11612 at 10:48:37.822
+starting worker pid=3821459 on localhost:11612 at 10:48:37.822
+starting worker pid=3821443 on localhost:11612 at 10:48:37.844
+starting worker pid=3821447 on localhost:11612 at 10:48:37.855
+starting worker pid=3821456 on localhost:11612 at 10:48:37.855
+starting worker pid=3821444 on localhost:11612 at 10:48:37.856
+starting worker pid=3821457 on localhost:11612 at 10:48:37.893
+starting worker pid=3821460 on localhost:11612 at 10:48:37.899
+starting worker pid=3822774 on localhost:11612 at 11:00:57.676
+starting worker pid=3822784 on localhost:11612 at 11:00:57.676
+starting worker pid=3822777 on localhost:11612 at 11:00:57.681
+starting worker pid=3822772 on localhost:11612 at 11:00:57.681
+starting worker pid=3822780 on localhost:11612 at 11:00:57.681
+starting worker pid=3822781 on localhost:11612 at 11:00:57.681
+starting worker pid=3822779 on localhost:11612 at 11:00:57.682
+starting worker pid=3822783 on localhost:11612 at 11:00:57.683
+starting worker pid=3822785 on localhost:11612 at 11:00:57.699
+starting worker pid=3822782 on localhost:11612 at 11:00:57.699
+starting worker pid=3822773 on localhost:11612 at 11:00:57.700
+starting worker pid=3822771 on localhost:11612 at 11:00:57.700
+starting worker pid=3822786 on localhost:11612 at 11:00:57.701
+starting worker pid=3822778 on localhost:11612 at 11:00:57.702
+starting worker pid=3822775 on localhost:11612 at 11:00:57.705
+starting worker pid=3822776 on localhost:11612 at 11:00:57.707
+starting worker pid=3822789 on localhost:11612 at 11:00:57.753
+starting worker pid=3822788 on localhost:11612 at 11:00:57.753
+starting worker pid=3822787 on localhost:11612 at 11:00:57.773
+starting worker pid=3822790 on localhost:11612 at 11:00:57.774
+starting worker pid=3824077 on localhost:11612 at 11:13:18.747
+starting worker pid=3824078 on localhost:11612 at 11:13:18.758
+starting worker pid=3824079 on localhost:11612 at 11:13:18.778
+starting worker pid=3824083 on localhost:11612 at 11:13:18.778
+starting worker pid=3824085 on localhost:11612 at 11:13:18.778
+starting worker pid=3824081 on localhost:11612 at 11:13:18.778
+starting worker pid=3824080 on localhost:11612 at 11:13:18.780
+starting worker pid=3824087 on localhost:11612 at 11:13:18.780
+starting worker pid=3824089 on localhost:11612 at 11:13:18.781
+starting worker pid=3824076 on localhost:11612 at 11:13:18.783
+starting worker pid=3824075 on localhost:11612 at 11:13:18.791
+starting worker pid=3824084 on localhost:11612 at 11:13:18.791
+starting worker pid=3824086 on localhost:11612 at 11:13:18.792
+starting worker pid=3824082 on localhost:11612 at 11:13:18.792
+starting worker pid=3824092 on localhost:11612 at 11:13:18.793
+starting worker pid=3824093 on localhost:11612 at 11:13:18.793
+starting worker pid=3824090 on localhost:11612 at 11:13:18.799
+starting worker pid=3824094 on localhost:11612 at 11:13:18.801
+starting worker pid=3824091 on localhost:11612 at 11:13:18.809
+starting worker pid=3824088 on localhost:11612 at 11:13:18.809
+  |                                                                              |.                                                                     |   2%
+  ordinary text without R code
+
+
+label: datapanel (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+Attaching package: 'gridExtra'
+
+The following object is masked from 'package:dplyr':
+
+    combine
+
+
+  ordinary text without R code
+
+  |                                                                              |..                                                                    |   2%
+label: datapanel2 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..                                                                    |   3%
+label: datapanel3 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: datapanel4 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: datapanel5 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..                                                                    |   4%
+  ordinary text without R code
+
+  |                                                                              |...                                                                   |   4%
+label: unnamed-chunk-3 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-4 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-5 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...                                                                   |   5%
+  ordinary text without R code
+
+
+label: unnamed-chunk-6 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |....                                                                  |   5%
+label: unnamed-chunk-7 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |....                                                                  |   6%
+label: unnamed-chunk-8 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-9 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-10 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.....                                                                 |   6%
+  ordinary text without R code
+
+  |                                                                              |.....                                                                 |   7%
+label: unnamed-chunk-11 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-12 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-13 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.....                                                                 |   8%
+  ordinary text without R code
+
+
+label: unnamed-chunk-14 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |......                                                                |   8%
+  ordinary text without R code
+
+
+label: unnamed-chunk-15 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |......                                                                |   9%
+label: unnamed-chunk-16 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-17 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-18 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.......                                                               |   9%
+  ordinary text without R code
+
+  |                                                                              |.......                                                               |  10%
+label: unnamed-chunk-19 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-20 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-21 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.......                                                               |  11%
+  ordinary text without R code
+
+  |                                                                              |........                                                              |  11%
+label: unnamed-chunk-22 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-23 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-24 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |........                                                              |  12%
+  ordinary text without R code
+
+
+label: unnamed-chunk-25 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.........                                                             |  12%
+label: unnamed-chunk-26 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.........                                                             |  13%
+label: unnamed-chunk-27 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-28 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-29 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..........                                                            |  14%
+label: unnamed-chunk-30 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-31 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-32 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..........                                                            |  15%
+  ordinary text without R code
+
+
+label: unnamed-chunk-33 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |...........                                                           |  15%
+label: unnamed-chunk-34 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |...........                                                           |  16%
+label: unnamed-chunk-35 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-36 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-37 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |............                                                          |  16%
+  ordinary text without R code
+
+  |                                                                              |............                                                          |  17%
+label: unnamed-chunk-38 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-39 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-40 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |............                                                          |  18%
+  ordinary text without R code
+
+
+label: unnamed-chunk-41 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.............                                                         |  18%
+  ordinary text without R code
+
+
+label: unnamed-chunk-42 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-43 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.............                                                         |  19%
+  ordinary text without R code
+
+
+label: unnamed-chunk-44 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-45 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..............                                                        |  19%
+  ordinary text without R code
+
+  |                                                                              |..............                                                        |  20%
+label: unnamed-chunk-46 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-47 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-48 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..............                                                        |  21%
+  ordinary text without R code
+
+
+label: unnamed-chunk-49 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...............                                                       |  21%
+  ordinary text without R code
+
+
+label: unnamed-chunk-50 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-51 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...............                                                       |  22%
+  ordinary text without R code
+
+
+label: unnamed-chunk-52 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |................                                                      |  22%
+label: unnamed-chunk-53 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |................                                                      |  23%
+label: unnamed-chunk-54 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-55 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-56 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.................                                                     |  24%
+label: unnamed-chunk-57 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-58 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-59 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.................                                                     |  25%
+  ordinary text without R code
+
+
+label: unnamed-chunk-60 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..................                                                    |  25%
+label: unnamed-chunk-61 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..................                                                    |  26%
+label: unnamed-chunk-62 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-63 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-64 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...................                                                   |  26%
+  ordinary text without R code
+
+  |                                                                              |...................                                                   |  27%
+label: unnamed-chunk-65 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-66 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-67 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...................                                                   |  28%
+  ordinary text without R code
+
+
+label: unnamed-chunk-68 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |....................                                                  |  28%
+  ordinary text without R code
+
+
+label: unnamed-chunk-69 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-70 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |....................                                                  |  29%
+  ordinary text without R code
+
+
+label: unnamed-chunk-71 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-72 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.....................                                                 |  29%
+  ordinary text without R code
+
+  |                                                                              |.....................                                                 |  30%
+label: unnamed-chunk-73 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-74 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-75 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.....................                                                 |  31%
+label: unnamed-chunk-76 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |......................                                                |  31%
+  ordinary text without R code
+
+
+label: unnamed-chunk-77 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-78 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |......................                                                |  32%
+  ordinary text without R code
+
+
+label: unnamed-chunk-79 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.......................                                               |  32%
+label: unnamed-chunk-80 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.......................                                               |  33%
+label: unnamed-chunk-81 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-82 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-83 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |........................                                              |  34%
+label: unnamed-chunk-84 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-85 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-86 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |........................                                              |  35%
+  ordinary text without R code
+
+
+label: unnamed-chunk-87 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.........................                                             |  35%
+label: unnamed-chunk-88 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-89 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.........................                                             |  36%
+  ordinary text without R code
+
+
+label: unnamed-chunk-90 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-91 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..........................                                            |  37%
+label: unnamed-chunk-92 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-93 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-94 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..........................                                            |  38%
+  ordinary text without R code
+
+
+label: unnamed-chunk-95 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...........................                                           |  38%
+  ordinary text without R code
+
+
+label: unnamed-chunk-96 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-97 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...........................                                           |  39%
+  ordinary text without R code
+
+
+label: unnamed-chunk-98 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-99 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |............................                                          |  39%
+  ordinary text without R code
+
+  |                                                                              |............................                                          |  40%
+label: unnamed-chunk-100 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-101 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-102 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |............................                                          |  41%
+label: unnamed-chunk-103 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.............................                                         |  41%
+  ordinary text without R code
+
+
+label: unnamed-chunk-104 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-105 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.............................                                         |  42%
+  ordinary text without R code
+
+
+label: unnamed-chunk-106 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..............................                                        |  42%
+label: unnamed-chunk-107 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..............................                                        |  43%
+label: unnamed-chunk-108 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-109 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-110 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |...............................                                       |  44%
+label: unnamed-chunk-111 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-112 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-113 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...............................                                       |  45%
+  ordinary text without R code
+
+
+label: unnamed-chunk-114 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |................................                                      |  45%
+label: unnamed-chunk-115 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-116 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |................................                                      |  46%
+  ordinary text without R code
+
+
+label: unnamed-chunk-117 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-118 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.................................                                     |  47%
+label: unnamed-chunk-119 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-120 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-121 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.................................                                     |  48%
+  ordinary text without R code
+
+
+label: unnamed-chunk-122 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..................................                                    |  48%
+  ordinary text without R code
+
+
+label: unnamed-chunk-123 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-124 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..................................                                    |  49%
+  ordinary text without R code
+
+
+label: unnamed-chunk-125 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-126 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...................................                                   |  49%
+  ordinary text without R code
+
+  |                                                                              |...................................                                   |  50%
+label: unnamed-chunk-127 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-128 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-129 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |...................................                                   |  51%
+label: unnamed-chunk-130 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |....................................                                  |  51%
+  ordinary text without R code
+
+
+label: unnamed-chunk-131 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-132 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |....................................                                  |  52%
+  ordinary text without R code
+
+
+label: unnamed-chunk-133 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-134 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.....................................                                 |  52%
+  ordinary text without R code
+
+
+label: unnamed-chunk-135 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.....................................                                 |  53%
+  ordinary text without R code
+
+
+label: unnamed-chunk-136 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-137 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |......................................                                |  54%
+label: unnamed-chunk-138 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-139 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-140 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |......................................                                |  55%
+  ordinary text without R code
+
+
+label: unnamed-chunk-141 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.......................................                               |  55%
+label: unnamed-chunk-142 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-143 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.......................................                               |  56%
+  ordinary text without R code
+
+
+label: unnamed-chunk-144 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-145 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |........................................                              |  57%
+label: unnamed-chunk-146 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-147 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-148 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |........................................                              |  58%
+label: unnamed-chunk-149 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.........................................                             |  58%
+label: unnamed-chunk-150 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-151 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.........................................                             |  59%
+  ordinary text without R code
+
+
+label: unnamed-chunk-152 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-153 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..........................................                            |  59%
+  ordinary text without R code
+
+  |                                                                              |..........................................                            |  60%
+label: unnamed-chunk-154 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-155 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-156 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..........................................                            |  61%
+label: unnamed-chunk-157 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...........................................                           |  61%
+  ordinary text without R code
+
+
+label: unnamed-chunk-158 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-159 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...........................................                           |  62%
+  ordinary text without R code
+
+
+label: unnamed-chunk-160 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-161 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |............................................                          |  62%
+  ordinary text without R code
+
+
+label: unnamed-chunk-162 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |............................................                          |  63%
+  ordinary text without R code
+
+
+label: unnamed-chunk-163 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-164 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.............................................                         |  64%
+label: unnamed-chunk-165 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-166 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-167 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.............................................                         |  65%
+  ordinary text without R code
+
+
+label: unnamed-chunk-168 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..............................................                        |  65%
+label: unnamed-chunk-169 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-170 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..............................................                        |  66%
+  ordinary text without R code
+
+
+label: unnamed-chunk-171 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-172 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |...............................................                       |  67%
+label: unnamed-chunk-173 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-174 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-175 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |...............................................                       |  68%
+label: unnamed-chunk-176 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |................................................                      |  68%
+label: unnamed-chunk-177 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-178 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |................................................                      |  69%
+  ordinary text without R code
+
+
+label: unnamed-chunk-179 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-180 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.................................................                     |  69%
+  ordinary text without R code
+
+  |                                                                              |.................................................                     |  70%
+label: unnamed-chunk-181 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-182 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-183 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.................................................                     |  71%
+label: unnamed-chunk-184 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..................................................                    |  71%
+  ordinary text without R code
+
+
+label: unnamed-chunk-185 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-186 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..................................................                    |  72%
+  ordinary text without R code
+
+
+label: unnamed-chunk-187 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-188 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...................................................                   |  72%
+  ordinary text without R code
+
+
+label: unnamed-chunk-189 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...................................................                   |  73%
+  ordinary text without R code
+
+
+label: unnamed-chunk-190 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-191 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |...................................................                   |  74%
+label: unnamed-chunk-192 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |....................................................                  |  74%
+  ordinary text without R code
+
+
+label: unnamed-chunk-193 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-194 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |....................................................                  |  75%
+label: unnamed-chunk-195 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.....................................................                 |  75%
+label: unnamed-chunk-196 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-197 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.....................................................                 |  76%
+  ordinary text without R code
+
+
+label: unnamed-chunk-198 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-199 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |......................................................                |  77%
+label: unnamed-chunk-200 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-201 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-202 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |......................................................                |  78%
+label: unnamed-chunk-203 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.......................................................               |  78%
+label: unnamed-chunk-204 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-205 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.......................................................               |  79%
+  ordinary text without R code
+
+
+label: unnamed-chunk-206 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-207 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |........................................................              |  79%
+  ordinary text without R code
+
+
+label: unnamed-chunk-208 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |........................................................              |  80%
+  ordinary text without R code
+
+
+label: unnamed-chunk-209 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-210 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |........................................................              |  81%
+label: unnamed-chunk-211 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.........................................................             |  81%
+  ordinary text without R code
+
+
+label: unnamed-chunk-212 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-213 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.........................................................             |  82%
+  ordinary text without R code
+
+
+label: unnamed-chunk-214 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-215 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..........................................................            |  82%
+  ordinary text without R code
+
+
+label: unnamed-chunk-216 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..........................................................            |  83%
+  ordinary text without R code
+
+
+label: unnamed-chunk-217 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-218 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..........................................................            |  84%
+label: unnamed-chunk-219 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...........................................................           |  84%
+  ordinary text without R code
+
+
+label: unnamed-chunk-220 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-221 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |...........................................................           |  85%
+label: unnamed-chunk-222 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |............................................................          |  85%
+label: unnamed-chunk-223 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-224 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |............................................................          |  86%
+  ordinary text without R code
+
+
+label: covidrisk_model_combine1 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: covidrisk_model_combine2 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |.............................................................         |  87%
+label: covidrisk_model_combine3 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: covidrisk_model_R2plot (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: covidrisk_model_pvalues (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+Attaching package: 'kableExtra'
+
+The following object is masked from 'package:dplyr':
+
+    group_rows
+
+Using x as value column: use value.var to override.
+
+  ordinary text without R code
+
+  |                                                                              |.............................................................         |  88%
+label: unnamed-chunk-225 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..............................................................        |  88%
+label: unnamed-chunk-226 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: covidrisk_GWRF2 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+Loading required package: robustbase
+
+Attaching package: 'robustbase'
+
+The following object is masked from 'package:lmerTest':
+
+    carrots
+
+Loading required package: Rcpp
+Loading required package: spatialreg
+
+Attaching package: 'spatialreg'
+
+The following objects are masked from 'package:spdep':
+
+    aple, aple.mc, aple.plot, as_dgRMatrix_listw, as_dsCMatrix_I,
+    as_dsCMatrix_IrW, as_dsTMatrix_listw, as.spam.listw, can.be.simmed,
+    cheb_setup, create_WX, do_ldet, eigen_pre_setup, eigen_setup,
+    eigenw, errorsarlm, get.ClusterOption, get.coresOption,
+    get.mcOption, get.VerboseOption, get.ZeroPolicyOption,
+    GMargminImage, GMerrorsar, griffith_sone, gstsls, Hausman.test,
+    impacts, intImpacts, invIrM, invIrW, Jacobian_W, jacobianSetup,
+    l_max, lagmess, lagsarlm, lextrB, lextrS, lextrW, lmSLX, localAple,
+    LU_prepermutate_setup, LU_setup, Matrix_J_setup, Matrix_setup,
+    mcdet_setup, MCMCsamp, ME, mom_calc, mom_calc_int2, moments_setup,
+    powerWeights, sacsarlm, SE_classic_setup, SE_interp_setup,
+    SE_whichMin_setup, set.ClusterOption, set.coresOption,
+    set.mcOption, set.VerboseOption, set.ZeroPolicyOption,
+    similar.listw, spam_setup, spam_update_setup, SpatialFiltering,
+    spautolm, spBreg_err, spBreg_lag, spBreg_sac, stsls,
+    subgraph_eigenw, trW
+
+Welcome to GWmodel version 2.2-8.
+
+Attaching package: 'raster'
+
+The following object is masked from 'package:lme4':
+
+    getData
+
+The following object is masked from 'package:dplyr':
+
+    select
+
+Loading required package: randomForest
+randomForest 4.6-14
+Type rfNews() to see new features/changes/bug fixes.
+
+Attaching package: 'randomForest'
+
+The following object is masked from 'package:gridExtra':
+
+    combine
+
+The following object is masked from 'package:ggplot2':
+
+    margin
+
+The following object is masked from 'package:dplyr':
+
+    combine
+
+  |                                                                              |..............................................................        |  89%
+  ordinary text without R code
+
+
+label: covidrisk_write (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+ $ results: chr "hide"
+
+
+  ordinary text without R code
+
+
+label: covidrisk_GWRF1 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |...............................................................       |  89%
+label: covidrisk_GWRF2a (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...............................................................       |  90%
+  ordinary text without R code
+
+
+label: covidrisk_GWRF3 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+
+  ordinary text without R code
+
+
+label: covidrisk_GWRF4 (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+
+  ordinary text without R code
+
+  |                                                                              |...............................................................       |  91%
+label: covidrisk_GWRF (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+  |                                                                              |................................................................      |  91%
+  ordinary text without R code
+
+
+label: covidrisk_read (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+ $ results: chr "hide"
+
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+
+  ordinary text without R code
+
+
+label: covidrisk_GWRF_cases (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+ $ results: chr "hide"
+
+
+  ordinary text without R code
+
+  |                                                                              |................................................................      |  92%
+label: unnamed-chunk-227 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-228 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |.................................................................     |  92%
+  ordinary text without R code
+
+
+label: covidrisk_GWRF_deaths (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+Loading required package: lattice
+
+Attaching package: 'Metrics'
+
+The following objects are masked from 'package:caret':
+
+    precision, recall
+
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 1
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.332
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): NA
+R-squared (OOB) %: NA
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 100
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 2
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.434
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.003
+R-squared (OOB) %: -16.015
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 92.242
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 3
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.209
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.003
+R-squared (OOB) %: 7.021
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 90.795
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 4
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.34
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 21.396
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.907
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 5
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.417
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 26.054
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.184
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 6
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.499
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 30.551
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.906
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 7
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.852
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 30.823
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.881
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 8
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.328
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 32.346
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.468
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 9
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.669
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 33.357
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.611
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 10
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.844
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 34.454
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.922
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 11
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.073
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 34.446
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.183
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 12
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.474
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 38.298
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.68
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 13
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.372
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 37.256
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.827
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 14
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.357
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.524
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.21
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 15
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.416
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 34.829
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.246
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 16
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.382
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.288
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.649
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 17
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.436
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.858
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.383
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 18
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.016
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 37.559
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.912
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 19
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.368
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.074
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.584
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 20
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.318
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 37.13
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.93
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 21
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.051
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 35.694
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.7
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 22
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.176
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.385
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.608
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 23
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.021
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.842
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.811
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 24
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.444
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.262
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.704
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 25
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.535
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 37.252
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.842
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 26
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.41
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.688
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.982
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 27
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.441
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 37.341
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.033
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 28
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.046
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.407
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.818
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 29
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.331
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.503
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.551
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 30
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.078
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 35.693
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.674
+
+Number of Observations: 3070
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 24
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.465
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 40.225
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.544
+  |                                                                              |.................................................................     |  93%
+  ordinary text without R code
+
+
+label: unnamed-chunk-229 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-230 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+`geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+  ordinary text without R code
+
+  |                                                                              |.................................................................     |  94%
+label: unnamed-chunk-231 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |..................................................................    |  94%
+  ordinary text without R code
+
+
+label: unnamed-chunk-232 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-233 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |..................................................................    |  95%
+label: unnamed-chunk-234 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |...................................................................   |  95%
+label: covidrisk_GWRF_deaths_delta (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 1
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.615
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): NA
+R-squared (OOB) %: NA
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 100
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 2
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.762
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: -1.686
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 93.431
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 3
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.008
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 24.642
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 92.275
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 4
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.852
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 35.264
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 91.276
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 5
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.674
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 38.927
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 90.213
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 6
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.806
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 38.499
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.372
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 7
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.451
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.342
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.751
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 8
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.22
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.058
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.439
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 9
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.03
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 38.444
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.551
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 10
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.547
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.291
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.989
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 11
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.651
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.743
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.162
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 12
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.677
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.519
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.019
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 13
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.376
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.656
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.883
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 14
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.013
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.552
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.082
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 15
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.807
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 41.348
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.266
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 16
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.786
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 41.189
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.057
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 17
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.847
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 41.966
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.553
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 18
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.128
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.15
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.156
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 19
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.604
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 41.22
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.111
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 20
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.959
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.327
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.007
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 21
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.468
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 41.414
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.362
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 22
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.487
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.188
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.175
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 23
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.697
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 41.418
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.246
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 24
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.775
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.555
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.29
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 25
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.55
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.97
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.411
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 26
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.023
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 41.516
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.973
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 27
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.763
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 42.208
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.545
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 28
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.365
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 41.904
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.812
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 29
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.68
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 41.516
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.627
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 30
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.397
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 41.188
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.249
+
+Number of Observations: 3070
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 20
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.626
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 44.143
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 90.105
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-235 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |...................................................................   |  96%
+  ordinary text without R code
+
+
+label: unnamed-chunk-236 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+`geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-237 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |....................................................................  |  96%
+label: unnamed-chunk-238 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |....................................................................  |  97%
+  ordinary text without R code
+
+
+label: unnamed-chunk-239 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-240 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |....................................................................  |  98%
+label: covidrisk_GWRF_deaths_omicron (with options) 
+List of 4
+ $ echo   : logi FALSE
+ $ results: chr "hide"
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 1
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.399
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): NA
+R-squared (OOB) %: NA
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 100
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 2
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.007
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: -5.914
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 92.633
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 3
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.388
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 18.607
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 91.884
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 4
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.811
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 24.323
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 90.379
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 5
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.332
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 27.111
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.98
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 6
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.524
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 28.396
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.382
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 7
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.798
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 30.234
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.905
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 8
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.511
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 30.387
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.128
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 9
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.783
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 31.027
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.282
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 10
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.408
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 29.207
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.045
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 11
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.211
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 31.007
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.308
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 12
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.484
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 30.334
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.248
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 13
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.352
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 31.644
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.795
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 14
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.602
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 30.598
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.07
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 15
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.662
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 31.489
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.517
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 16
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.454
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 30.814
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.598
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 17
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.258
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 32.452
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.811
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 18
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.1
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 32.45
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.879
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 19
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.445
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 33.347
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.385
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 20
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.924
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 32.632
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.038
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 21
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.563
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 33.777
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.306
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 22
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.239
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 34.068
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.189
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 23
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.361
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 32.163
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.12
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 24
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.912
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 34.256
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.15
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 25
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.59
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 33.435
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.864
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 26
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.657
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 35.314
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.761
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 27
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.255
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 35.883
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.613
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 28
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.968
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 35.421
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.248
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 29
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.529
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 35.38
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.736
+
+Number of Observations: 2458
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 30
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.138
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 35.838
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.63
+
+Number of Observations: 3070
+Number of Independent Variables: 16
+Kernel: Adaptive
+Neightbours: 12
+Number of Variables: 16
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.577
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 34.081
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.89
+
+  ordinary text without R code
+
+  |                                                                              |..................................................................... |  98%
+label: unnamed-chunk-241 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-242 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+`geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+  |                                                                              |..................................................................... |  99%
+  ordinary text without R code
+
+
+label: unnamed-chunk-243 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+label: unnamed-chunk-244 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+  |                                                                              |......................................................................|  99%
+label: unnamed-chunk-245 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+  |                                                                              |......................................................................| 100%
+  ordinary text without R code
+
+
+label: unnamed-chunk-246 (with options) 
+List of 3
+ $ echo   : logi FALSE
+ $ message: logi FALSE
+ $ warning: logi FALSE
+
+
+  ordinary text without R code
+
+
+output file: Risk_SupplementalA_ordered2.knit.md
+
+/opt/rstudio-server/bin/pandoc/pandoc +RTS -K512m -RTS Risk_SupplementalA_ordered2.knit.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output Risk_SupplementalA_ordered2.tex --lua-filter /opt/modules/devel/R/4.0.5/lib64/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /opt/modules/devel/R/4.0.5/lib64/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --self-contained --table-of-contents --toc-depth 2 --highlight-style tango --pdf-engine pdflatex --variable graphics --variable 'geometry:margin=1in' --include-in-header /tmp/Rtmp0XL0yH/rmarkdown-str3a45ac536540de.html 
+
+Output created: Risk_SupplementalA_ordered2.pdf
+There were 50 or more warnings (use warnings() to see the first 50)
+> 
+> proc.time()
+     user    system   elapsed 
+ 7806.507   102.997 10753.530 
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted

@@ -1,0 +1,5 @@
+#setwd("../IMCI-covid/figures/infectious_frequency_data_sevenday/")
+files  <- list.files(path = "../IMCI-covid/figures/infectious_frequency_data_sevenday/", pattern = 'summary\\.csv', recursive = TRUE)
+tables <- lapply(paste("/mnt/ceph/erichs/git/IMCI-covid/figures/infectious_frequency_data_sevenday/", files, sep=""), read.csv, header = TRUE)
+combined.df <- do.call(rbind , tables)
+write.csv(combined.df, file = "./data/sevenday_combined.csv")
