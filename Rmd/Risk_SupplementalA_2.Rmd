@@ -957,12 +957,25 @@ name3 <- paste("fit_", j, "_ideology_deaths", sep="")
 name4 <- paste("fit_", j, "_noideology_deaths", sep="")
 name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
 name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
-assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+
+assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
 assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
 assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+
+
 }
 
 
@@ -1003,10 +1016,22 @@ name3 <- paste("fit_", j, "_ideology_deaths", sep="")
 name4 <- paste("fit_", j, "_noideology_deaths", sep="")
 name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
 name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
-assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+
+
+assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
 assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
 assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
 }
@@ -1049,10 +1074,22 @@ name3 <- paste("fit_", j, "_ideology_deaths", sep="")
 name4 <- paste("fit_", j, "_noideology_deaths", sep="")
 name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
 name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
-assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+
+
+assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
 assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
 assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
 }
@@ -1095,10 +1132,22 @@ name3 <- paste("fit_", j, "_ideology_deaths", sep="")
 name4 <- paste("fit_", j, "_noideology_deaths", sep="")
 name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
 name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
-assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
-assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+
+
+assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
 assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
 assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
 }
@@ -1830,7 +1879,9 @@ withoutmodel_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3
 
 # modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[1])), eval(parse(text=regionlist3_list_ideology_deaths[1])),  eval(parse(text=regionlist4_list_ideology_deaths[1])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_US.html")
 
-modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[1])), eval(parse(text=regionlist3_list_ideology_deaths[1])),  eval(parse(text=regionlist4_list_ideology_deaths[1])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_US.html") 
+# modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[1])), eval(parse(text=regionlist3_list_ideology_deaths[1])),  eval(parse(text=regionlist4_list_ideology_deaths[1])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_US.html") 
+
+modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[1])), eval(parse(text=regionlist3_list_ideology_deaths[1])),  eval(parse(text=regionlist4_list_ideology_deaths[1])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_US.html") 
 
 #+ theme_blank(base_size = 12, base_family = "")
 
@@ -2014,19 +2065,19 @@ pb <- ggplot(data_northeast, aes(x=cuml.cases_adjusted, y = deaths_adjusted, col
 
 ```
 
-## Figure S8: Fatality Rate vs. Population Density
+<!-- ## Figure S8: Fatality Rate vs. Population Density -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pa
+#pa
 
 ```
 
-## Figure S9: County Level Cumulative Cases vs. Cumulative Deaths
+<!-- ## Figure S9: County Level Cumulative Cases vs. Cumulative Deaths -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pb
+#pb
 
 ```
 
@@ -2149,7 +2200,7 @@ p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/popula
 
 ```
 
-## Figure S10: Population Adjusted Cumulative Deaths vs Ideology over time -->
+## Figure S8: Population Adjusted Cumulative Deaths vs Ideology over time -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
@@ -2200,8 +2251,10 @@ p6
 
 # modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[2])), eval(parse(text=regionlist3_list_ideology_deaths[2])),  eval(parse(text=regionlist4_list_ideology_deaths[2])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_NE.html")
 
-modeloutput_NE <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[2])), eval(parse(text=regionlist3_list_ideology_deaths[2])),  eval(parse(text=regionlist4_list_ideology_deaths[2])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_NE.html")
+# modeloutput_NE <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[2])), eval(parse(text=regionlist3_list_ideology_deaths[2])),  eval(parse(text=regionlist4_list_ideology_deaths[2])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_NE.html")
 
+
+modeloutput_NE <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[2])), eval(parse(text=regionlist3_list_ideology_deaths[2])),  eval(parse(text=regionlist4_list_ideology_deaths[2])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_NE.html")
 
 #modeloutput_NE
 
@@ -2289,19 +2342,19 @@ pb <- ggplot(data_mideast, aes(x=cuml.cases_adjusted, y = deaths_adjusted, color
 
 ```
 
-## Figure S11: Fatality Rate vs. Population Density
+<!-- ## Figure S11: Fatality Rate vs. Population Density -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pa
+#pa
 
 ```
 
-## Figure S12: County Level Cumulative Cases vs. Cumulative Deaths
+<!-- ## Figure S12: County Level Cumulative Cases vs. Cumulative Deaths -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pb
+#pb
 
 ```
 
@@ -2425,7 +2478,7 @@ p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/popula
 
 ```
 
-## Figure S13: Population Adjusted Cumulative Deaths vs Ideology over time
+## Figure S9: Population Adjusted Cumulative Deaths vs Ideology over time
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
@@ -2476,7 +2529,9 @@ p6
 
 # modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[3])), eval(parse(text=regionlist3_list_ideology_deaths[3])),  eval(parse(text=regionlist4_list_ideology_deaths[3])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_ME.html")
 
-modeloutput_ME <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[3])), eval(parse(text=regionlist3_list_ideology_deaths[3])),  eval(parse(text=regionlist4_list_ideology_deaths[3])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_ME.html")
+# modeloutput_ME <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[3])), eval(parse(text=regionlist3_list_ideology_deaths[3])),  eval(parse(text=regionlist4_list_ideology_deaths[3])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_ME.html")
+
+modeloutput_ME <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[3])), eval(parse(text=regionlist3_list_ideology_deaths[3])),  eval(parse(text=regionlist4_list_ideology_deaths[3])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_ME.html")
 
 #modeloutput_ME
 
@@ -2564,19 +2619,19 @@ pb <- ggplot(data_southeast, aes(x=cuml.cases_adjusted, y = deaths_adjusted, col
 ```
 
 
-## Figure S14: Fatality Rate vs. Population Density
+<!-- ## Figure S14: Fatality Rate vs. Population Density -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pa
+#pa
 
 ```
 
-## Figure S15: County Level Cumulative Cases vs. Cumulative Deaths
+<!-- ## Figure S15: County Level Cumulative Cases vs. Cumulative Deaths -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pb
+#pb
 
 ```
 
@@ -2699,7 +2754,7 @@ p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/popula
 
 ```
 
-## Figure S16: Population Adjusted Cumulative Deaths vs Ideology over time
+## Figure S10: Population Adjusted Cumulative Deaths vs Ideology over time
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
@@ -2751,7 +2806,9 @@ p6
 
 # modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[4])), eval(parse(text=regionlist3_list_ideology_deaths[4])),  eval(parse(text=regionlist4_list_ideology_deaths[4])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_SE.html")
 
-modeloutput_SE <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[4])), eval(parse(text=regionlist3_list_ideology_deaths[4])),  eval(parse(text=regionlist4_list_ideology_deaths[4])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_SE.html")
+# modeloutput_SE <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[4])), eval(parse(text=regionlist3_list_ideology_deaths[4])),  eval(parse(text=regionlist4_list_ideology_deaths[4])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_SE.html")
+
+modeloutput_SE <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[4])), eval(parse(text=regionlist3_list_ideology_deaths[4])),  eval(parse(text=regionlist4_list_ideology_deaths[4])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_SE.html")
 
 #modeloutput_SE
 
@@ -2837,19 +2894,19 @@ pb <- ggplot(data_midwest, aes(x=cuml.cases_adjusted, y = deaths_adjusted, color
 
 ```
 
-## Figure S17: Fatality Rate vs. Population Density
+<!-- ## Figure S17: Fatality Rate vs. Population Density -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pa
+#pa
 
 ```
 
-## Figure S18: County Level Cumulative Cases vs. Cumulative Deaths
+<!-- ## Figure S18: County Level Cumulative Cases vs. Cumulative Deaths -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pb
+#pb
 
 ```
 
@@ -2970,7 +3027,7 @@ p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/popula
 
 ```
 
-## Figure S19: Population Adjusted Cumulative Deaths vs Ideology over time
+## Figure S11: Population Adjusted Cumulative Deaths vs Ideology over time
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
@@ -3027,8 +3084,9 @@ p6
 
 # modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[5])), eval(parse(text=regionlist3_list_ideology_deaths[5])),  eval(parse(text=regionlist4_list_ideology_deaths[5])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MW.html")
 
-modeloutput_MW <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[5])), eval(parse(text=regionlist3_list_ideology_deaths[5])),  eval(parse(text=regionlist4_list_ideology_deaths[5])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MW.html")
+# modeloutput_MW <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[5])), eval(parse(text=regionlist3_list_ideology_deaths[5])),  eval(parse(text=regionlist4_list_ideology_deaths[5])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MW.html")
 
+modeloutput_MW <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[5])), eval(parse(text=regionlist3_list_ideology_deaths[5])),  eval(parse(text=regionlist4_list_ideology_deaths[5])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MW.html")
 
 #modeloutput_MW
 
@@ -3111,19 +3169,19 @@ pb <- ggplot(data_midsouth, aes(x=cuml.cases_adjusted, y = deaths_adjusted, colo
 
 ```
 
-## Figure S20: Fatality Rate vs. Population Density
+<!-- ## Figure S20: Fatality Rate vs. Population Density -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pa
+#pa
 
 ```
 
-## Figure S21: County Level Cumulative Cases vs. Cumulative Deaths
+<!-- ## Figure S21: County Level Cumulative Cases vs. Cumulative Deaths -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pb
+#pb
 
 ```
 
@@ -3243,7 +3301,7 @@ p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/popula
 
 ```
 
-## Figure S22: Population Adjusted Cumulative Deaths vs Ideology over time
+## Figure S12: Population Adjusted Cumulative Deaths vs Ideology over time
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
@@ -3296,7 +3354,9 @@ p6
 
 # modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[6])), eval(parse(text=regionlist3_list_ideology_deaths[6])),  eval(parse(text=regionlist4_list_ideology_deaths[6])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MS.html")
 
-modeloutput_MS <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[6])), eval(parse(text=regionlist3_list_ideology_deaths[6])),  eval(parse(text=regionlist4_list_ideology_deaths[6])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MS.html")
+# modeloutput_MS <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[6])), eval(parse(text=regionlist3_list_ideology_deaths[6])),  eval(parse(text=regionlist4_list_ideology_deaths[6])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MS.html")
+
+modeloutput_MS <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[6])), eval(parse(text=regionlist3_list_ideology_deaths[6])),  eval(parse(text=regionlist4_list_ideology_deaths[6])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MS.html")
 
 #modeloutput_MS
 
@@ -3381,19 +3441,19 @@ pb <- ggplot(data_middlewest, aes(x=cuml.cases_adjusted, y = deaths_adjusted, co
 
 ```
 
-## Figure S23: Fatality Rate vs. Population Density
+<!-- ## Figure S23: Fatality Rate vs. Population Density -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pa
+#pa
 
 ```
 
-## Figure S24: County Level Cumulative Cases vs. Cumulative Deaths
+<!-- ## Figure S24: County Level Cumulative Cases vs. Cumulative Deaths -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pb
+#pb
 
 ```
 
@@ -3512,7 +3572,7 @@ p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/popula
 
 ```
 
-## Figure S25: Population Adjusted Cumulative Deaths vs Ideology over time
+## Figure S13: Population Adjusted Cumulative Deaths vs Ideology over time
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
@@ -3560,7 +3620,9 @@ p6
 
 # modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[7])), eval(parse(text=regionlist3_list_ideology_deaths[7])),  eval(parse(text=regionlist4_list_ideology_deaths[7])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity", "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MDW.html")
 
-modeloutput_MDW <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[7])), eval(parse(text=regionlist3_list_ideology_deaths[7])),  eval(parse(text=regionlist4_list_ideology_deaths[7])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity", "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MDW.html")
+# modeloutput_MDW <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[7])), eval(parse(text=regionlist3_list_ideology_deaths[7])),  eval(parse(text=regionlist4_list_ideology_deaths[7])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity", "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MDW.html")
+
+modeloutput_MDW <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[7])), eval(parse(text=regionlist3_list_ideology_deaths[7])),  eval(parse(text=regionlist4_list_ideology_deaths[7])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MDW.html")
 
 #modeloutput_MDW
 
@@ -3652,19 +3714,19 @@ fulldata_midnorth <- subset(fulldata_revised, state == "montana" | state == "wyo
 ```
 
 
-## Figure S26: Fatality Rate vs. Population Density
+<!-- ## Figure S26: Fatality Rate vs. Population Density -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pa
+#pa
 
 ```
 
-## Figure S27: County Level Cumulative Cases vs. Cumulative Deaths
+<!-- ## Figure S27: County Level Cumulative Cases vs. Cumulative Deaths -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pb
+#pb
 
 ```
 
@@ -3785,7 +3847,7 @@ p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/popula
 
 ```
 
-## Figure S28: Population Adjusted Cumulative Deaths vs Ideology over time
+## Figure S14: Population Adjusted Cumulative Deaths vs Ideology over time
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
@@ -3835,7 +3897,9 @@ p6
 
 # modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[8])), eval(parse(text=regionlist3_list_ideology_deaths[8])),  eval(parse(text=regionlist4_list_ideology_deaths[8])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MN.html")
 
-modeloutput_MN <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[8])), eval(parse(text=regionlist3_list_ideology_deaths[8])),  eval(parse(text=regionlist4_list_ideology_deaths[8])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MN.html")
+# modeloutput_MN <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[8])), eval(parse(text=regionlist3_list_ideology_deaths[8])),  eval(parse(text=regionlist4_list_ideology_deaths[8])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MN.html")
+
+modeloutput_MN <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[8])), eval(parse(text=regionlist3_list_ideology_deaths[8])),  eval(parse(text=regionlist4_list_ideology_deaths[8])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_MN.html")
 
 #modeloutput_MN
 
@@ -3924,19 +3988,19 @@ pb <- ggplot(data_west, aes(x=cuml.cases_adjusted, y = deaths_adjusted, color = 
 
 ```
 
-## Figure S29: Fatality Rate vs. Population Density
+<!-- ## Figure S29: Fatality Rate vs. Population Density -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pa
+#pa
 
 ```
 
-## Figure S30: County Level Cumulative Cases vs. Cumulative Deaths
+<!-- ## Figure S30: County Level Cumulative Cases vs. Cumulative Deaths -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pb
+#pb
 
 ```
 
@@ -4062,7 +4126,7 @@ p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/popula
 
 ```
 
-## Figure S31: Population Adjusted Cumulative Deaths vs Ideology over time
+## Figure S15: Population Adjusted Cumulative Deaths vs Ideology over time
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
@@ -4111,7 +4175,9 @@ p6
 
 # modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[9])), eval(parse(text=regionlist3_list_ideology_deaths[9])),  eval(parse(text=regionlist4_list_ideology_deaths[9])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, show.est = FALSE, show.p=TRUE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_W.html")
 
-modeloutput_W <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[9])), eval(parse(text=regionlist3_list_ideology_deaths[9])),  eval(parse(text=regionlist4_list_ideology_deaths[9])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, show.est = FALSE, show.p=TRUE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_W.html")
+# modeloutput_W <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[9])), eval(parse(text=regionlist3_list_ideology_deaths[9])),  eval(parse(text=regionlist4_list_ideology_deaths[9])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, show.est = FALSE, show.p=TRUE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_W.html")
+
+modeloutput_W <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[9])), eval(parse(text=regionlist3_list_ideology_deaths[9])),  eval(parse(text=regionlist4_list_ideology_deaths[9])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_W.html")
 
 #modeloutput_W
 
@@ -4195,19 +4261,19 @@ pb <- ggplot(data_PNW, aes(x=cuml.cases_adjusted, y = deaths_adjusted, color = v
 
 ```
 
-## Figure S32: Fatality Rate vs. Population Density
+<!-- ## Figure S32: Fatality Rate vs. Population Density -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pa
+#pa
 
 ```
 
-## Figure S33: County Level Cumulative Cases vs. Cumulative Deaths
+<!-- ## Figure S33: County Level Cumulative Cases vs. Cumulative Deaths -->
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
-pb
+#pb
 
 ```
 
@@ -4333,7 +4399,7 @@ p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/popula
 
 ```
 
-## Figure S34: Population Adjusted Cumulative Deaths vs Ideology over time
+## Figure S16: Population Adjusted Cumulative Deaths vs Ideology over time
 
 ```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
@@ -4387,7 +4453,9 @@ p6
 
 # modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[10])), eval(parse(text=regionlist3_list_ideology_deaths[10])),  eval(parse(text=regionlist4_list_ideology_deaths[10])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_PNW.html")
 
-modeloutput_PNW <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[10])), eval(parse(text=regionlist3_list_ideology_deaths[10])),  eval(parse(text=regionlist4_list_ideology_deaths[10])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_PNW.html")
+# modeloutput_PNW <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[10])), eval(parse(text=regionlist3_list_ideology_deaths[10])),  eval(parse(text=regionlist4_list_ideology_deaths[10])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_PNW.html")
+
+modeloutput_PNW <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[10])), eval(parse(text=regionlist3_list_ideology_deaths[10])),  eval(parse(text=regionlist4_list_ideology_deaths[10])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_PNW.html")
 
 #modeloutput_PNW
 
@@ -4562,7 +4630,7 @@ webshot::webshot(url = "/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutp
 ```{r covidrisk_model_combine1, echo=FALSE, message=FALSE, warning=FALSE}
 
 
-modeloutput_A <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[2])),  eval(parse(text=regionlist1_list_ideology_deaths[3])), eval(parse(text=regionlist1_list_ideology_deaths[4])),  eval(parse(text=regionlist1_list_ideology_deaths[5])), eval(parse(text=regionlist1_list_ideology_deaths[6])), eval(parse(text=regionlist1_list_ideology_deaths[7])),  eval(parse(text=regionlist1_list_ideology_deaths[8])), eval(parse(text=regionlist1_list_ideology_deaths[9])), eval(parse(text=regionlist1_list_ideology_deaths[10])), eval(parse(text=regionlist1_list_ideology_deaths[1])),   digits = 5, dv.labels = c("NE", "ME", "SE", "MW", "MS", "MDW", "MN", "W", "PNW", "US"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, show.est = FALSE, show.p=TRUE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_A.html")
+modeloutput_A <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[2])),  eval(parse(text=regionlist1_list_ideology_deaths[3])), eval(parse(text=regionlist1_list_ideology_deaths[4])),  eval(parse(text=regionlist1_list_ideology_deaths[5])), eval(parse(text=regionlist1_list_ideology_deaths[6])), eval(parse(text=regionlist1_list_ideology_deaths[7])),  eval(parse(text=regionlist1_list_ideology_deaths[8])), eval(parse(text=regionlist1_list_ideology_deaths[9])), eval(parse(text=regionlist1_list_ideology_deaths[10])), eval(parse(text=regionlist1_list_ideology_deaths[1])),   digits = 5, dv.labels = c("NE", "ME", "SE", "MW", "MS", "MDW", "MN", "W", "PNW", "US"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, show.est = FALSE, show.p=TRUE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_A.html")
 
 #modeloutput_A
 
@@ -4595,7 +4663,7 @@ webshot::webshot(url = "/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutp
 ```{r covidrisk_model_combine2, echo=FALSE, message=FALSE, warning=FALSE}
 
 
-modeloutput_B <- sjPlot::tab_model(eval(parse(text=regionlist3_list_ideology_deaths[2])),  eval(parse(text=regionlist3_list_ideology_deaths[3])), eval(parse(text=regionlist3_list_ideology_deaths[4])),  eval(parse(text=regionlist3_list_ideology_deaths[5])), eval(parse(text=regionlist3_list_ideology_deaths[6])), eval(parse(text=regionlist3_list_ideology_deaths[7])),  eval(parse(text=regionlist3_list_ideology_deaths[8])), eval(parse(text=regionlist3_list_ideology_deaths[9])), eval(parse(text=regionlist3_list_ideology_deaths[10])), eval(parse(text=regionlist3_list_ideology_deaths[1])),    digits = 5, dv.labels = c("NE", "ME", "SE", "MW", "MS", "MDW", "MN", "W", "PNW", "US"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, show.est = FALSE, show.p=TRUE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_B.html")
+modeloutput_B <- sjPlot::tab_model(eval(parse(text=regionlist3_list_ideology_deaths[2])),  eval(parse(text=regionlist3_list_ideology_deaths[3])), eval(parse(text=regionlist3_list_ideology_deaths[4])),  eval(parse(text=regionlist3_list_ideology_deaths[5])), eval(parse(text=regionlist3_list_ideology_deaths[6])), eval(parse(text=regionlist3_list_ideology_deaths[7])),  eval(parse(text=regionlist3_list_ideology_deaths[8])), eval(parse(text=regionlist3_list_ideology_deaths[9])), eval(parse(text=regionlist3_list_ideology_deaths[10])), eval(parse(text=regionlist3_list_ideology_deaths[1])),    digits = 5, dv.labels = c("NE", "ME", "SE", "MW", "MS", "MDW", "MN", "W", "PNW", "US"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, show.est = FALSE, show.p=TRUE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_B.html")
 
 #modeloutput_B
 
@@ -4607,7 +4675,7 @@ webshot::webshot(url = "/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutp
 ```{r covidrisk_model_combine3, echo=FALSE, message=FALSE, warning=FALSE}
 
 
-modeloutput_C <- sjPlot::tab_model(eval(parse(text=regionlist4_list_ideology_deaths[2])),  eval(parse(text=regionlist4_list_ideology_deaths[3])), eval(parse(text=regionlist4_list_ideology_deaths[4])),  eval(parse(text=regionlist4_list_ideology_deaths[5])), eval(parse(text=regionlist4_list_ideology_deaths[6])), eval(parse(text=regionlist4_list_ideology_deaths[7])),  eval(parse(text=regionlist4_list_ideology_deaths[8])), eval(parse(text=regionlist4_list_ideology_deaths[9])), eval(parse(text=regionlist4_list_ideology_deaths[10])), eval(parse(text=regionlist4_list_ideology_deaths[1])),  digits = 5,  dv.labels = c("NE", "ME", "SE", "MW", "MS", "MDW", "MN", "W", "PNW", "US"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation",  "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, show.est = FALSE, show.p=TRUE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_C.html")
+modeloutput_C <- sjPlot::tab_model(eval(parse(text=regionlist4_list_ideology_deaths[2])),  eval(parse(text=regionlist4_list_ideology_deaths[3])), eval(parse(text=regionlist4_list_ideology_deaths[4])),  eval(parse(text=regionlist4_list_ideology_deaths[5])), eval(parse(text=regionlist4_list_ideology_deaths[6])), eval(parse(text=regionlist4_list_ideology_deaths[7])),  eval(parse(text=regionlist4_list_ideology_deaths[8])), eval(parse(text=regionlist4_list_ideology_deaths[9])), eval(parse(text=regionlist4_list_ideology_deaths[10])), eval(parse(text=regionlist4_list_ideology_deaths[1])),  digits = 5,  dv.labels = c("NE", "ME", "SE", "MW", "MS", "MDW", "MN", "W", "PNW", "US"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, show.est = FALSE, show.p=TRUE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_C.html")
 
 #modeloutput_C
 
