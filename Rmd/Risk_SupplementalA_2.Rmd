@@ -25,8 +25,8 @@ header-includes:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.width=15, fig.height=8.5)
-#knitr::opts_knit$set(root.dir = "/mnt/ceph/erichs/git/IMCI-covid-riskfinal/")  # with something else than `getwd()`
-knitr::opts_knit$set(root.dir = "/Users/erichseamon/Dropbox/Mac/Documents/GitHub/IMCI-covid-riskfinal/")
+knitr::opts_knit$set(root.dir = "/mnt/ceph/erichs/git/IMCI-covid-riskfinal/")  # with something else than `getwd()`
+#knitr::opts_knit$set(root.dir = "/Users/erichseamon/Dropbox/Mac/Documents/GitHub/IMCI-covid-riskfinal/")
 ```
 \newpage
 # Appendix Overview
