@@ -1,0 +1,1477 @@
+---
+title: "test"
+author: "Erich Seamon"
+date: "3/12/2023"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width=15, fig.height=8.5)
+knitr::opts_knit$set(root.dir = "/mnt/ceph/erichs/git/IMCI-covid-riskfinal/")  # with something else than `getwd()`
+#knitr::opts_knit$set(root.dir = "/Users/erichseamon/Dropbox/Mac/Documents/GitHub/IMCI-covid-riskfinal/")
+```
+\newpage
+
+```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+library(stringr)
+library(dplyr)
+library(lmerTest)
+library(parallel)
+library(doSNOW)
+library(plyr)
+library(ggplot2)
+library(sjPlot)
+library(RcppRoll)
+
+options(timeout=200)
+
+risk_model <- function(date_entry) {
+
+  
+mc <- parallel::makeCluster(20, outfile="")
+registerDoSNOW(mc)
+
+
+#source("./src/risk_covid_data_combine.R") #NEED TO UNCOMMENT TO BRING DATA UP TO CURRENT DATE
+#source("./src/risk_cases_deaths_summary.R")
+
+combined <- read.csv("https://folders.hpc.uidaho.edu/index.php/s/9E5I1nbq4Tlrlyb/download")
+#combined <- read.csv("./data/sevenday_combined.csv")
+#combined$fips <- str_pad(combined$fips, 5, pad = "0")
+
+#age65 and over
+age65 <- read.csv("./data/age65_over.csv")
+age65$FIPS <- str_pad(age65$FIPS, 5, pad = "0")
+
+#combined <- read.csv("/Users/tristanmoxley/Downloads/sevenday_combined.csv")
+combined_refined <- combined[,c(5, 6, 7,23, 9,10,30)]
+SVI <- read.csv("./data/SVI2018_US_COUNTY.csv")
+
+#broadband
+broadband <- read.csv("./data/broadband.csv")
+broadband$FIPS <- str_pad(broadband$FIPS, 5, pad = "0")
+
+#SVI <- read.csv("https://raw.githubusercontent.com/IMCI-GM/IMCI-covid-arima/main/data/SVI2018_US_COUNTY.csv?token=AUGOICYDUW25QB2V634JSIDA4S4WC")
+SVI_refined <- SVI[,c(5,79,85,89,96)]
+SVI_refined$FIPS <- str_pad(SVI_refined$FIPS, 5, pad = "0")
+daily_deaths <- read.csv("https://folders.hpc.uidaho.edu/index.php/s/SXhOfqn5ZypMKfz/download")
+daily_deaths <- daily_deaths[,c(3,4,5,6)]
+
+colnames(combined_refined) <- c("population", "FIPS", "cuml.cases", "freq.trans", "new.cases", "daily_cases", "date")
+colnames(daily_deaths) <- c("date", "FIPS", "deaths", "daily_deaths")
+daily_deaths$FIPS <- str_pad(daily_deaths$FIPS, 5, pad = "0")
+combined_refined$FIPS <- str_pad(combined_refined$FIPS, 5, pad = "0")
+
+
+#colnames(elections_refined) <- c("X", "FIPS", "total_votes", "race", "id", "fips_char", "place", "fname", "lname", "party", "pab", "votes", "incumbent", "mpc", "pct")
+daily_combined <- merge(combined_refined, daily_deaths, by=c("FIPS", "date"))
+daily_combined <- merge(daily_combined, SVI_refined, by="FIPS" )
+#daily_combined <- merge(daily_combined, elections_refined, by="FIPS" )
+
+#new_voting <- read.csv("https://raw.githubusercontent.com/IMCI-GM/IMCI-covid-arima/main/data/voting_threestates.csv?token=AUGOIC5SSFWZVBJBM74QFDLA4S52G")
+new_voting <- read.csv("./data/voting_nationwide_liberal.csv")
+new_voting$FIPS <- str_pad(new_voting$FIPS, 5, pad = "0")
+
+density <- read.csv("./data/Population-Density By County.csv")
+density <- density[5:7]
+colnames(density) <- c("FIPS", "name", "density")
+density$FIPS <- str_pad(density$FIPS, 5, pad = "0")
+
+#fulldata <- merge(modeldata, new_voting, by="FIPS")
+fulldata <- merge(daily_combined, new_voting, by="FIPS")
+
+fulldata <- merge(fulldata, density, by="FIPS")
+
+#merge broadband into fulldata
+
+fulldata <- merge(fulldata, broadband, by="FIPS")
+
+#full <- fulldata[,-c(5,11,21,22,23,24,26)]
+#full2 <- full[,-c(10,12)]
+#full3 <- full2[,-12]
+
+#data <- full3[-c(300:321, 323:337, 339:354, 356:371, 373:384, 386:399, 401:404, 406:414, 416:431, 433:450, 452:478, 480:498, 500:520, 522:544),]
+
+
+#maxdate <- as.Date(date_entry, "%m-%d-%Y")
+#maxdate <- format(maxdate, "%Y-%m-%d")
+
+data <- subset(fulldata, date == date_entry)
+
+#--
+
+# THE NEXT TWO LINES ARE FOR THE MOST RECENT DATE
+# 
+# data <- subset(fulldata, date == fulldata[nrow(fulldata),]$date)
+# maxdate <- fulldata[nrow(fulldata),]$date
+
+
+
+data$deaths_adjusted <- data$deaths/data$population
+data$cuml.cases_adjusted <- data$cuml.cases/data$population
+data$cases_to_deaths <- data$deaths/data$cuml.cases
+
+data$vote_discrete = cut(data$pct,c(0,.25, .5, .75, 1))
+data$vote_discrete <- revalue(data$vote_discrete, c("(0,0.25]"="Very Conservative", "(0.25,0.5]"="Moderately Conservative", "(0.5,0.75]"="Moderately Liberal", "(0.75,1]" = "Very Liberal"))
+
+data <- merge(data, age65, by="FIPS", all.x = TRUE)
+data$Age_over_65 <- as.numeric(data$Age_over_65)
+data$deaths_age65_ratio <- data$deaths/data$Age_over_65
+data$age65_ratio <- data$Age_over_65/data$population
+data
+}
+
+
+#source("./src/risk_covid_data_combine.R") #NEED TO UNCOMMENT TO BRING DATA UP TO CURRENT DATE
+#source("./src/risk_cases_deaths_summary.R")
+
+combined <- read.csv("https://folders.hpc.uidaho.edu/index.php/s/9E5I1nbq4Tlrlyb/download")
+#combined <- read.csv("./data/sevenday_combined.csv")
+#combined <- read.csv("/Users/tristanmoxley/Downloads/sevenday_combined.csv")
+combined_refined <- combined[,c(5, 6, 7,23, 9,10,30)]
+SVI <- read.csv("./data/SVI2018_US_COUNTY.csv")
+
+#age65 and over
+age65 <- read.csv("./data/age65_over.csv")
+age65$FIPS <- str_pad(age65$FIPS, 5, pad = "0")
+
+#broadband
+broadband <- read.csv("./data/broadband.csv")
+broadband$FIPS <- str_pad(broadband$FIPS, 5, pad = "0")
+
+#SVI <- read.csv("https://raw.githubusercontent.com/IMCI-GM/IMCI-covid-arima/main/data/SVI2018_US_COUNTY.csv?token=AUGOICYDUW25QB2V634JSIDA4S4WC")
+SVI_refined <- SVI[,c(5,79,85,89,96)]
+SVI_refined$FIPS <- str_pad(SVI_refined$FIPS, 5, pad = "0")
+daily_deaths <- read.csv("https://folders.hpc.uidaho.edu/index.php/s/SXhOfqn5ZypMKfz/download")
+daily_deaths <- daily_deaths[,c(3,4,5,6)]
+
+colnames(combined_refined) <- c("population", "FIPS", "cuml.cases", "freq.trans", "new.cases", "daily_cases", "date")
+colnames(daily_deaths) <- c("date", "FIPS", "deaths", "daily_deaths")
+daily_deaths$FIPS <- str_pad(daily_deaths$FIPS, 5, pad = "0")
+combined_refined$FIPS <- str_pad(combined_refined$FIPS, 5, pad = "0")
+
+
+#colnames(elections_refined) <- c("X", "FIPS", "total_votes", "race", "id", "fips_char", "place", "fname", "lname", "party", "pab", "votes", "incumbent", "mpc", "pct")
+daily_combined <- merge(combined_refined, daily_deaths, by=c("FIPS", "date"))
+daily_combined <- merge(daily_combined, SVI_refined, by="FIPS" )
+#daily_combined <- merge(daily_combined, elections_refined, by="FIPS" )
+
+#new_voting <- read.csv("https://raw.githubusercontent.com/IMCI-GM/IMCI-covid-arima/main/data/voting_threestates.csv?token=AUGOIC5SSFWZVBJBM74QFDLA4S52G")
+new_voting <- read.csv("./data/voting_nationwide_liberal.csv")
+new_voting$FIPS <- str_pad(new_voting$FIPS, 5, pad = "0")
+
+density <- read.csv("./data/Population-Density By County.csv")
+density <- density[5:7]
+colnames(density) <- c("FIPS", "name", "density")
+density$FIPS <- str_pad(density$FIPS, 5, pad = "0")
+
+fulldata <- merge(daily_combined, new_voting, by="FIPS")
+
+fulldata <- merge(fulldata, density, by="FIPS")
+
+fulldata$deaths_adjusted <- fulldata$deaths/fulldata$population
+fulldata$cuml.cases_adjusted <- fulldata$cuml.cases/fulldata$population
+fulldata$cases_to_deaths <- fulldata$deaths/fulldata$cuml.cases
+
+fulldata$vote_discrete = cut(fulldata$pct,c(0,.25, .5, .75, 1))
+fulldata$vote_discrete <- revalue(fulldata$vote_discrete, c("(0,0.25]"="Very Conservative", "(0.25,0.5]"="Moderately Conservative", "(0.5,0.75]"="Moderately Liberal", "(0.75,1]" = "Very Liberal"))
+# 
+# #rolling 7 day sum for deaths
+fulldata_revised <- fulldata %>%
+      arrange(FIPS, date) %>%
+      group_by(FIPS, date) %>%
+      mutate(new.deaths = roll_sum(daily_deaths, 7, align = "right", fill = NA)) 
+fulldata_revised <- as.data.frame(fulldata_revised)
+
+
+fulldata_revised <- merge(fulldata_revised, age65, by="FIPS", all.x=TRUE)
+fulldata_revised$Age_over_65 <- as.numeric(fulldata_revised$Age_over_65)
+fulldata_revised$deaths_age65_ratio <- fulldata_revised$deaths/fulldata_revised$Age_over_65
+fulldata_revised$age65_ratio <- fulldata_revised$Age_over_65/fulldata_revised$population
+
+fulldata_revised <- merge(fulldata_revised, broadband, by="FIPS")
+
+maxdate <- "2022-04-01"
+```
+
+```{r, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+library(stringr)
+library(dplyr)
+library(lmerTest)
+library(parallel)
+library(doSNOW)
+library(plyr)
+library(ggplot2)
+library(sjPlot)
+library(RcppRoll)
+
+risk_model_latter <- function(date_entry, date_entry_latter) {
+
+mc <- parallel::makeCluster(20, outfile="")
+registerDoSNOW(mc)
+
+#source("./src/risk_covid_data_combine.R") #NEED TO UNCOMMENT TO BRING DATA UP TO CURRENT DATE
+#source("./src/risk_cases_deaths_summary.R")
+
+combined <- read.csv("https://folders.hpc.uidaho.edu/index.php/s/9E5I1nbq4Tlrlyb/download")
+#combined <- read.csv("./data/sevenday_combined.csv")
+#combined$fips <- str_pad(combined$fips, 5, pad = "0")
+
+#age65 and over
+age65 <- read.csv("./data/age65_over.csv")
+age65$FIPS <- str_pad(age65$FIPS, 5, pad = "0")
+
+#combined <- read.csv("/Users/tristanmoxley/Downloads/sevenday_combined.csv")
+combined_refined <- combined[,c(5, 6, 7,23, 9,10,30)]
+SVI <- read.csv("./data/SVI2018_US_COUNTY.csv")
+
+#broadband
+broadband <- read.csv("./data/broadband.csv")
+broadband$FIPS <- str_pad(broadband$FIPS, 5, pad = "0")
+
+#SVI <- read.csv("https://raw.githubusercontent.com/IMCI-GM/IMCI-covid-arima/main/data/SVI2018_US_COUNTY.csv?token=AUGOICYDUW25QB2V634JSIDA4S4WC")
+SVI_refined <- SVI[,c(5,79,85,89,96)]
+SVI_refined$FIPS <- str_pad(SVI_refined$FIPS, 5, pad = "0")
+daily_deaths <- read.csv("https://folders.hpc.uidaho.edu/index.php/s/SXhOfqn5ZypMKfz/download")
+daily_deaths <- daily_deaths[,c(3,4,5,6)]
+
+colnames(combined_refined) <- c("population", "FIPS", "cuml.cases", "freq.trans", "new.cases", "daily_cases", "date")
+colnames(daily_deaths) <- c("date", "FIPS", "deaths", "daily_deaths")
+daily_deaths$FIPS <- str_pad(daily_deaths$FIPS, 5, pad = "0")
+combined_refined$FIPS <- str_pad(combined_refined$FIPS, 5, pad = "0")
+
+
+#colnames(elections_refined) <- c("X", "FIPS", "total_votes", "race", "id", "fips_char", "place", "fname", "lname", "party", "pab", "votes", "incumbent", "mpc", "pct")
+daily_combined <- merge(combined_refined, daily_deaths, by=c("FIPS", "date"))
+daily_combined <- merge(daily_combined, SVI_refined, by="FIPS" )
+#daily_combined <- merge(daily_combined, elections_refined, by="FIPS" )
+
+#new_voting <- read.csv("https://raw.githubusercontent.com/IMCI-GM/IMCI-covid-arima/main/data/voting_threestates.csv?token=AUGOIC5SSFWZVBJBM74QFDLA4S52G")
+new_voting <- read.csv("./data/voting_nationwide_liberal.csv")
+new_voting$FIPS <- str_pad(new_voting$FIPS, 5, pad = "0")
+
+density <- read.csv("./data/Population-Density By County.csv")
+density <- density[5:7]
+colnames(density) <- c("FIPS", "name", "density")
+density$FIPS <- str_pad(density$FIPS, 5, pad = "0")
+
+#fulldata <- merge(modeldata, new_voting, by="FIPS")
+fulldata <- merge(daily_combined, new_voting, by="FIPS")
+
+fulldata <- merge(fulldata, density, by="FIPS")
+
+fulldata <- merge(fulldata, broadband, by="FIPS")
+
+#full <- fulldata[,-c(5,11,21,22,23,24,26)]
+#full2 <- full[,-c(10,12)]
+#full3 <- full2[,-12]
+
+#data <- full3[-c(300:321, 323:337, 339:354, 356:371, 373:384, 386:399, 401:404, 406:414, 416:431, 433:450, 452:478, 480:498, 500:520, 522:544),]
+
+
+#maxdate <- as.Date(date_entry, "%m-%d-%Y")
+#maxdate <- format(maxdate, "%Y-%m-%d")
+
+data <- subset(fulldata, date == date_entry)
+
+#added to remove data before may 1, 2021
+data_latter <- subset(fulldata, date == date_entry_latter)
+data$cuml.cases <- data$cuml.cases - data_latter$cuml.cases
+data$deaths <- data$deaths - data_latter$deaths
+#--
+
+# THE NEXT TWO LINES ARE FOR THE MOST RECENT DATE
+# 
+# data <- subset(fulldata, date == fulldata[nrow(fulldata),]$date)
+# maxdate <- fulldata[nrow(fulldata),]$date
+
+
+
+data$deaths_adjusted <- data$deaths/data$population
+data$cuml.cases_adjusted <- data$cuml.cases/data$population
+data$cases_to_deaths <- data$deaths/data$cuml.cases
+
+data$vote_discrete = cut(data$pct,c(0,.25, .5, .75, 1))
+data$vote_discrete <- revalue(data$vote_discrete, c("(0,0.25]"="Very Conservative", "(0.25,0.5]"="Moderately Conservative", "(0.5,0.75]"="Moderately Liberal", "(0.75,1]" = "Very Liberal"))
+
+data <- merge(data, age65, by="FIPS", all.x = TRUE)
+data$Age_over_65 <- as.numeric(data$Age_over_65)
+data$deaths_age65_ratio <- data$deaths/data$Age_over_65
+data$age65_ratio <- data$Age_over_65/data$population
+
+data <- merge(data, broadband, by="FIPS")
+
+
+data
+}
+
+
+```
+
+```{r Linear_models, echo=FALSE, results='hide',message=FALSE, warning=FALSE, fig.cap = "State Categorization by Legislative and Governorship Alignment."}
+# 
+#dyn.load("/opt/modules/climatology/gdal/3.1.4/lib/libgdal.so.27")
+# dyn.load("/opt/modules/climatology/proj/6.3.1/lib/libproj.so.15")
+
+library(rgdal)
+library(rgeos)
+library(maptools)
+library(spdep)
+library(sp)
+
+
+  states <- readShapePoly('./data/states/states.shp',
+                          proj4string=CRS
+                          ("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+  projection = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
+
+states <- subset(states, STATE_NAME != "Alaska")
+states <- subset(states, STATE_NAME != "Hawaii")
+states <- subset(states, STATE_NAME != "District of Columbia")
+  #states <- spTransform(states, CRS("+proj=utm +zone=9 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"))
+
+
+#policy describes legislature and governor balance. 1 - all three liberal, 2 - all three conservative, 3 - split
+policy <- c(1,3,1,2,2,2,3,2,3,3,1,3,2,3,2,1,3,1,1,1,2,1,2,1,2,1,1,2,3,1,3,3,1,2,2,2,3,2,2,1,2,2,2,2,2,3,2,3)
+
+# 
+# states$STATE_NAME <- toupper(states$STATE_NAME)
+# voting_state <- merge(states, new_voting_state_combined, by="STATE_NAME")
+# my.col <- colorRampPalette(c(rgb(0,0,1,1), rgb(0,0,1,0)), alpha = TRUE)(48)
+# my.col <- colorRampPalette(brewer.pal(11, "RdBu"))(diff(range(new_voting_state_combined$pct)))
+# 
+# voting_state$vote_groups <- cut(voting_state$lib_pct, breaks = c(0,.50, 1))
+# levels(voting_state$vote_groups) <- c("Blue", "Red")
+# voting_state$policy <- policy
+
+states$policy <- policy
+states$policy <- as.factor(states$policy)
+col=c("red","blue","green")
+
+  counties <- readShapePoly('./data/counties/UScounties_conus.shp',
+                            proj4string=CRS
+                            ("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+  projection = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
+  
+  #counties <- spTransform(counties, CRS("+proj=utm +zone=9 +datum=WGS84 +units=m +no_defs +ellps=WGS84 +towgs84=0,0,0"))
+
+  
+  
+  
+  
+  #counties  <- subset(counties, STATE_NAME == "California" | STATE_NAME == "Arizona" |  STATE_NAME == "Nevada")
+  
+  new_voting_removed_na <- new_voting[!(is.na(new_voting$pct)), ]
+
+  counties_merged <- merge(counties, new_voting, by="FIPS", duplicateGeoms = TRUE)
+  
+  #fixing NA values due to spatial data frame having empty counties due to lack of voting data.  Minimal counties (< 20)
+  naIndex <- which(is.na(counties_merged$pct))
+  counties_merged[naIndex, "pct"] <- 0
+  
+  
+  
+
+  #counties@data <- counties@data[-c(36,690,710,882),]
+  
+sf::sf_use_s2(FALSE)
+nb <- poly2nb(counties_merged, queen = TRUE)
+lw <- nb2listw(nb, style="W", zero.policy=TRUE)
+
+Inc.lag <- lag.listw(lw, counties_merged$pct)
+divergence <- counties_merged$pct/Inc.lag
+divergence[which(!is.finite(divergence))] <- 0
+
+counties_merged <- cbind(counties_merged, Inc.lag, divergence)
+
+colnames(counties_merged@data)[13] <- c("adjacent_ideology")
+colnames(counties_merged@data)[14] <- c("divergence")
+  
+  
+vac <- read.csv("https://folders.hpc.uidaho.edu/index.php/s/DtXpb1dXAgVY4Ei/download")
+#vac <- read.csv("./data/COVID-19_Vaccinations_in_the_United_States_County.csv")
+
+#vac <- vac[,1:6]
+
+
+#merge into one file
+
+#added second date to remove data before 
+#risk <- risk_model("2022-04-01")
+
+#risk_all <- risk_model_latter("2022-04-01", "2020-02-01")
+risk <- risk_model_latter("2021-05-01", "2020-02-01")
+risk_latter <- risk_model_latter("2022-04-01", "2021-05-01")
+
+risk_omicron <- risk_model_latter("2022-04-01", "2021-12-01")
+risk_delta <- risk_model_latter("2021-12-01", "2021-05-01")
+
+#risk$date <- as.Date(risk$date, format = "%d/%m/%Y")
+
+
+#add vaccinations that are unique for each model time frame
+
+
+#all
+# vac_04_01_2021 <- subset(vac, Date == "04/01/2022")
+# vac_04_01_2021$Date <- as.Date(vac_04_01_2021$Date, "%m/%d/%Y" )
+# colnames(vac_04_01_2021)[1] <- "date"
+# vac_04_01_2021 <- vac_04_01_2021[,c(1:5,18)]
+# risk_vac_all <- merge(risk_all, vac_04_01_2021, by="FIPS")
+
+
+#prevac
+vac_04_01_2021 <- subset(vac, Date == "04/01/2022")
+vac_04_01_2021$Date <- as.Date(vac_04_01_2021$Date, "%m/%d/%Y" )
+colnames(vac_04_01_2021)[1] <- "date"
+vac_04_01_2021 <- vac_04_01_2021[,c(1:5,18)]
+risk_vac <- merge(risk, vac_04_01_2021, by="FIPS")
+
+#postvac
+vac_04_01_2021 <- subset(vac, Date == "04/01/2022")
+vac_04_01_2021$Date <- as.Date(vac_04_01_2021$Date, "%m/%d/%Y" )
+colnames(vac_04_01_2021)[1] <- "date"
+vac_04_01_2021 <- vac_04_01_2021[,c(1:5,18)]
+risk_vac_latter <- merge(risk_latter, vac_04_01_2021, by="FIPS")
+
+#delta
+vac_04_01_2021 <- subset(vac, Date == "04/01/2022")
+vac_04_01_2021$Date <- as.Date(vac_04_01_2021$Date, "%m/%d/%Y" )
+colnames(vac_04_01_2021)[1] <- "date"
+vac_04_01_2021 <- vac_04_01_2021[,c(1:5,18)]
+risk_vac_delta <- merge(risk_delta, vac_04_01_2021, by="FIPS")
+
+#omicron
+vac_04_01_2021 <- subset(vac, Date == "04/01/2022")
+vac_04_01_2021$Date <- as.Date(vac_04_01_2021$Date, "%m/%d/%Y" )
+colnames(vac_04_01_2021)[1] <- "date"
+vac_04_01_2021 <- vac_04_01_2021[,c(1:5,18)]
+risk_vac_omicron <- merge(risk_omicron, vac_04_01_2021, by="FIPS")
+
+
+risk_vac_divergence_delta <- merge(risk_vac_delta, counties_merged, by="FIPS")
+risk_vac_divergence_omicron <- merge(risk_vac_omicron, counties_merged, by="FIPS")
+
+#remove for broadband add
+risk_vac_divergence_delta <- risk_vac_divergence_delta[-c(23:25,33,34)]
+risk_vac_divergence_omicron <- risk_vac_divergence_omicron[-c(23:25,33,34)]
+
+risk_final_delta <- risk_vac_divergence_delta[c(1,3,4,8,10:13,18,19,20,22,23:25,27,28,29,30,35,47:48)]
+risk_final_omicron <- risk_vac_divergence_omicron[c(1,3,4,8,10:13,18,19,20,22,23:25,27,28,29,30,35,47:48)]
+
+
+#risk_vac_divergence_all <- merge(risk_vac_all, counties_merged, by="FIPS")
+risk_vac_divergence <- merge(risk_vac, counties_merged, by="FIPS")
+risk_vac_divergence_latter <- merge(risk_vac_latter, counties_merged, by="FIPS")
+
+#risk_vac_divergence_all <- risk_vac_divergence_all[-c(23:25,33,34)]
+risk_vac_divergence <- risk_vac_divergence[-c(23:25,33,34)]
+risk_vac_divergence_latter <- risk_vac_divergence_latter[-c(23:25,33,34)]
+
+#risk_final_all <- risk_vac_divergence_all[c(1,3,4,8,10:13,18,19,20,22,23:25,27,28,29,30,35,47:48)]
+risk_final <- risk_vac_divergence[c(1,3,4,8,10:13,18,19,20,22,23:25,27,28,29,30,35,47:48)]
+risk_final_latter <- risk_vac_divergence_latter[c(1,3,4,8,10:13,18,19,20,22,23:25,27,28,29,30,35,47:48)]
+
+rankings <- read.csv("./data/countyrankings_refined.csv")
+#colnames(rankings) <- c("FIPS", "State", "County", "Obesity", "FEI", "Physically_Inactive", "Exercise_Access", "Excessive_Drinking")
+
+rankings$FIPS <- str_pad(rankings$FIPS, 5, pad = "0")
+
+#
+#linear_risk_final_all <- merge(risk_final_all, rankings, by="FIPS")
+linear_risk_final <- merge(risk_final, rankings, by="FIPS")
+linear_risk_final_latter <- merge(risk_final_latter, rankings, by="FIPS")
+
+linear_risk_final_delta <- merge(risk_final_delta, rankings, by="FIPS")
+linear_risk_final_omicron <- merge(risk_final_omicron, rankings, by="FIPS")
+
+
+
+
+
+
+
+#risk_final <- risk_vac_divergence
+
+states$STATE_NAME <- tolower(states$STATE_NAME)
+names(states)[names(states)=="STATE_NAME"] <- "state.x"
+states <- states[,-c(2:5)]
+
+#linear_risk_final_all <- merge(linear_risk_final_all, states, by = "state.x")
+linear_risk_final <- merge(linear_risk_final, states, by = "state.x")
+linear_risk_final_latter <- merge(linear_risk_final_latter, states, by = "state.x")
+
+linear_risk_final_delta <- merge(linear_risk_final_delta, states, by = "state.x")
+linear_risk_final_omicron <- merge(linear_risk_final_omicron, states, by = "state.x")
+
+linear_risk_final$adjacent_ideology[is.na(linear_risk_final$adjacent_ideology)] = .5
+linear_risk_final_latter$adjacent_ideology[is.na(linear_risk_final_latter$adjacent_ideology)] = .5
+linear_risk_final_delta$adjacent_ideology[is.na(linear_risk_final_delta$adjacent_ideology)] = .5
+linear_risk_final_omicron$adjacent_ideology[is.na(linear_risk_final_omicron$adjacent_ideology)] = .5
+
+#all
+
+# linear_risk_final_all$divergence_scaled <- linear_risk_final_all$divergence
+# 
+#  linear_risk_final_all$divergence_scaled[linear_risk_final_all$divergence_scaled<1] <- 
+#                       linear_risk_final_all$divergence_scaled[linear_risk_final_all$divergence_scaled<1]+ (1-linear_risk_final_all$divergence_scaled[linear_risk_final_all$divergence_scaled<1])
+# 
+#  linear_risk_final_all$divergence_scaled <- (linear_risk_final_all$divergence_scaled - min(linear_risk_final_all$divergence_scaled)) / (max(linear_risk_final_all$divergence_scaled) - min(linear_risk_final_all$divergence_scaled)) 
+
+ 
+ #fix broadband and scale
+ 
+ # linear_risk_final_all$broadband_access.y <-  (100 - linear_risk_final_all$broadband_access.y)/100
+ #  linear_risk_final_all_latter$broadband_access.y <-  (100 - linear_risk_final_all_latter$broadband_access.y)/100
+ # linear_risk_final_all_delta$broadband_access.y <-  (100 - linear_risk_final_all_delta$broadband_access.y)/100
+ # linear_risk_final_all_omicron$broadband_access.y <-  (100 - linear_risk_final_all_omicron$broadband_access.y)/100
+
+
+ 
+ 
+ #risk_final
+ #scaling
+ 
+ #density scaled
+
+# linear_risk_final_all$density <- log(linear_risk_final_all$density)
+# linear_risk_final_all$density_scaled <- linear_risk_final_all$density
+# 
+#  linear_risk_final_all$density_scaled <- (linear_risk_final_all$density_scaled - min(linear_risk_final_all$density_scaled)) / (max(linear_risk_final_all$density_scaled) - min(linear_risk_final_all$density_scaled)) 
+#  
+  #vaccination scaled
+
+#  linear_risk_final_all$Series_Complete_Pop_Pct[is.na(linear_risk_final_all$Series_Complete_Pop_Pct)] <- 50.0
+# linear_risk_final_all$Series_Complete_Pop_Pct_scaled <- linear_risk_final_all$Series_Complete_Pop_Pct
+# 
+# linear_risk_final_all$Series_Complete_Pop_Pct_scaled <- linear_risk_final_all$Series_Complete_Pop_Pct_scaled/100
+
+
+
+
+
+
+#risk_final
+#divergence scaled
+
+linear_risk_final$divergence_scaled <- linear_risk_final$divergence
+
+ linear_risk_final$divergence_scaled[linear_risk_final$divergence_scaled<1] <- 
+                      linear_risk_final$divergence_scaled[linear_risk_final$divergence_scaled<1]+ (1-linear_risk_final$divergence_scaled[linear_risk_final$divergence_scaled<1])
+
+ linear_risk_final$divergence_scaled <- (linear_risk_final$divergence_scaled - min(linear_risk_final$divergence_scaled)) / (max(linear_risk_final$divergence_scaled) - min(linear_risk_final$divergence_scaled)) 
+ 
+ 
+ #fix broadband and scale
+ 
+ linear_risk_final$broadband_access.y <-  (100 - linear_risk_final$broadband_access.y)/100
+
+linear_risk_final_map <- linear_risk_final
+
+ #density scaled
+
+linear_risk_final$density <- log(linear_risk_final$density)
+linear_risk_final$density_scaled <- linear_risk_final$density
+linear_risk_final$density_scaled <- (linear_risk_final$density_scaled - min(linear_risk_final$density_scaled)) / (max(linear_risk_final$density_scaled) - min(linear_risk_final$density_scaled))
+
+ #density scaled map
+
+linear_risk_final_map$density <- log(linear_risk_final_map$density)
+linear_risk_final_map$density_scaled <- linear_risk_final_map$density
+linear_risk_final_map$density_scaled <- (linear_risk_final_map$density_scaled - min(linear_risk_final_map$density_scaled)) / (max(linear_risk_final_map$density_scaled) - min(linear_risk_final_map$density_scaled))
+
+#other remaining variables to scale for map
+
+linear_risk_final$Obesity <- (linear_risk_final$Obesity - min(linear_risk_final$Obesity)) / (max(linear_risk_final$Obesity) - min(linear_risk_final$Obesity))
+linear_risk_final$Diabetes <- (linear_risk_final$Diabetes - min(linear_risk_final$Diabetes)) / (max(linear_risk_final$Diabetes) - min(linear_risk_final$Diabetes))
+linear_risk_final$Food_Insecurity <- (linear_risk_final$Food_Insecurity - min(linear_risk_final$Food_Insecurity)) / (max(linear_risk_final$Food_Insecurity) - min(linear_risk_final$Food_Insecurity))
+linear_risk_final$Uninsured_Adults <- (linear_risk_final$Uninsured_Adults - min(linear_risk_final$Uninsured_Adults)) / (max(linear_risk_final$Uninsured_Adults) - min(linear_risk_final$Uninsured_Adults))
+linear_risk_final$Unemployed <- (linear_risk_final$Unemployed - min(linear_risk_final$Unemployed)) / (max(linear_risk_final$Unemployed) - min(linear_risk_final$Unemployed))
+linear_risk_final$Associations <- (linear_risk_final$Associations - min(linear_risk_final$Associations)) / (max(linear_risk_final$Associations) - min(linear_risk_final$Associations))
+linear_risk_final$adjacent_ideology <- (linear_risk_final$adjacent_ideology - min(linear_risk_final$adjacent_ideology)) / (max(linear_risk_final$adjacent_ideology) - min(linear_risk_final$adjacent_ideology))
+
+#vaccination scaled
+
+linear_risk_final$Series_Complete_Pop_Pct[is.na(linear_risk_final$Series_Complete_Pop_Pct)] <- 50.0
+linear_risk_final$Series_Complete_Pop_Pct_scaled <- linear_risk_final$Series_Complete_Pop_Pct
+linear_risk_final$Series_Complete_Pop_Pct_scaled <- linear_risk_final$Series_Complete_Pop_Pct_scaled/100
+
+
+#vaccination scaled map
+
+linear_risk_final_map$Series_Complete_Pop_Pct[is.na(linear_risk_final_map$Series_Complete_Pop_Pct)] <- 50.0
+linear_risk_final_map$Series_Complete_Pop_Pct_scaled <- linear_risk_final_map$Series_Complete_Pop_Pct
+linear_risk_final_map$Series_Complete_Pop_Pct_scaled <- linear_risk_final_map$Series_Complete_Pop_Pct_scaled/100
+
+# linear_risk_final$Series_Complete_Pop_Pct_scaled <- (linear_risk_final$Series_Complete_Pop_Pct_scaled - min(linear_risk_final$Series_Complete_Pop_Pct_scaled)) / (max(linear_risk_final$Series_Complete_Pop_Pct_scaled) - min(linear_risk_final$Series_Complete_Pop_Pct_scaled)) 
+
+#latter
+#divergence scaled
+
+linear_risk_final_latter$divergence_scaled <- linear_risk_final_latter$divergence
+
+ linear_risk_final_latter$divergence_scaled[linear_risk_final_latter$divergence_scaled<1] <- 
+                      linear_risk_final_latter$divergence_scaled[linear_risk_final_latter$divergence_scaled<1]+ (1-linear_risk_final_latter$divergence_scaled[linear_risk_final_latter$divergence_scaled<1])
+
+ linear_risk_final_latter$divergence_scaled <- (linear_risk_final_latter$divergence_scaled - min(linear_risk_final_latter$divergence_scaled)) / (max(linear_risk_final_latter$divergence_scaled) - min(linear_risk_final_latter$divergence_scaled)) 
+ 
+ 
+ # #fix broadband and scale
+ # 
+linear_risk_final_latter$broadband_access.y <-  (100 - linear_risk_final_latter$broadband_access.y)/100
+ 
+ 
+ #scaling
+ 
+ #density scale
+ 
+linear_risk_final_latter$density <- log(linear_risk_final_latter$density)
+linear_risk_final_latter$density_scaled <- linear_risk_final_latter$density
+
+ linear_risk_final_latter$density_scaled <- (linear_risk_final_latter$density_scaled - min(linear_risk_final_latter$density_scaled)) / (max(linear_risk_final_latter$density_scaled) - min(linear_risk_final_latter$density_scaled))
+ 
+ #other remaining variables to scale
+
+linear_risk_final_latter$Obesity <- (linear_risk_final_latter$Obesity - min(linear_risk_final_latter$Obesity)) / (max(linear_risk_final_latter$Obesity) - min(linear_risk_final_latter$Obesity))
+linear_risk_final_latter$Diabetes <- (linear_risk_final_latter$Diabetes - min(linear_risk_final_latter$Diabetes)) / (max(linear_risk_final_latter$Diabetes) - min(linear_risk_final_latter$Diabetes))
+linear_risk_final_latter$Food_Insecurity <- (linear_risk_final_latter$Food_Insecurity - min(linear_risk_final_latter$Food_Insecurity)) / (max(linear_risk_final_latter$Food_Insecurity) - min(linear_risk_final_latter$Food_Insecurity))
+linear_risk_final_latter$Uninsured_Adults <- (linear_risk_final_latter$Uninsured_Adults - min(linear_risk_final_latter$Uninsured_Adults)) / (max(linear_risk_final_latter$Uninsured_Adults) - min(linear_risk_final_latter$Uninsured_Adults))
+linear_risk_final_latter$Unemployed <- (linear_risk_final_latter$Unemployed - min(linear_risk_final_latter$Unemployed)) / (max(linear_risk_final_latter$Unemployed) - min(linear_risk_final_latter$Unemployed))
+linear_risk_final_latter$Associations <- (linear_risk_final_latter$Associations - min(linear_risk_final_latter$Associations)) / (max(linear_risk_final_latter$Associations) - min(linear_risk_final_latter$Associations))
+linear_risk_final_latter$adjacent_ideology <- (linear_risk_final_latter$adjacent_ideology - min(linear_risk_final_latter$adjacent_ideology)) / (max(linear_risk_final_latter$adjacent_ideology) - min(linear_risk_final_latter$adjacent_ideology))
+ 
+ 
+
+  #vaccination scaled
+
+  linear_risk_final_latter$Series_Complete_Pop_Pct[is.na(linear_risk_final_latter$Series_Complete_Pop_Pct)] <- 50.0
+
+linear_risk_final_latter$Series_Complete_Pop_Pct_scaled <- linear_risk_final_latter$Series_Complete_Pop_Pct
+
+linear_risk_final_latter$Series_Complete_Pop_Pct_scaled <- linear_risk_final_latter$Series_Complete_Pop_Pct_scaled/100
+
+ # linear_risk_final_latter$Series_Complete_Pop_Pct_scaled <- (linear_risk_final_latter$Series_Complete_Pop_Pct_scaled - min(linear_risk_final_latter$Series_Complete_Pop_Pct_scaled)) / (max(linear_risk_final_latter$Series_Complete_Pop_Pct_scaled) - min(linear_risk_final_latter$Series_Complete_Pop_Pct_scaled)) 
+
+ 
+ #delta
+#divergence scaled
+
+linear_risk_final_delta$divergence_scaled <- linear_risk_final_delta$divergence
+
+ linear_risk_final_delta$divergence_scaled[linear_risk_final_delta$divergence_scaled<1] <- 
+                      linear_risk_final_delta$divergence_scaled[linear_risk_final_delta$divergence_scaled<1]+ (1-linear_risk_final_delta$divergence_scaled[linear_risk_final_delta$divergence_scaled<1])
+
+ linear_risk_final_delta$divergence_scaled <- (linear_risk_final_delta$divergence_scaled - min(linear_risk_final_delta$divergence_scaled)) / (max(linear_risk_final_delta$divergence_scaled) - min(linear_risk_final_delta$divergence_scaled)) 
+
+ 
+ # #fix broadband and scale
+ # 
+linear_risk_final_delta$broadband_access.y <-  (100 - linear_risk_final_delta$broadband_access.y)/100
+
+ #scaling
+ 
+ #density scaled
+
+ linear_risk_final_delta$density <- log(linear_risk_final_delta$density)
+linear_risk_final_delta$density_scaled <- linear_risk_final_delta$density
+
+ linear_risk_final_delta$density_scaled <- (linear_risk_final_delta$density_scaled - min(linear_risk_final_delta$density_scaled)) / (max(linear_risk_final_delta$density_scaled) - min(linear_risk_final_delta$density_scaled))
+
+#other remaining variables to scale
+
+linear_risk_final_delta$Obesity <- (linear_risk_final_delta$Obesity - min(linear_risk_final_delta$Obesity)) / (max(linear_risk_final_delta$Obesity) - min(linear_risk_final_delta$Obesity))
+linear_risk_final_delta$Diabetes <- (linear_risk_final_delta$Diabetes - min(linear_risk_final_delta$Diabetes)) / (max(linear_risk_final_delta$Diabetes) - min(linear_risk_final_delta$Diabetes))
+linear_risk_final_delta$Food_Insecurity <- (linear_risk_final_delta$Food_Insecurity - min(linear_risk_final_delta$Food_Insecurity)) / (max(linear_risk_final_delta$Food_Insecurity) - min(linear_risk_final_delta$Food_Insecurity))
+linear_risk_final_delta$Uninsured_Adults <- (linear_risk_final_delta$Uninsured_Adults - min(linear_risk_final_delta$Uninsured_Adults)) / (max(linear_risk_final_delta$Uninsured_Adults) - min(linear_risk_final_delta$Uninsured_Adults))
+linear_risk_final_delta$Unemployed <- (linear_risk_final_delta$Unemployed - min(linear_risk_final_delta$Unemployed)) / (max(linear_risk_final_delta$Unemployed) - min(linear_risk_final_delta$Unemployed))
+linear_risk_final_delta$Associations <- (linear_risk_final_delta$Associations - min(linear_risk_final_delta$Associations)) / (max(linear_risk_final_delta$Associations) - min(linear_risk_final_delta$Associations))
+linear_risk_final_delta$adjacent_ideology <- (linear_risk_final_delta$adjacent_ideology - min(linear_risk_final_delta$adjacent_ideology)) / (max(linear_risk_final_delta$adjacent_ideology) - min(linear_risk_final_delta$adjacent_ideology)) 
+ 
+ 
+ 
+  #vaccination scaled
+ linear_risk_final_delta$Series_Complete_Pop_Pct[is.na(linear_risk_final_delta$Series_Complete_Pop_Pct)] <- 50.0
+
+linear_risk_final_delta$Series_Complete_Pop_Pct_scaled <- linear_risk_final_delta$Series_Complete_Pop_Pct
+
+linear_risk_final_delta$Series_Complete_Pop_Pct_scaled <- linear_risk_final_delta$Series_Complete_Pop_Pct_scaled/100
+
+ # linear_risk_final_delta$Series_Complete_Pop_Pct_scaled <- (linear_risk_final_delta$Series_Complete_Pop_Pct_scaled - min(linear_risk_final_delta$Series_Complete_Pop_Pct_scaled)) / (max(linear_risk_final_delta$Series_Complete_Pop_Pct_scaled) - min(linear_risk_final_delta$Series_Complete_Pop_Pct_scaled)) 
+ 
+ #omicron
+#divergence scaled
+
+linear_risk_final_omicron$divergence_scaled <- linear_risk_final_omicron$divergence
+
+ linear_risk_final_omicron$divergence_scaled[linear_risk_final_omicron$divergence_scaled<1] <- 
+                      linear_risk_final_omicron$divergence_scaled[linear_risk_final_omicron$divergence_scaled<1]+ (1-linear_risk_final_omicron$divergence_scaled[linear_risk_final_omicron$divergence_scaled<1])
+
+ linear_risk_final_omicron$divergence_scaled <- (linear_risk_final_omicron$divergence_scaled - min(linear_risk_final_omicron$divergence_scaled)) / (max(linear_risk_final_omicron$divergence_scaled) - min(linear_risk_final_omicron$divergence_scaled)) 
+
+ 
+ # #fix broadband and scale
+ # 
+ linear_risk_final_omicron$broadband_access.y <-  (100 - linear_risk_final_omicron$broadband_access.y)/100
+ 
+ #scaling
+ 
+ #density scaled
+
+linear_risk_final_omicron$density <- log(linear_risk_final_omicron$density)
+linear_risk_final_omicron$density_scaled <- linear_risk_final_omicron$density
+
+ linear_risk_final_omicron$density_scaled <- (linear_risk_final_omicron$density_scaled - min(linear_risk_final_omicron$density_scaled)) / (max(linear_risk_final_omicron$density_scaled) - min(linear_risk_final_omicron$density_scaled))
+ 
+ #other remaining variables to scale
+
+linear_risk_final_omicron$Obesity <- (linear_risk_final_omicron$Obesity - min(linear_risk_final_omicron$Obesity)) / (max(linear_risk_final_omicron$Obesity) - min(linear_risk_final_omicron$Obesity))
+linear_risk_final_omicron$Diabetes <- (linear_risk_final_omicron$Diabetes - min(linear_risk_final_omicron$Diabetes)) / (max(linear_risk_final_omicron$Diabetes) - min(linear_risk_final_omicron$Diabetes))
+linear_risk_final_omicron$Food_Insecurity <- (linear_risk_final_omicron$Food_Insecurity - min(linear_risk_final_omicron$Food_Insecurity)) / (max(linear_risk_final_omicron$Food_Insecurity) - min(linear_risk_final_omicron$Food_Insecurity))
+linear_risk_final_omicron$Uninsured_Adults <- (linear_risk_final_omicron$Uninsured_Adults - min(linear_risk_final_omicron$Uninsured_Adults)) / (max(linear_risk_final_omicron$Uninsured_Adults) - min(linear_risk_final_omicron$Uninsured_Adults))
+linear_risk_final_omicron$Unemployed <- (linear_risk_final_omicron$Unemployed - min(linear_risk_final_omicron$Unemployed)) / (max(linear_risk_final_omicron$Unemployed) - min(linear_risk_final_omicron$Unemployed))
+linear_risk_final_omicron$Associations <- (linear_risk_final_omicron$Associations - min(linear_risk_final_omicron$Associations)) / (max(linear_risk_final_omicron$Associations) - min(linear_risk_final_omicron$Associations))
+linear_risk_final_omicron$adjacent_ideology <- (linear_risk_final_omicron$adjacent_ideology - min(linear_risk_final_omicron$adjacent_ideology)) / (max(linear_risk_final_omicron$adjacent_ideology) - min(linear_risk_final_omicron$adjacent_ideology))
+ 
+  #vaccination scaled
+
+  linear_risk_final_omicron$Series_Complete_Pop_Pct[is.na(linear_risk_final_omicron$Series_Complete_Pop_Pct)] <- 50.0
+
+linear_risk_final_omicron$Series_Complete_Pop_Pct_scaled <- linear_risk_final_omicron$Series_Complete_Pop_Pct
+
+linear_risk_final_omicron$Series_Complete_Pop_Pct_scaled <- linear_risk_final_omicron$Series_Complete_Pop_Pct_scaled/100
+# 
+#  linear_risk_final_omicron$Series_Complete_Pop_Pct_scaled <- (linear_risk_final_omicron$Series_Complete_Pop_Pct_scaled - min(linear_risk_final_omicron$Series_Complete_Pop_Pct_scaled)) / (max(linear_risk_final_omicron$Series_Complete_Pop_Pct_scaled) - min(linear_risk_final_omicron$Series_Complete_Pop_Pct_scaled)) 
+ 
+
+#dealing with counties with populations below a certain amount
+
+# linear_risk_final_all <- subset(linear_risk_final_all, population > 500)
+linear_risk_final <- subset(linear_risk_final, population > 500)
+linear_risk_final_delta <- subset(linear_risk_final_delta, population > 500)
+linear_risk_final_omicron <- subset(linear_risk_final_omicron, population > 500)
+
+#address lea county NM as an extremely high leverage observation
+
+# linear_risk_final_all <- subset(linear_risk_final_all, FIPS != c(35039))
+linear_risk_final <- subset(linear_risk_final, FIPS != c(35039))
+linear_risk_final_delta <- subset(linear_risk_final_delta, FIPS != c(35039))
+linear_risk_final_omicron <- subset(linear_risk_final_omicron, FIPS != c(35039))
+
+
+# linear_risk_final_all <- subset(linear_risk_final_all, population > 500)
+linear_risk_final_map <- subset(linear_risk_final_map, population > 500)
+
+
+#address lea county NM as an extremely high leverage observation fo
+
+# linear_risk_final_all <- subset(linear_risk_final_all, FIPS != c(35039))
+linear_risk_final_map <- subset(linear_risk_final_map, FIPS != c(35039))
+
+
+risk_final_north_latter <- subset(linear_risk_final_latter, state.x == "new york" | state.x == "new jersey")
+risk_final_midwest_latter <- subset(linear_risk_final_latter, state.x == "minnesota" | state.x == "wisconsin" | state.x == "illinois" | state.x == "indiana" | state.x == "ohio" | state.x == "michigan")
+risk_final_PNW_latter <- subset(linear_risk_final_latter, state.x == "idaho" | state.x == "washington" | state.x == "oregon")
+risk_final_midsouth_latter <- subset(linear_risk_final_latter, state.x == "louisiana" | state.x == "arkansas" | state.x == "texas" | state.x == "new mexico")
+risk_final_middlewest_latter <- subset(linear_risk_final_latter, state.x == "iowa" | state.x == "missouri" | state.x == "nebraska" | state.x == "kansas")
+risk_final_southeast_latter <- subset(linear_risk_final_latter, state.x == "florida" | state.x == "georgia" | state.x == "south carolina" | state.x == "north carolina")
+risk_final_northeast_latter <- subset(linear_risk_final_latter, state.x == "connecticut" | state.x == "maine" | state.x == "massachusetts" | state.x == "new hampshire" | state.x == "rhode island" | state.x == "vermont" | state.x == "new york" | state.x == "new jersey")
+risk_final_midnorth_latter <- subset(linear_risk_final_latter, state.x == "montana" | state.x == "wyoming" | state.x == "utah" | state.x == "colorado" | state.x == "north dakota" | state.x == "south dakota")
+risk_final_mideast_latter <- subset(linear_risk_final_latter, state.x == "pennsylania" | state.x == "west virginia" | state.x == "maryland" | state.x == "delaware")
+risk_final_west_latter <- subset(linear_risk_final_latter, state.x == "california" | state.x == "nevada" | state.x == "arizona")
+
+
+risk_final_north <- subset(linear_risk_final, state.x == "new york" | state.x == "new jersey")
+risk_final_midwest <- subset(linear_risk_final, state.x == "minnesota" | state.x == "wisconsin" | state.x == "illinois" | state.x == "indiana" | state.x == "ohio" | state.x == "michigan")
+risk_final_PNW <- subset(linear_risk_final, state.x == "idaho" | state.x == "washington" | state.x == "oregon")
+risk_final_midsouth <- subset(linear_risk_final, state.x == "louisiana" | state.x == "arkansas" | state.x == "texas" | state.x == "new mexico")
+risk_final_middlewest <- subset(linear_risk_final, state.x == "iowa" | state.x == "missouri" | state.x == "nebraska" | state.x == "kansas")
+risk_final_southeast <- subset(linear_risk_final, state.x == "florida" | state.x == "georgia" | state.x == "south carolina" | state.x == "north carolina")
+risk_final_northeast <- subset(linear_risk_final, state.x == "connecticut" | state.x == "maine" | state.x == "massachusetts" | state.x == "new hampshire" | state.x == "rhode island" | state.x == "vermont" | state.x == "new york" | state.x == "new jersey")
+risk_final_midnorth <- subset(linear_risk_final, state.x == "montana" | state.x == "wyoming" | state.x == "utah" | state.x == "colorado" | state.x == "north dakota" | state.x == "south dakota")
+risk_final_mideast <- subset(linear_risk_final, state.x == "pennsylania" | state.x == "west virginia" | state.x == "maryland" | state.x == "delaware")
+risk_final_west <- subset(linear_risk_final, state.x == "california" | state.x == "nevada" | state.x == "arizona")
+
+
+risk_final_north_delta <- subset(linear_risk_final_delta, state.x == "new york" | state.x == "new jersey")
+risk_final_midwest_delta <- subset(linear_risk_final_delta, state.x == "minnesota" | state.x == "wisconsin" | state.x == "illinois" | state.x == "indiana" | state.x == "ohio" | state.x == "michigan")
+risk_final_PNW_delta <- subset(linear_risk_final_delta, state.x == "idaho" | state.x == "washington" | state.x == "oregon")
+risk_final_midsouth_delta <- subset(linear_risk_final_delta, state.x == "louisiana" | state.x == "arkansas" | state.x == "texas" | state.x == "new mexico")
+risk_final_middlewest_delta <- subset(linear_risk_final_delta, state.x == "iowa" | state.x == "missouri" | state.x == "nebraska" | state.x == "kansas")
+risk_final_southeast_delta <- subset(linear_risk_final_latter, state.x == "florida" | state.x == "georgia" | state.x == "south carolina" | state.x == "north carolina")
+risk_final_northeast_delta <- subset(linear_risk_final_delta, state.x == "connecticut" | state.x == "maine" | state.x == "massachusetts" | state.x == "new hampshire" | state.x == "rhode island" | state.x == "vermont" | state.x == "new york" | state.x == "new jersey")
+risk_final_midnorth_delta <- subset(linear_risk_final_delta, state.x == "montana" | state.x == "wyoming" | state.x == "utah" | state.x == "colorado" | state.x == "north dakota" | state.x == "south dakota")
+risk_final_mideast_delta <- subset(linear_risk_final_delta, state.x == "pennsylania" | state.x == "west virginia" | state.x == "maryland" | state.x == "delaware")
+risk_final_west_delta <- subset(linear_risk_final_delta, state.x == "california" | state.x == "nevada" | state.x == "arizona")
+
+
+risk_final_north_omicron <- subset(linear_risk_final_omicron, state.x == "new york" | state.x == "new jersey")
+risk_final_midwest_omicron <- subset(linear_risk_final_omicron, state.x == "minnesota" | state.x == "wisconsin" | state.x == "illinois" | state.x == "indiana" | state.x == "ohio" | state.x == "michigan")
+risk_final_PNW_omicron<- subset(linear_risk_final_omicron, state.x == "idaho" | state.x == "washington" | state.x == "oregon")
+risk_final_midsouth_omicron <- subset(linear_risk_final_omicron, state.x == "louisiana" | state.x == "arkansas" | state.x == "texas" | state.x == "new mexico")
+risk_final_middlewest_omicron <- subset(linear_risk_final_omicron, state.x == "iowa" | state.x == "missouri" | state.x == "nebraska" | state.x == "kansas")
+risk_final_southeast_omicron <- subset(linear_risk_final_omicron, state.x == "florida" | state.x == "georgia" | state.x == "south carolina" | state.x == "north carolina")
+risk_final_northeast_omicron <- subset(linear_risk_final_omicron, state.x == "connecticut" | state.x == "maine" | state.x == "massachusetts" | state.x == "new hampshire" | state.x == "rhode island" | state.x == "vermont" | state.x == "new york" | state.x == "new jersey")
+risk_final_midnorth_omicron <- subset(linear_risk_final_omicron, state.x == "montana" | state.x == "wyoming" | state.x == "utah" | state.x == "colorado" | state.x == "north dakota" | state.x == "south dakota")
+risk_final_mideast_omicron <- subset(linear_risk_final_omicron, state.x == "pennsylania" | state.x == "west virginia" | state.x == "maryland" | state.x == "delaware")
+risk_final_west_omicron <- subset(linear_risk_final_omicron, state.x == "california" | state.x == "nevada" | state.x == "arizona")
+
+
+regionlist1 <- c("linear_risk_final", "risk_final_northeast", "risk_final_mideast", "risk_final_southeast", "risk_final_midwest", "risk_final_midsouth", "risk_final_middlewest", "risk_final_midnorth", "risk_final_west", "risk_final_PNW")
+regionlist2 <- c("linear_risk_final_latter", "risk_final_northeast_latter", "risk_final_mideast_latter", "risk_final_southeast_latter", "risk_final_midwest_latter", "risk_final_midsouth_latter", "risk_final_middlewest_latter", "risk_final_midnorth_latter", "risk_final_west_latter", "risk_final_PNW_latter")
+regionlist3 <- c("linear_risk_final_delta", "risk_final_northeast_delta", "risk_final_mideast_delta", "risk_final_southeast_delta", "risk_final_midwest_delta", "risk_final_midsouth_delta", "risk_final_middlewest_delta", "risk_final_midnorth_delta", "risk_final_west_delta", "risk_final_PNW_delta")
+regionlist4 <- c("linear_risk_final_omicron", "risk_final_northeast_omicron", "risk_final_mideast_omicron", "risk_final_southeast_omicron", "risk_final_midwest_omicron", "risk_final_midsouth_omicron", "risk_final_middlewest_omicron", "risk_final_midnorth_omicron", "risk_final_west_omicron", "risk_final_PNW_omicron")
+
+
+for (j in regionlist1) {
+name <- paste("fit_", j, "_ideology_cases", sep="")
+name2 <- paste("fit_", j, "_noideology_cases", sep="")
+name3 <- paste("fit_", j, "_ideology_deaths", sep="")
+name4 <- paste("fit_", j, "_noideology_deaths", sep="")
+name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
+name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
+# assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+
+assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+
+
+}
+
+
+k <- 0
+regionlist1_list_ideology_cases<- NA
+regionlist1_list_noideology_cases<- NA
+regionlist1_list_ideology_deaths<- NA
+regionlist1_list_noideology_deaths<- NA
+regionlist1_list_ideology_deaths65<- NA
+regionlist1_list_noideology_deaths65<- NA
+for (j in regionlist1) {
+  k <- k+1
+name <- paste("fit_", j, "_ideology_cases", sep="")
+name2 <- paste("fit_", j, "_noideology_cases", sep="")
+name3 <- paste("fit_", j, "_ideology_deaths", sep="")
+name4 <- paste("fit_", j, "_noideology_deaths", sep="")
+name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
+name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
+regionlist1_list_ideology_cases[k] <- name
+regionlist1_list_noideology_cases[k] <- name2
+regionlist1_list_ideology_deaths[k] <- name3
+regionlist1_list_noideology_deaths[k] <- name4
+regionlist1_list_ideology_deaths65[k] <- name5
+regionlist1_list_noideology_deaths65[k] <- name6
+}
+
+list_models_ideology_cases_prevac = lapply(regionlist1_list_ideology_cases, get)
+list_models_noideology_cases_prevac = lapply(regionlist1_list_noideology_cases, get)
+list_models_ideology_deaths_prevac = lapply(regionlist1_list_ideology_deaths, get)
+list_models_noideology_deaths_prevac = lapply(regionlist1_list_noideology_deaths, get)
+list_models_ideology_deaths65_prevac = lapply(regionlist1_list_ideology_deaths65, get)
+list_models_noideology_deaths65_prevac = lapply(regionlist1_list_noideology_deaths65, get)
+
+for (j in regionlist2) {
+name <- paste("fit_", j, "_ideology_cases", sep="")
+name2 <- paste("fit_", j, "_noideology_cases", sep="")
+name3 <- paste("fit_", j, "_ideology_deaths", sep="")
+name4 <- paste("fit_", j, "_noideology_deaths", sep="")
+name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
+name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
+# assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+
+
+assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+}
+
+
+k <- 0
+regionlist2_list_ideology_cases<- NA
+regionlist2_list_noideology_cases<- NA
+regionlist2_list_ideology_deaths<- NA
+regionlist2_list_noideology_deaths<- NA
+regionlist2_list_ideology_deaths65<- NA
+regionlist2_list_noideology_deaths65<- NA
+for (j in regionlist2) {
+  k <- k+1
+name <- paste("fit_", j, "_ideology_cases", sep="")
+name2 <- paste("fit_", j, "_noideology_cases", sep="")
+name3 <- paste("fit_", j, "_ideology_deaths", sep="")
+name4 <- paste("fit_", j, "_noideology_deaths", sep="")
+name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
+name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
+regionlist2_list_ideology_cases[k] <- name
+regionlist2_list_noideology_cases[k] <- name2
+regionlist2_list_ideology_deaths[k] <- name3
+regionlist2_list_noideology_deaths[k] <- name4
+regionlist2_list_ideology_deaths65[k] <- name5
+regionlist2_list_noideology_deaths65[k] <- name6
+}
+
+list_models_ideology_cases_postvac = lapply(regionlist2_list_ideology_cases, get)
+list_models_noideology_cases_postvac = lapply(regionlist2_list_noideology_cases, get)
+list_models_ideology_deaths_postvac = lapply(regionlist2_list_ideology_deaths, get)
+list_models_noideology_deaths_postvac = lapply(regionlist2_list_noideology_deaths, get)
+list_models_ideology_deaths65_postvac = lapply(regionlist2_list_ideology_deaths65, get)
+list_models_noideology_deaths65_postvac = lapply(regionlist2_list_noideology_deaths65, get)
+
+for (j in regionlist3) {
+name <- paste("fit_", j, "_ideology_cases", sep="")
+name2 <- paste("fit_", j, "_noideology_cases", sep="")
+name3 <- paste("fit_", j, "_ideology_deaths", sep="")
+name4 <- paste("fit_", j, "_noideology_deaths", sep="")
+name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
+name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
+# assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+
+
+assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+}
+
+
+k <- 0
+regionlist3_list_ideology_cases<- NA
+regionlist3_list_noideology_cases<- NA
+regionlist3_list_ideology_deaths<- NA
+regionlist3_list_noideology_deaths<- NA
+regionlist3_list_ideology_deaths65<- NA
+regionlist3_list_noideology_deaths65<- NA
+for (j in regionlist3) {
+  k <- k+1
+name <- paste("fit_", j, "_ideology_cases", sep="")
+name2 <- paste("fit_", j, "_noideology_cases", sep="")
+name3 <- paste("fit_", j, "_ideology_deaths", sep="")
+name4 <- paste("fit_", j, "_noideology_deaths", sep="")
+name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
+name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
+regionlist3_list_ideology_cases[k] <- name
+regionlist3_list_noideology_cases[k] <- name2
+regionlist3_list_ideology_deaths[k] <- name3
+regionlist3_list_noideology_deaths[k] <- name4
+regionlist3_list_ideology_deaths65[k] <- name5
+regionlist3_list_noideology_deaths65[k] <- name6
+}
+
+list_models_ideology_cases_delta = lapply(regionlist3_list_ideology_cases, get)
+list_models_noideology_cases_delta = lapply(regionlist3_list_noideology_cases, get)
+list_models_ideology_deaths_delta = lapply(regionlist3_list_ideology_deaths, get)
+list_models_noideology_deaths_delta = lapply(regionlist3_list_noideology_deaths, get)
+list_models_ideology_deaths65_delta = lapply(regionlist3_list_ideology_deaths65, get)
+list_models_noideology_deaths65_delta = lapply(regionlist3_list_noideology_deaths65, get)
+
+for (j in regionlist4) {
+name <- paste("fit_", j, "_ideology_cases", sep="")
+name2 <- paste("fit_", j, "_noideology_cases", sep="")
+name3 <- paste("fit_", j, "_ideology_deaths", sep="")
+name4 <- paste("fit_", j, "_noideology_deaths", sep="")
+name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
+name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
+# assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+# assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+
+
+assign(name, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name2, lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name3, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name4, lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME4 + Unemployed + Food_Insecurity + broadband_access.y + Diabetes + Obesity + 
+density + Associations + Age_over_65 + pct.x + Series_Complete_Pop_Pct_scaled + RPL_THEME3 + Uninsured_Adults, REML=FALSE, data = eval(parse(text=j))))
+assign(name5, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+assign(name6, lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct_scaled + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + broadband_access.y, REML=FALSE, data = eval(parse(text=j))))
+}
+
+k <- 0
+regionlist4_list_ideology_cases<- NA
+regionlist4_list_noideology_cases<- NA
+regionlist4_list_ideology_deaths<- NA
+regionlist4_list_noideology_deaths<- NA
+regionlist4_list_ideology_deaths65<- NA
+regionlist4_list_noideology_deaths65<- NA
+for (j in regionlist4) {
+  k <- k+1
+name <- paste("fit_", j, "_ideology_cases", sep="")
+name2 <- paste("fit_", j, "_noideology_cases", sep="")
+name3 <- paste("fit_", j, "_ideology_deaths", sep="")
+name4 <- paste("fit_", j, "_noideology_deaths", sep="")
+name5 <- paste("fit_", j, "_ideology_deaths65", sep="")
+name6 <- paste("fit_", j, "_noideology_deaths65", sep="")
+regionlist4_list_ideology_cases[k] <- name
+regionlist4_list_noideology_cases[k] <- name2
+regionlist4_list_ideology_deaths[k] <- name3
+regionlist4_list_noideology_deaths[k] <- name4
+regionlist4_list_ideology_deaths65[k] <- name5
+regionlist4_list_noideology_deaths65[k] <- name6
+}
+
+list_models_ideology_cases_omicron = lapply(regionlist4_list_ideology_cases, get)
+list_models_noideology_cases_omicron = lapply(regionlist4_list_noideology_cases, get)
+list_models_ideology_deaths_omicron = lapply(regionlist4_list_ideology_deaths, get)
+list_models_noideology_deaths_omicron = lapply(regionlist4_list_noideology_deaths, get)
+list_models_ideology_deaths65_omicron = lapply(regionlist4_list_ideology_deaths65, get)
+list_models_noideology_deaths65_omicron = lapply(regionlist4_list_noideology_deaths65, get)
+
+
+#cum case models with ideology
+
+# fit_all <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = linear_risk_final_latter)
+# fit1 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_northeast)
+# #fit2 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + policy, REML=FALSE, data = risk_final_north)
+# fit3 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_mideast)
+# fit4 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_southeast)
+# fit5 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midwest)
+# fit6 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midsouth)
+# fit7 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_middlewest)
+# fit8 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midnorth)
+# fit9 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_west)
+# fit10 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_PNW)
+# 
+# 
+# #-cum case models with no voting ideology
+# 
+# fit_all_noideology <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = linear_risk_final_latter)
+# fit1_noideology <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_northeast)
+# #fit2 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + policy, REML=FALSE, data = risk_final_north)
+# fit3_noideology <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_mideast)
+# fit4_noideology <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_southeast)
+# fit5_noideology <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence +  Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65,  REML=FALSE, data = risk_final_midwest)
+# fit6_noideology <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65,  REML=FALSE, data = risk_final_midsouth)
+# fit7_noideology <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_middlewest)
+# fit8_noideology <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midnorth)
+# fit9_noideology <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_west)
+# fit10_noideology <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_PNW)
+# 
+# #deaths models with ideology
+# 
+# fit_all_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = linear_risk_final_latter)
+# fit1_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_northeast)
+# #fit2 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + policy, REML=FALSE, data = risk_final_north)
+# fit3_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_mideast)
+# fit4_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_southeast)
+# fit5_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midwest)
+# fit6_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midsouth)
+# fit7_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_middlewest)
+# fit8_deaths<- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midnorth)
+# fit9_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_west)
+# fit10_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_PNW)
+# 
+# 
+# #-deaths models with no voting ideology
+# 
+# fit_all_noideology_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = linear_risk_final_latter)
+# fit1_noideology_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_northeast)
+# #fit2 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + policy, REML=FALSE, data = risk_final_north)
+# fit3_noideology_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_mideast)
+# fit4_noideology_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_southeast)
+# fit5_noideology_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence +  Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midwest)
+# fit6_noideology_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midsouth)
+# fit7_noideology_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_middlewest)
+# fit8_noideology_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midnorth)
+# fit9_noideology_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_west)
+# fit10_noideology_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_PNW)
+# 
+# 
+# #deaths models 65+ with ideology
+# 
+# fit_all_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = linear_risk_final_latter)
+# fit1_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_northeast)
+# #fit2 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + policy, REML=FALSE, data = risk_final_north)
+# fit3_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_mideast)
+# fit4_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_southeast)
+# fit5_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midwest)
+# fit6_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midsouth)
+# fit7_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_middlewest)
+# fit8_deaths65<- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midnorth)
+# fit9_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_west)
+# fit10_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_PNW)
+# 
+# 
+# #-deaths models 65+ with no voting ideology
+# 
+# fit_all_noideology_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = linear_risk_final_latter)
+# fit1_noideology_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_northeast)
+# #fit2 <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + policy, REML=FALSE, data = risk_final_north)
+# fit3_noideology_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_mideast)
+# fit4_noideology_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_southeast)
+# fit5_noideology_deaths <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence +  Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midwest)
+# fit6_noideology_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midsouth)
+# fit7_noideology_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_middlewest)
+# fit8_noideology_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_midnorth)
+# fit9_noideology_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_west)
+# fit10_noideology_deaths65 <- lm(deaths_age65_ratio ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence  + Series_Complete_Pop_Pct + density + Obesity + FEI + Physically_Inactive + Exercise_Access + Excessive_Drinking + Age_over_65, REML=FALSE, data = risk_final_PNW)
+#
+
+#save models - ideology deaths
+# model_names <- regionlist1_list_ideology_deaths
+# model_ideology_deaths = lapply(model_names, get)
+# saveRDS(model_ideology_deaths, file="./linear_models/model_ideology_deaths.RDS")
+# 
+# model_names <- regionlist2_list_ideology_deaths
+# model_ideology_deaths_latter = lapply(model_names, get)
+# saveRDS(model_ideology_deaths_latter, file="./linear_models/model_ideology_deaths_latter.RDS")
+# 
+# model_names <- regionlist3_list_ideology_deaths
+# model_ideology_deaths_delta = lapply(model_names, get)
+# saveRDS(model_ideology_deaths_delta, file="./linear_models/model_ideology_deaths_delta.RDS")
+# 
+# model_names <- regionlist4_list_ideology_deaths
+# model_ideology_deaths_omicron = lapply(model_names, get)
+# saveRDS(model_ideology_deaths_omicron, file="./linear_models/model_ideology_deaths_omicron.RDS")
+# 
+# #save models - no ideology deaths
+# model_names <- regionlist1_list_noideology_deaths
+# model_noideology_deaths = lapply(model_names, get)
+# saveRDS(model_noideology_deaths, file="./linear_models/model_noideology_deaths.RDS")
+# 
+# model_names <- regionlist2_list_noideology_deaths
+# model_noideology_deaths_latter = lapply(model_names, get)
+# saveRDS(model_noideology_deaths_latter, file="./linear_models/model_noideology_deaths_latter.RDS")
+# 
+# model_names <- regionlist3_list_noideology_deaths
+# model_noideology_deaths_delta = lapply(model_names, get)
+# saveRDS(model_noideology_deaths_delta, file="./linear_models/model_noideology_deaths_delta.RDS")
+# 
+# model_names <- regionlist4_list_noideology_deaths
+# model_noideology_deaths_omicron = lapply(model_names, get)
+# saveRDS(model_noideology_deaths_omicron, file="./linear_models/model_noideology_deaths_omicron.RDS")
+# 
+# #save models - ideology deaths 65+
+# model_names <- regionlist1_list_ideology_deaths65
+# model_ideology_deaths65 = lapply(model_names, get)
+# saveRDS(model_ideology_deaths65, file="./linear_models/model_ideology_deaths65.RDS")
+# 
+# model_names <- regionlist2_list_noideology_deaths65
+# model_ideology_deaths65_latter = lapply(model_names, get)
+# saveRDS(model_ideology_deaths65_latter, file="./linear_models/model_ideology_deaths65_latter.RDS")
+# 
+# model_names <- regionlist3_list_noideology_deaths65
+# model_ideology_deaths65_delta = lapply(model_names, get)
+# saveRDS(model_ideology_deaths65_delta, file="./linear_models/model_ideology_deaths65_delta.RDS")
+# 
+# model_names <- regionlist4_list_noideology_deaths65
+# model_ideology_deaths65_omicron = lapply(model_names, get)
+# saveRDS(model_ideology_deaths65_omicron, file="./linear_models/model_ideology_deaths65_omicron.RDS")
+# 
+# #save models - no ideology deaths 65+
+# model_names <- regionlist1_list_ideology_deaths65
+# model_noideology_deaths65 = lapply(model_names, get)
+# saveRDS(model_noideology_deaths65, file="./linear_models/model_noideology_deaths65.RDS")
+# 
+# model_names <- regionlist2_list_noideology_deaths65
+# model_noideology_deaths65_latter = lapply(model_names, get)
+# saveRDS(model_noideology_deaths65_latter, file="./linear_models/model_noideology_deaths65_latter.RDS")
+# 
+# model_names <- regionlist3_list_noideology_deaths65
+# model_noideology_deaths65_delta = lapply(model_names, get)
+# saveRDS(model_noideology_deaths65_delta, file="./linear_models/model_noideology_deaths65_delta.RDS")
+# 
+# model_names <- regionlist4_list_noideology_deaths65
+# model_noideology_deaths65_omicron = lapply(model_names, get)
+# saveRDS(model_noideology_deaths65_omicron, file="./linear_models/model_noideology_deaths65_omicron.RDS")
+
+
+#write.csv(linear_risk_final_all, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/data/results/linear_risk_final_all", row.names=FALSE)
+# write.csv(linear_risk_final, file="./data/results/linear_risk_final.csv", row.names=FALSE)
+# write.csv(linear_risk_final_latter, file="./data/results/linear_risk_final_latter.csv", row.names=FALSE)
+# write.csv(linear_risk_final_delta, file="./data/results/linear_risk_final_delta.csv", row.names=FALSE)
+# write.csv(linear_risk_final_omicron, file="./data/results/linear_risk_final_omicron.csv", row.names=FALSE)
+# model_names <- c("fit1", "fit3", "fit4", "fit5", "fit6", "fit7", "fit8", "fit9", "fit10")
+# list_models = lapply(model_names, get)
+# 
+# model_names_noideology <- c("fit1_noideology", "fit3_noideology", "fit4_noideology", "fit5_noideology", "fit6_noideology", "fit7_noideology", "fit8_noideology", "fit9_noideology", "fit10_noideology")
+# list_models_noideology = lapply(model_names_noideology, get)
+# 
+# model_names_deaths <- c("fit1_deaths", "fit3_deaths", "fit4_deaths", "fit5_deaths", "fit6_deaths", "fit7_deaths", "fit8_deaths", "fit9_deaths", "fit10_deaths")
+# list_models_deaths = lapply(model_names_deaths, get)
+# 
+# model_names_noideology_deaths <- c("fit1_noideology_deaths", "fit3_noideology_deaths", "fit4_noideology_deaths", "fit5_noideology_deaths", "fit6_noideology_deaths", "fit7_noideology_deaths", "fit8_noideology_deaths", "fit9_noideology_deaths", "fit10_noideology_deaths")
+# 
+# 
+# model_names_deaths65 <- c("fit1_deaths65", "fit3_deaths65", "fit4_deaths65", "fit5_deaths65", "fit6_deaths65", "fit7_deaths65", "fit8_deaths65", "fit9_deaths65", "fit10_deaths65")
+# list_models_deaths = lapply(model_names_deaths, get)
+# 
+# model_names_noideology_deaths65 <- c("fit1_noideology_deaths65", "fit3_noideology_deaths65", "fit4_noideology_deaths65", "fit5_noideology_deaths65", "fit6_noideology_deaths65", "fit7_noideology_deaths65", "fit8_noideology_deaths65", "fit9_noideology_deaths65", "fit10_noideology_deaths65")
+# #list_models_noideology_deaths = lapply(model_names_noideology_deaths, get)
+
+```
+
+
+# Part 2: Datasets and Modeling Framework
+
+We utilize fifteen (15) independent variables and one (1) dependent variable for our analysis, which are as follows:
+
+## Table T1: Variable Descriptions
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(knitr)
+library(kableExtra)
+df <- data.frame(Variables = c("Socioeconomic Status", "Household Composition and Disability", "Minority Status", "Housing Type and Transportation", "Obesity", "Unemployment", "Uninsured Adults", "Social Associations", "Diabetes", "Food Insecurity", "Broadband Access", "Population Density", "Population Age 65+", "Democratic Voting Percentage", "Vaccination Rate", "Population adjusted COVID-19 deaths*"), Description = linebreak(c("Index which represents income, poverty, employment, and education.", "Index with represents age, single parenting, and disability.", "Index which represents race and ethnicity.","Index which represents housing structure, crowding and vehicle access.", "Number of people who are obese, at a county level.","Number of unemployed adults per county.", "Number of uninsured adults per county.", "Number of people who are members of a social organization (churches, clubs, etc).","Number of people with diabetes at a county level.", "Index indicating the relative level of food insecurity in a county.", "Number of people without broadband access.", "Population density at a county level.", "Number of people age 65 or older in a county.", "Represents voting outcomes from the 2020 presidential general election.","CDC data for two dose vaccination rates at a county level, ending in April 1, 2022.", "Population-adjusted COVID-19 deaths per county.")), Source = linebreak(c("Social Vulnerability Indices (SVI) taken from the US Census agency for toxic substances and disease registry (ATSDR)", "Social Vulnerability Indices (SVI) taken from the US Census agency for toxic substances and disease registry (ATSDR)", "Social Vulnerability Indices (SVI) taken from the US Census agency for toxic substances and disease registry (ATSDR)", "Social Vulnerability Indices (SVI) taken from the US Census agency for toxic substances and disease registry (ATSDR)", "University of Wisconsin's Population Health Institute", "University of Wisconsin's Population Health Institute","University of Wisconsin's Population Health Institute", "University of Wisconsin's Population Health Institute","University of Wisconsin's Population Health Institute", "University of Wisconsin's Population Health Institute","University of Wisconsin's Population Health Institute","2020 US Census", "2020 US Census","Massachusettes Institute of Technology's (MIT) Election Lab","US Centers for Disease Control (CDC)", "US Centers for Disease Control (CDC)")))
+kable(df, col.names = c("Variables", "Description", "Data Source"), escape = F, caption = "Table S1: Variable Descriptions. * = dependent variable") %>% column_spec(3, width = "3in") %>% column_spec(c(1:2), width = "2in") %>% kable_styling(full_width = FALSE,latex_options = c("hold_position", "scale_down"), font_size = 10) %>% collapse_rows(columns = 3) 
+
+#df %>% collapse_rows_df(Source) %>% formattable()
+
+```
+
+Using this framework, we constructed three (3) temporal model time frames:
+
+1. Alpha variant time window (deaths calculated from December 1, 2019 to May 1, 2021)
+2. Delta variant time window (deaths calculated from May 1, 2021, to December 1, 2021)
+3. Omicron variant time window (deaths calculated from December 1, 2021 to April 1, 2022)
+
+\newpage
+
+# Part 3: Data Analysis and Regression: United States
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+#All states 
+risk <- subset(risk, county != "dona ana")
+pa <- ggplot(risk, aes(x=log10(density), y = deaths_adjusted/cuml.cases_adjusted, color = vote_discrete)) + geom_point() + theme_minimal() +
+scale_colour_brewer(palette = "RdBu") + ggtitle("United States: Fatality Rate vs. Logarithmic Population Density", subtitle = paste("Cumulative Deaths and Cases by County, as of ", maxdate, sep="")) +ylab("Fatality Rate") + xlab("Logarithmic Population Density") + theme(text = element_text(size = 20, family="serif"))
+
+risk_noloving <- subset(risk, FIPS != "48301") 
+
+pb <- ggplot(risk_noloving, aes(x=cuml.cases_adjusted, y = deaths_adjusted, color = vote_discrete)) + geom_point() + theme_minimal() +
+  scale_colour_brewer(palette = "RdBu") + ggtitle("United States: County level Cumulative Cases vs. Cumulative Population Deaths", subtitle = paste("Cumulative Population Adjusted Cases Vs. Cumulative Population Adjusted Deaths, as of ",  maxdate, sep="")) +ylab("Cumulative Population Adjusted Deaths") + xlab("Cumulative Population Adjusted Cases")+ theme(text = element_text(size = 20, family="serif"))
+
+```
+
+## Figure S5: Fatality Rate vs. Population Density
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+pa
+
+```
+
+## Figure S6: County Level Cumulative Cases vs. Cumulative Deaths
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+pb
+
+```
+
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+fulldata1 <- subset(fulldata, vote_discrete == c("Very Conservative", "Moderately Conservative"))
+
+p2 <- ggplot(fulldata1, aes(x=cuml.cases_adjusted, y = deaths_adjusted, color = vote_discrete, group = FIPS)) + geom_line() + theme_minimal() +
+  scale_colour_discrete(type = c("pink", "darkred")) + xlim(0,.4) + ylim(0,.01) + ggtitle("United States: Conservative Counties", subtitle = paste("County Level Cases Vs. Deaths: ", maxdate, sep="")) +ylab("Population Adjusted Deaths") + xlab("Population Adjusted Cases")+ theme(text = element_text(size = 20, family="serif"))
+
+fulldata2 <- subset(fulldata, vote_discrete == c("Very Liberal", "Moderately Liberal"))
+
+p3 <- ggplot(fulldata2, aes(x=cuml.cases_adjusted, y = deaths_adjusted, color = vote_discrete, group = FIPS)) + geom_line() + theme_minimal() +
+  scale_colour_discrete(type = c("lightblue", "darkblue")) + xlim(0,.4) + ylim(0,.01)+ ggtitle("United States: Liberal Counties", subtitle = paste("County Level Cases Vs. Deaths: ", maxdate, sep="")) +ylab("Population Adjusted Deaths") + xlab("Population Adjusted Cases")+ theme(text = element_text(size = 20, family="serif"))
+
+```
+
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+#p2
+
+```
+
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+#p3
+
+```
+
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+#gridExtra::grid.arrange(p2,p3, ncol=2)
+
+#animation test
+# 
+# p <- ggplot(fulldata, aes(x=cuml.cases_adjusted, y = deaths_adjusted, color = vote_discrete, frame = date)) + geom_point() + theme_minimal() +
+#   scale_colour_brewer(palette = "RdBu") 
+# p + transition_states(date,
+#                     transition_length = 2,
+#                     state_length = 1)
+
+fulldata_agg <- fulldata_revised
+fulldata_agg$vote_discrete <- as.factor(fulldata_agg$vote_discrete)
+#levels(fulldata_agg$vote_discrete) <- c(4,3,2,1)
+#fulldata_agg$vote_discrete <- as.numeric(fulldata_agg$vote_discrete)
+
+
+fulldata_agg_pop <- aggregate(fulldata_agg$population, by=list(fulldata_agg$vote_discrete, fulldata_agg$date), FUN = "sum")
+fulldata_agg_cases <- aggregate(fulldata_agg$new.cases, by=list(fulldata_agg$vote_discrete, fulldata_agg$date), FUN = "sum")
+fulldata_agg_combined <- cbind(fulldata_agg_pop, fulldata_agg_cases[3])
+colnames(fulldata_agg_combined) <- c("vote_discrete", "date", "population", "new.cases")
+fulldata_agg_combined$date <- as.Date(fulldata_agg_combined$date)
+
+
+p5 <- ggplot(fulldata_agg_combined, aes(x=date, y = new.cases/population, color = vote_discrete, group = vote_discrete)) + geom_line()+ theme_classic() +
+  theme(axis.text.x = element_text(angle = 90))  +
+    scale_x_date(date_breaks = "1 month", expand = c(0,0)) + ggtitle("United States", subtitle = paste("Population Adjusted Cases vs. Ideology over time, as of: ", maxdate, sep="" )) + theme(text = element_text(size = 20, family="serif"))
+
+fulldata_agg_deaths <- aggregate(fulldata_agg$new.deaths, by=list(fulldata_agg$vote_discrete, fulldata_agg$date), FUN = "sum")
+fulldata_agg_combined_deaths <- cbind(fulldata_agg_pop, fulldata_agg_deaths[3])
+colnames(fulldata_agg_combined_deaths) <- c("vote_discrete", "date", "population", "deaths")
+fulldata_agg_combined_deaths$date <- as.Date(fulldata_agg_combined_deaths$date)
+
+
+p6a <- ggplot(fulldata_agg_combined_deaths, aes(x=date, y = deaths/population, color = vote_discrete, group = vote_discrete)) + geom_line()+ theme_classic() +
+  theme(axis.text.x = element_text(angle = 90))  +
+    scale_x_date(date_breaks = "1 month", expand = c(0,0)) + ggtitle("United States", subtitle = paste("Population Adjusted Deaths vs. Ideology over time, as of: ", maxdate, sep="" ))+ theme(text = element_text(size = 20, family="serif"))
+
+```
+
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+#p5
+
+```
+
+<!-- ## Figure S7: Population Adjusted Deaths vs Ideology over time -->
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+#p6a
+
+```
+
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+fulldata_agg2 <- fulldata_agg
+fulldata_agg2$daily_deaths[fulldata_agg2$daily_deaths < 0] <- 0
+
+fulldata_agg_deaths <- aggregate(fulldata_agg2$deaths, by=list(fulldata_agg2$vote_discrete, fulldata_agg2$date), FUN = "sum")
+fulldata_agg_combined_deaths <- cbind(fulldata_agg_pop, fulldata_agg_deaths[3])
+colnames(fulldata_agg_combined_deaths) <- c("vote_discrete", "date", "population", "deaths")
+fulldata_agg_combined_deaths$date <- as.Date(fulldata_agg_combined_deaths$date)
+
+
+p6 <- ggplot(fulldata_agg_combined_deaths, aes(x=date, y = deaths/population, color = vote_discrete, group = vote_discrete)) + geom_line()+ theme_classic() +
+  theme(axis.text.x = element_text(angle = 90))  +
+    scale_x_date(date_breaks = "1 month", expand = c(0,0))  + ggtitle("United States", subtitle = paste("Population Adjusted Cumulative Deaths vs. Ideology over time, as of: ", maxdate, sep=""))+ theme(text = element_text(size = 20, family="serif"))
+
+
+fulldata_agg_cuml_cases <- aggregate(fulldata_agg$cuml.cases, by=list(fulldata_agg$vote_discrete, fulldata_agg$date), FUN = "sum")
+fulldata_agg_combined_cuml_cases <- cbind(fulldata_agg_pop, fulldata_agg_cuml_cases[3])
+colnames(fulldata_agg_combined_cuml_cases) <- c("vote_discrete", "date", "population", "cuml.cases")
+fulldata_agg_combined_cuml_cases$date <- as.Date(fulldata_agg_combined_cuml_cases$date)
+
+p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/population, color = vote_discrete, group = vote_discrete)) + geom_line()+ theme_classic() +
+  theme(axis.text.x = element_text(angle = 90)) +
+    scale_x_date(date_breaks = "1 month", expand = c(0,0))  + ggtitle("United States", subtitle = paste("Population Adjusted Cumulative Cases vs. Ideology over time, as of: ", maxdate, sep=""))+ theme(text = element_text(size = 20, family="serif"))
+
+```
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+#p7
+
+```
+
+## Figure S7: Population Adjusted Cumulative Deaths vs Ideology over time
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+p6
+
+```
+
+
+
+
+```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+#LM including cumulative cases (as of 4/11), SVI, and voting percentage for Biden
+withmodel <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + policy, REML=FALSE, data = linear_risk_final)
+#LM without the voting percentage to compare fit
+withoutmodel <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + Series_Complete_Pop_Pct + density + policy, REML=FALSE, data = linear_risk_final)
+
+
+#LM including cumulative cases (as of 4/11), SVI, and voting percentage for Biden
+withmodel_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + policy, REML=FALSE, data = linear_risk_final)
+#LM without the voting percentage to compare fit
+withoutmodel_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + Series_Complete_Pop_Pct + density + policy, REML=FALSE, data = linear_risk_final)
+
+
+
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# 
+# modeloutput <- sjPlot::tab_model(fit_all, fit_all_noideology, fit_all_deaths, fit_all_noideology_deaths, fit_all_deaths65, fit_all_noideology_deaths65, dv.labels = c("Cases w/ ID", "Cases w/o ID", "Deaths w/ ID", "Deaths w/o ID", "Deaths 65+ w/ ID", "Deaths 65+ w/o ID"), show.ci = FALSE)
+# modeloutput
+```
+
+## Table T2: United States: Regression Model Results
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+# modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[1])), eval(parse(text=regionlist3_list_ideology_deaths[1])),  eval(parse(text=regionlist4_list_ideology_deaths[1])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_US.html")
+
+# modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[1])), eval(parse(text=regionlist3_list_ideology_deaths[1])),  eval(parse(text=regionlist4_list_ideology_deaths[1])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_US.html") 
+
+modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[1])), eval(parse(text=regionlist3_list_ideology_deaths[1])),  eval(parse(text=regionlist4_list_ideology_deaths[1])), digits = 5, dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Housing Type & Transportation", "Unemployed", "Food Insecurity", "Broadband Access", "Diabetes", "Obesity", "Population Density", "Associations", "Age over 65", "Democratic Voting Pct", "Vaccination Rate", "Minority Status and Language", "Uninsured Adults"), show.ci = FALSE, file="./html/modeloutput_US.html") 
+
+#+ theme_blank(base_size = 12, base_family = "")
+
+#modeloutput_US
+
+#webshot::webshot(url = "/mnt/ceph/erichs/git/IMCI-covid-riskfinal/html/modeloutput_US.html", file = "/mnt/ceph/erichs/git/IMCI-covid-riskfinal/png/modeloutput_US.png")
+
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+webshot::webshot(url = "./html/modeloutput_US.html", file = "./png/modeloutput_US.png")
+
+```
