@@ -1,0 +1,4380 @@
+
+R version 4.0.5 (2021-03-31) -- "Shake and Throw"
+Copyright (C) 2021 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> Sys.setenv(RSTUDIO_PANDOC="/opt/rstudio-server/bin/pandoc")
+> rmarkdown::render("/mnt/ceph/erichs/git/IMCI-covid-riskfinal/Rmd/Risk_SupplementalA_rev4.Rmd")
+
+
+processing file: Risk_SupplementalA_rev4.Rmd
+1/509                                 
+2/509 [setup]                         
+3/509                                 
+4/509 [unnamed-chunk-1]               
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+Loading required package: lme4
+Loading required package: Matrix
+
+Attaching package: 'lmerTest'
+
+The following object is masked from 'package:lme4':
+
+    lmer
+
+The following object is masked from 'package:stats':
+
+    step
+
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: snow
+
+Attaching package: 'snow'
+
+The following objects are masked from 'package:parallel':
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, clusterSplit, makeCluster, parApply,
+    parCapply, parLapply, parRapply, parSapply, splitIndices,
+    stopCluster
+
+------------------------------------------------------------------------------
+You have loaded plyr after dplyr - this is likely to cause problems.
+If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
+library(plyr); library(dplyr)
+------------------------------------------------------------------------------
+
+Attaching package: 'plyr'
+
+The following objects are masked from 'package:dplyr':
+
+    arrange, count, desc, failwith, id, mutate, rename, summarise,
+    summarize
+
+Registered S3 methods overwritten by 'parameters':
+  method                           from      
+  as.double.parameters_kurtosis    datawizard
+  as.double.parameters_skewness    datawizard
+  as.double.parameters_smoothness  datawizard
+  as.numeric.parameters_kurtosis   datawizard
+  as.numeric.parameters_skewness   datawizard
+  as.numeric.parameters_smoothness datawizard
+  print.parameters_distribution    datawizard
+  print.parameters_kurtosis        datawizard
+  print.parameters_skewness        datawizard
+  summary.parameters_kurtosis      datawizard
+  summary.parameters_skewness      datawizard
+5/509                                 
+6/509 [unnamed-chunk-2]               
+7/509                                 
+8/509 [unnamed-chunk-3]               
+
+Attaching package: 'kableExtra'
+
+The following object is masked from 'package:dplyr':
+
+    group_rows
+
+9/509                                 
+10/509 [Linear_models]                 
+Loading required package: sp
+Please note that rgdal will be retired during 2023,
+plan transition to sf/stars/terra functions using GDAL and PROJ
+at your earliest convenience.
+See https://r-spatial.org/r/2022/04/12/evolution.html and https://github.com/r-spatial/evolution
+rgdal: version: 1.6-5, (SVN revision 1199)
+Geospatial Data Abstraction Library extensions to R successfully loaded
+Loaded GDAL runtime: GDAL 3.0.4, released 2020/01/28
+Path to GDAL shared files: /usr/share/gdal
+GDAL binary built with GEOS: TRUE 
+Loaded PROJ runtime: Rel. 6.3.2, May 1st, 2020, [PJ_VERSION: 632]
+Path to PROJ shared files: /usr/share/proj
+Linking to sp version:1.4-6
+To mute warnings of possible GDAL/OSR exportToProj4() degradation,
+use options("rgdal_show_exportToProj4_warnings"="none") before loading sp or rgdal.
+rgeos version: 0.5-7, (SVN revision 676)
+ GEOS runtime version: 3.7.2-CAPI-1.11.2 
+ Please note that rgeos will be retired by the end of 2023,
+plan transition to sf functions using GEOS at your earliest convenience.
+ Linking to sp version: 1.4-5 
+ Polygon checking: TRUE 
+
+Checking rgeos availability: TRUE
+Please note that 'maptools' will be retired during 2023,
+plan transition at your earliest convenience;
+some functionality will be moved to 'sp'.
+Loading required package: spData
+To access larger datasets in this package, install the spDataLarge
+package with: `install.packages('spDataLarge',
+repos='https://nowosad.github.io/drat/', type='source')`
+
+Attaching package: 'spData'
+
+The following object is masked _by_ '.GlobalEnv':
+
+    polys
+
+Loading required package: sf
+Linking to GEOS 3.7.2, GDAL 3.0.4, PROJ 6.3.2; sf_use_s2() is TRUE
+Spherical geometry (s2) switched off
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+starting worker pid=1279768 on localhost:11420 at 11:46:41.980
+starting worker pid=1279778 on localhost:11420 at 11:46:41.980
+starting worker pid=1279773 on localhost:11420 at 11:46:41.987
+starting worker pid=1279771 on localhost:11420 at 11:46:41.987
+starting worker pid=1279775 on localhost:11420 at 11:46:41.989
+starting worker pid=1279782 on localhost:11420 at 11:46:41.989
+starting worker pid=1279777 on localhost:11420 at 11:46:41.990
+starting worker pid=1279761 on localhost:11420 at 11:46:41.993
+starting worker pid=1279763 on localhost:11420 at 11:46:42.002
+starting worker pid=1279770 on localhost:11420 at 11:46:42.009
+starting worker pid=1279776 on localhost:11420 at 11:46:42.011
+starting worker pid=1279779 on localhost:11420 at 11:46:42.015
+starting worker pid=1279772 on localhost:11420 at 11:46:42.025
+starting worker pid=1279762 on localhost:11420 at 11:46:42.026
+starting worker pid=1279774 on localhost:11420 at 11:46:42.031
+starting worker pid=1279765 on localhost:11420 at 11:46:42.034
+starting worker pid=1279767 on localhost:11420 at 11:46:42.067
+starting worker pid=1279769 on localhost:11420 at 11:46:42.068
+starting worker pid=1279764 on localhost:11420 at 11:46:42.070
+starting worker pid=1279766 on localhost:11420 at 11:46:42.075
+starting worker pid=1280584 on localhost:11420 at 11:48:23.502
+starting worker pid=1280567 on localhost:11420 at 11:48:23.502
+starting worker pid=1280579 on localhost:11420 at 11:48:23.505
+starting worker pid=1280575 on localhost:11420 at 11:48:23.507
+starting worker pid=1280576 on localhost:11420 at 11:48:23.509
+starting worker pid=1280574 on localhost:11420 at 11:48:23.516
+starting worker pid=1280578 on localhost:11420 at 11:48:23.516
+starting worker pid=1280571 on localhost:11420 at 11:48:23.517
+starting worker pid=1280583 on localhost:11420 at 11:48:23.520
+starting worker pid=1280577 on localhost:11420 at 11:48:23.520
+starting worker pid=1280566 on localhost:11420 at 11:48:23.523
+starting worker pid=1280580 on localhost:11420 at 11:48:23.529
+starting worker pid=1280565 on localhost:11420 at 11:48:23.534
+starting worker pid=1280573 on localhost:11420 at 11:48:23.537
+starting worker pid=1280568 on localhost:11420 at 11:48:23.545
+starting worker pid=1280572 on localhost:11420 at 11:48:23.549
+starting worker pid=1280581 on localhost:11420 at 11:48:23.550
+starting worker pid=1280582 on localhost:11420 at 11:48:23.555
+starting worker pid=1280570 on localhost:11420 at 11:48:23.568
+starting worker pid=1280569 on localhost:11420 at 11:48:23.575
+starting worker pid=1280967 on localhost:11420 at 11:50:06.153
+starting worker pid=1280969 on localhost:11420 at 11:50:06.157
+starting worker pid=1280964 on localhost:11420 at 11:50:06.158
+starting worker pid=1280965 on localhost:11420 at 11:50:06.159
+starting worker pid=1280961 on localhost:11420 at 11:50:06.162
+starting worker pid=1280955 on localhost:11420 at 11:50:06.163
+starting worker pid=1280950 on localhost:11420 at 11:50:06.164
+starting worker pid=1280966 on localhost:11420 at 11:50:06.166
+starting worker pid=1280952 on localhost:11420 at 11:50:06.168
+starting worker pid=1280968 on localhost:11420 at 11:50:06.171
+starting worker pid=1280954 on localhost:11420 at 11:50:06.182
+starting worker pid=1280957 on localhost:11420 at 11:50:06.192
+starting worker pid=1280962 on localhost:11420 at 11:50:06.195
+starting worker pid=1280956 on localhost:11420 at 11:50:06.196
+starting worker pid=1280953 on localhost:11420 at 11:50:06.198
+starting worker pid=1280959 on localhost:11420 at 11:50:06.199
+starting worker pid=1280960 on localhost:11420 at 11:50:06.200
+starting worker pid=1280958 on localhost:11420 at 11:50:06.220
+starting worker pid=1280963 on localhost:11420 at 11:50:06.221
+starting worker pid=1280951 on localhost:11420 at 11:50:06.237
+starting worker pid=1281289 on localhost:11420 at 11:51:47.096
+starting worker pid=1281295 on localhost:11420 at 11:51:47.097
+starting worker pid=1281290 on localhost:11420 at 11:51:47.101
+starting worker pid=1281283 on localhost:11420 at 11:51:47.104
+starting worker pid=1281294 on localhost:11420 at 11:51:47.111
+starting worker pid=1281284 on localhost:11420 at 11:51:47.123
+starting worker pid=1281298 on localhost:11420 at 11:51:47.126
+starting worker pid=1281285 on localhost:11420 at 11:51:47.128
+starting worker pid=1281292 on localhost:11420 at 11:51:47.128
+starting worker pid=1281303 on localhost:11420 at 11:51:47.129
+starting worker pid=1281297 on localhost:11420 at 11:51:47.135
+starting worker pid=1281288 on localhost:11420 at 11:51:47.149
+starting worker pid=1281286 on localhost:11420 at 11:51:47.149
+starting worker pid=1281287 on localhost:11420 at 11:51:47.152
+starting worker pid=1281296 on localhost:11420 at 11:51:47.157
+starting worker pid=1281291 on localhost:11420 at 11:51:47.161
+starting worker pid=1281301 on localhost:11420 at 11:51:47.170
+starting worker pid=1281282 on localhost:11420 at 11:51:47.186
+starting worker pid=1281293 on localhost:11420 at 11:51:47.186
+starting worker pid=1281302 on localhost:11420 at 11:51:47.189
+11/509                                 
+12/509 [datapanel]                     
+
+Attaching package: 'gridExtra'
+
+The following object is masked from 'package:dplyr':
+
+    combine
+
+13/509                                 
+14/509 [datapanel2]                    
+15/509                                 
+16/509 [datapanel3]                    
+17/509                                 
+18/509 [datapanel4]                    
+19/509                                 
+20/509 [datapanel5]                    
+21/509                                 
+22/509 [unnamed-chunk-4]               
+23/509                                 
+24/509 [unnamed-chunk-5]               
+25/509                                 
+26/509 [unnamed-chunk-6]               
+27/509                                 
+28/509 [unnamed-chunk-7]               
+29/509                                 
+30/509 [unnamed-chunk-8]               
+31/509                                 
+32/509 [unnamed-chunk-9]               
+33/509                                 
+34/509 [unnamed-chunk-10]              
+35/509                                 
+36/509 [unnamed-chunk-11]              
+37/509                                 
+38/509 [unnamed-chunk-12]              
+39/509                                 
+40/509 [unnamed-chunk-13]              
+41/509                                 
+42/509 [unnamed-chunk-14]              
+43/509                                 
+44/509 [unnamed-chunk-15]              
+45/509                                 
+46/509 [unnamed-chunk-16]              
+47/509                                 
+48/509 [unnamed-chunk-17]              
+49/509                                 
+50/509 [unnamed-chunk-18]              
+51/509                                 
+52/509 [unnamed-chunk-19]              
+53/509                                 
+54/509 [unnamed-chunk-20]              
+55/509                                 
+56/509 [unnamed-chunk-21]              
+57/509                                 
+58/509 [unnamed-chunk-22]              
+59/509                                 
+60/509 [unnamed-chunk-23]              
+61/509                                 
+62/509 [unnamed-chunk-24]              
+63/509                                 
+64/509 [unnamed-chunk-25]              
+65/509                                 
+66/509 [unnamed-chunk-26]              
+67/509                                 
+68/509 [unnamed-chunk-27]              
+69/509                                 
+70/509 [unnamed-chunk-28]              
+71/509                                 
+72/509 [unnamed-chunk-29]              
+73/509                                 
+74/509 [unnamed-chunk-30]              
+75/509                                 
+76/509 [unnamed-chunk-31]              
+77/509                                 
+78/509 [unnamed-chunk-32]              
+79/509                                 
+80/509 [unnamed-chunk-33]              
+81/509                                 
+82/509 [unnamed-chunk-34]              
+83/509                                 
+84/509 [unnamed-chunk-35]              
+85/509                                 
+86/509 [unnamed-chunk-36]              
+87/509                                 
+88/509 [unnamed-chunk-37]              
+89/509                                 
+90/509 [unnamed-chunk-38]              
+91/509                                 
+92/509 [unnamed-chunk-39]              
+93/509                                 
+94/509 [unnamed-chunk-40]              
+95/509                                 
+96/509 [unnamed-chunk-41]              
+97/509                                 
+98/509 [unnamed-chunk-42]              
+99/509                                 
+100/509 [unnamed-chunk-43]              
+101/509                                 
+102/509 [unnamed-chunk-44]              
+103/509                                 
+104/509 [unnamed-chunk-45]              
+105/509                                 
+106/509 [unnamed-chunk-46]              
+107/509                                 
+108/509 [unnamed-chunk-47]              
+109/509                                 
+110/509 [unnamed-chunk-48]              
+111/509                                 
+112/509 [unnamed-chunk-49]              
+113/509                                 
+114/509 [unnamed-chunk-50]              
+115/509                                 
+116/509 [unnamed-chunk-51]              
+117/509                                 
+118/509 [unnamed-chunk-52]              
+119/509                                 
+120/509 [unnamed-chunk-53]              
+121/509                                 
+122/509 [unnamed-chunk-54]              
+123/509                                 
+124/509 [unnamed-chunk-55]              
+125/509                                 
+126/509 [unnamed-chunk-56]              
+127/509                                 
+128/509 [unnamed-chunk-57]              
+129/509                                 
+130/509 [unnamed-chunk-58]              
+131/509                                 
+132/509 [unnamed-chunk-59]              
+133/509                                 
+134/509 [unnamed-chunk-60]              
+135/509                                 
+136/509 [unnamed-chunk-61]              
+137/509                                 
+138/509 [unnamed-chunk-62]              
+139/509                                 
+140/509 [unnamed-chunk-63]              
+141/509                                 
+142/509 [unnamed-chunk-64]              
+143/509                                 
+144/509 [unnamed-chunk-65]              
+145/509                                 
+146/509 [unnamed-chunk-66]              
+147/509                                 
+148/509 [unnamed-chunk-67]              
+149/509                                 
+150/509 [unnamed-chunk-68]              
+151/509                                 
+152/509 [unnamed-chunk-69]              
+153/509                                 
+154/509 [unnamed-chunk-70]              
+155/509                                 
+156/509 [unnamed-chunk-71]              
+157/509                                 
+158/509 [unnamed-chunk-72]              
+159/509                                 
+160/509 [unnamed-chunk-73]              
+161/509                                 
+162/509 [unnamed-chunk-74]              
+163/509                                 
+164/509 [unnamed-chunk-75]              
+165/509                                 
+166/509 [unnamed-chunk-76]              
+167/509                                 
+168/509 [unnamed-chunk-77]              
+169/509                                 
+170/509 [unnamed-chunk-78]              
+171/509                                 
+172/509 [unnamed-chunk-79]              
+173/509                                 
+174/509 [unnamed-chunk-80]              
+175/509                                 
+176/509 [unnamed-chunk-81]              
+177/509                                 
+178/509 [unnamed-chunk-82]              
+179/509                                 
+180/509 [unnamed-chunk-83]              
+181/509                                 
+182/509 [unnamed-chunk-84]              
+183/509                                 
+184/509 [unnamed-chunk-85]              
+185/509                                 
+186/509 [unnamed-chunk-86]              
+187/509                                 
+188/509 [unnamed-chunk-87]              
+189/509                                 
+190/509 [unnamed-chunk-88]              
+191/509                                 
+192/509 [unnamed-chunk-89]              
+193/509                                 
+194/509 [unnamed-chunk-90]              
+195/509                                 
+196/509 [unnamed-chunk-91]              
+197/509                                 
+198/509 [unnamed-chunk-92]              
+199/509                                 
+200/509 [unnamed-chunk-93]              
+201/509                                 
+202/509 [unnamed-chunk-94]              
+203/509                                 
+204/509 [unnamed-chunk-95]              
+205/509                                 
+206/509 [unnamed-chunk-96]              
+207/509                                 
+208/509 [unnamed-chunk-97]              
+209/509                                 
+210/509 [unnamed-chunk-98]              
+211/509                                 
+212/509 [unnamed-chunk-99]              
+213/509                                 
+214/509 [unnamed-chunk-100]             
+215/509                                 
+216/509 [unnamed-chunk-101]             
+217/509                                 
+218/509 [unnamed-chunk-102]             
+219/509                                 
+220/509 [unnamed-chunk-103]             
+221/509                                 
+222/509 [unnamed-chunk-104]             
+223/509                                 
+224/509 [unnamed-chunk-105]             
+225/509                                 
+226/509 [unnamed-chunk-106]             
+227/509                                 
+228/509 [unnamed-chunk-107]             
+229/509                                 
+230/509 [unnamed-chunk-108]             
+231/509                                 
+232/509 [unnamed-chunk-109]             
+233/509                                 
+234/509 [unnamed-chunk-110]             
+235/509                                 
+236/509 [unnamed-chunk-111]             
+237/509                                 
+238/509 [unnamed-chunk-112]             
+239/509                                 
+240/509 [unnamed-chunk-113]             
+241/509                                 
+242/509 [unnamed-chunk-114]             
+243/509                                 
+244/509 [unnamed-chunk-115]             
+245/509                                 
+246/509 [unnamed-chunk-116]             
+247/509                                 
+248/509 [unnamed-chunk-117]             
+249/509                                 
+250/509 [unnamed-chunk-118]             
+251/509                                 
+252/509 [unnamed-chunk-119]             
+253/509                                 
+254/509 [unnamed-chunk-120]             
+255/509                                 
+256/509 [unnamed-chunk-121]             
+257/509                                 
+258/509 [unnamed-chunk-122]             
+259/509                                 
+260/509 [unnamed-chunk-123]             
+261/509                                 
+262/509 [unnamed-chunk-124]             
+263/509                                 
+264/509 [unnamed-chunk-125]             
+265/509                                 
+266/509 [unnamed-chunk-126]             
+267/509                                 
+268/509 [unnamed-chunk-127]             
+269/509                                 
+270/509 [unnamed-chunk-128]             
+271/509                                 
+272/509 [unnamed-chunk-129]             
+273/509                                 
+274/509 [unnamed-chunk-130]             
+275/509                                 
+276/509 [unnamed-chunk-131]             
+277/509                                 
+278/509 [unnamed-chunk-132]             
+279/509                                 
+280/509 [unnamed-chunk-133]             
+281/509                                 
+282/509 [unnamed-chunk-134]             
+283/509                                 
+284/509 [unnamed-chunk-135]             
+285/509                                 
+286/509 [unnamed-chunk-136]             
+287/509                                 
+288/509 [unnamed-chunk-137]             
+289/509                                 
+290/509 [unnamed-chunk-138]             
+291/509                                 
+292/509 [unnamed-chunk-139]             
+293/509                                 
+294/509 [unnamed-chunk-140]             
+295/509                                 
+296/509 [unnamed-chunk-141]             
+297/509                                 
+298/509 [unnamed-chunk-142]             
+299/509                                 
+300/509 [unnamed-chunk-143]             
+301/509                                 
+302/509 [unnamed-chunk-144]             
+303/509                                 
+304/509 [unnamed-chunk-145]             
+305/509                                 
+306/509 [unnamed-chunk-146]             
+307/509                                 
+308/509 [unnamed-chunk-147]             
+309/509                                 
+310/509 [unnamed-chunk-148]             
+311/509                                 
+312/509 [unnamed-chunk-149]             
+313/509                                 
+314/509 [unnamed-chunk-150]             
+315/509                                 
+316/509 [unnamed-chunk-151]             
+317/509                                 
+318/509 [unnamed-chunk-152]             
+319/509                                 
+320/509 [unnamed-chunk-153]             
+321/509                                 
+322/509 [unnamed-chunk-154]             
+323/509                                 
+324/509 [unnamed-chunk-155]             
+325/509                                 
+326/509 [unnamed-chunk-156]             
+327/509                                 
+328/509 [unnamed-chunk-157]             
+329/509                                 
+330/509 [unnamed-chunk-158]             
+331/509                                 
+332/509 [unnamed-chunk-159]             
+333/509                                 
+334/509 [unnamed-chunk-160]             
+335/509                                 
+336/509 [unnamed-chunk-161]             
+337/509                                 
+338/509 [unnamed-chunk-162]             
+339/509                                 
+340/509 [unnamed-chunk-163]             
+341/509                                 
+342/509 [unnamed-chunk-164]             
+343/509                                 
+344/509 [unnamed-chunk-165]             
+345/509                                 
+346/509 [unnamed-chunk-166]             
+347/509                                 
+348/509 [unnamed-chunk-167]             
+349/509                                 
+350/509 [unnamed-chunk-168]             
+351/509                                 
+352/509 [unnamed-chunk-169]             
+353/509                                 
+354/509 [unnamed-chunk-170]             
+355/509                                 
+356/509 [unnamed-chunk-171]             
+357/509                                 
+358/509 [unnamed-chunk-172]             
+359/509                                 
+360/509 [unnamed-chunk-173]             
+361/509                                 
+362/509 [unnamed-chunk-174]             
+363/509                                 
+364/509 [unnamed-chunk-175]             
+365/509                                 
+366/509 [unnamed-chunk-176]             
+367/509                                 
+368/509 [unnamed-chunk-177]             
+369/509                                 
+370/509 [unnamed-chunk-178]             
+371/509                                 
+372/509 [covidrisk_model_pvalues]       
+Using x as value column: use value.var to override.
+373/509                                 
+374/509 [unnamed-chunk-179]             
+375/509                                 
+376/509 [covidrisk_GWRF2]               
+Loading required package: robustbase
+
+Attaching package: 'robustbase'
+
+The following object is masked from 'package:lmerTest':
+
+    carrots
+
+Loading required package: Rcpp
+Loading required package: spatialreg
+
+Attaching package: 'spatialreg'
+
+The following objects are masked from 'package:spdep':
+
+    aple, aple.mc, aple.plot, as_dgRMatrix_listw, as_dsCMatrix_I,
+    as_dsCMatrix_IrW, as_dsTMatrix_listw, as.spam.listw, can.be.simmed,
+    cheb_setup, create_WX, do_ldet, eigen_pre_setup, eigen_setup,
+    eigenw, errorsarlm, get.ClusterOption, get.coresOption,
+    get.mcOption, get.VerboseOption, get.ZeroPolicyOption,
+    GMargminImage, GMerrorsar, griffith_sone, gstsls, Hausman.test,
+    impacts, intImpacts, invIrM, invIrW, Jacobian_W, jacobianSetup,
+    l_max, lagmess, lagsarlm, lextrB, lextrS, lextrW, lmSLX, localAple,
+    LU_prepermutate_setup, LU_setup, Matrix_J_setup, Matrix_setup,
+    mcdet_setup, MCMCsamp, ME, mom_calc, mom_calc_int2, moments_setup,
+    powerWeights, sacsarlm, SE_classic_setup, SE_interp_setup,
+    SE_whichMin_setup, set.ClusterOption, set.coresOption,
+    set.mcOption, set.VerboseOption, set.ZeroPolicyOption,
+    similar.listw, spam_setup, spam_update_setup, SpatialFiltering,
+    spautolm, spBreg_err, spBreg_lag, spBreg_sac, stsls,
+    subgraph_eigenw, trW
+
+Welcome to GWmodel version 2.2-8.
+
+Attaching package: 'raster'
+
+The following object is masked from 'package:lme4':
+
+    getData
+
+The following object is masked from 'package:dplyr':
+
+    select
+
+377/509                                 
+378/509 [covidrisk_write]               
+379/509                                 
+380/509 [covidrisk_GWRF1]               
+381/509                                 
+382/509 [covidrisk_GWRF2a]              
+383/509                                 
+384/509 [covidrisk_GWRF3b]              
+
+Attaching package: 'ggpubr'
+
+The following object is masked from 'package:raster':
+
+    rotate
+
+The following object is masked from 'package:plyr':
+
+    mutate
+
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+385/509                                 
+386/509 [covidrisk_GWRF3]               
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+387/509                                 
+388/509 [covidrisk_moran_map1a]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+389/509                                 
+390/509 [covidrisk_moran_map2a]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+391/509                                 
+392/509 [covidrisk_moran_map3a]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+393/509                                 
+394/509 [covidrisk_moran_map4a]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+395/509                                 
+396/509 [covidrisk_moran_map5a]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+397/509                                 
+398/509 [covidrisk_moran_map6a]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+399/509                                 
+400/509 [covidrisk_moran_map7a]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+401/509                                 
+402/509 [covidrisk_moran_map8a]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+403/509                                 
+404/509 [covidrisk_moran_alpha_merged1] 
+405/509                                 
+406/509 [covidrisk_moran_alpha_merged2] 
+407/509                                 
+408/509 [covidrisk_moran_alpha_merged3] 
+409/509                                 
+410/509 [covidrisk_moran_alpha_merged4] 
+411/509                                 
+412/509 [covidrisk_GWRF4]               
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+413/509                                 
+414/509 [covidrisk_GWRF3_delta]         
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+415/509                                 
+416/509 [covidrisk_moran_map1d]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+417/509                                 
+418/509 [covidrisk_moran_map2d]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+419/509                                 
+420/509 [covidrisk_moran_map3d]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+421/509                                 
+422/509 [covidrisk_moran_map4d]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+423/509                                 
+424/509 [covidrisk_moran_map5d]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+425/509                                 
+426/509 [covidrisk_moran_map6d]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+427/509                                 
+428/509 [covidrisk_moran_map7d]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+429/509                                 
+430/509 [covidrisk_moran_map8d]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+431/509                                 
+432/509 [covidrisk_moran_alpha_merged1b]
+433/509                                 
+434/509 [covidrisk_moran_alpha_merged2b]
+435/509                                 
+436/509 [covidrisk_moran_alpha_merged3b]
+437/509                                 
+438/509 [covidrisk_moran_alpha_merged4b]
+439/509                                 
+440/509 [covidrisk_GWRF_omicron]        
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+441/509                                 
+442/509 [covidrisk_GWRF3_omicron]       
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+443/509                                 
+444/509 [covidrisk_moran_map1o]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+445/509                                 
+446/509 [covidrisk_moran_map2o]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+447/509                                 
+448/509 [covidrisk_moran_map3o]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+449/509                                 
+450/509 [covidrisk_moran_map4o]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+451/509                                 
+452/509 [covidrisk_moran_map5o]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+453/509                                 
+454/509 [covidrisk_moran_map6o]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+455/509                                 
+456/509 [covidrisk_moran_map7o]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+457/509                                 
+458/509 [covidrisk_moran_map8o]         
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+459/509                                 
+460/509 [covidrisk_read]                
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+although coordinates are longitude/latitude, st_intersects assumes that they are planar
+461/509                                 
+462/509 [covidrisk_GWRF_cases]          
+463/509                                 
+464/509 [unnamed-chunk-180]             
+465/509                                 
+466/509 [unnamed-chunk-181]             
+467/509                                 
+468/509 [covidrisk_GWRF_deaths]         
+Loading required package: lattice
+
+Attaching package: 'Metrics'
+
+The following objects are masked from 'package:caret':
+
+    precision, recall
+
+Loading required package: randomForest
+randomForest 4.6-14
+Type rfNews() to see new features/changes/bug fixes.
+
+Attaching package: 'randomForest'
+
+The following object is masked from 'package:gridExtra':
+
+    combine
+
+The following object is masked from 'package:ggplot2':
+
+    margin
+
+The following object is masked from 'package:dplyr':
+
+    combine
+
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 1
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.498
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): NA
+R-squared (OOB) %: NA
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 100
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 2
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.363
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.003
+R-squared (OOB) %: -16.015
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 92.396
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 3
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.059
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.003
+R-squared (OOB) %: 6.048
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 90.601
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 4
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.475
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 21.433
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.822
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 5
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.633
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 26.084
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.063
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 6
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.095
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 29.45
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.619
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 7
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.483
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 31.243
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.854
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 8
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.275
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 31.185
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.528
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 9
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.383
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 33.814
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.875
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 10
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.533
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 32.857
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.914
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 11
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.97
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.119
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.403
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 12
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.934
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.617
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.388
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 13
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.493
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.798
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.551
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 14
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.317
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 35.964
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.585
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 15
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.248
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 35.483
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.101
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 16
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.392
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.571
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.408
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 17
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.977
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 37.198
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.795
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 18
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.605
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 37.807
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.494
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 19
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.038
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.693
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.918
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 20
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.915
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 37.041
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.804
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 21
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.425
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.834
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.798
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 22
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.377
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 38.239
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.973
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 23
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.223
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 37.168
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.116
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 24
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.244
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.402
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.704
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 25
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.286
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 35.967
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.259
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 26
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.369
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 37.333
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.921
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 27
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.172
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 37.126
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.762
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 28
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.397
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 35.773
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.319
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 29
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.633
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 36.792
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.716
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 30
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.277
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 35.836
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.451
+
+Number of Observations: 3070
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 24
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.32
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.002
+R-squared (OOB) %: 40.379
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.5
+469/509                                 
+470/509 [unnamed-chunk-182]             
+471/509                                 
+472/509 [unnamed-chunk-183]             
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+473/509                                 
+474/509 [unnamed-chunk-184]             
+475/509                                 
+476/509 [unnamed-chunk-185]             
+477/509                                 
+478/509 [unnamed-chunk-186]             
+479/509                                 
+480/509 [unnamed-chunk-187]             
+481/509                                 
+482/509 [covidrisk_GWRF_deaths_delta]   
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 1
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.88
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): NA
+R-squared (OOB) %: NA
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 100
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 2
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.555
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: -1.686
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 93.234
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 3
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.846
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 23.998
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 92.36
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 4
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.942
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 34.678
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 91.094
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 5
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.574
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 37.032
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.85
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 6
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.567
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 37.034
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.341
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 7
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.884
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 38.292
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.05
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 8
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.518
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.568
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.508
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 9
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.893
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 38.966
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.626
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 10
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.572
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.163
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.72
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 11
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.543
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.622
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.646
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 12
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.826
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.77
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.324
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 13
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.608
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.335
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.952
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 14
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.976
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.687
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.808
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 15
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.786
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.338
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.03
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 16
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.498
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 41.053
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.142
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 17
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.916
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.797
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.023
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 18
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.937
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.589
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.241
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 19
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.768
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.087
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.28
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 20
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.869
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 38.711
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.173
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 21
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.516
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.394
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.314
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 22
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.682
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 38.185
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.091
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 23
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.653
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.397
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.108
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 24
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.527
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.836
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.623
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 25
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.691
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.946
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.279
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 26
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.588
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.738
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.317
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 27
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.721
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.085
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.655
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 28
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.716
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.556
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.43
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 29
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.876
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 39.409
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.37
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 30
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.572
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 40.843
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.39
+
+Number of Observations: 3070
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 20
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 89.672
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: 44.528
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 90.238
+483/509                                 
+484/509 [unnamed-chunk-188]             
+485/509                                 
+486/509 [unnamed-chunk-189]             
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+487/509                                 
+488/509 [unnamed-chunk-190]             
+489/509                                 
+490/509 [unnamed-chunk-191]             
+491/509                                 
+492/509 [unnamed-chunk-192]             
+493/509                                 
+494/509 [unnamed-chunk-193]             
+495/509                                 
+496/509 [covidrisk_GWRF_deaths_omicron] 
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 1
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.535
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): NA
+R-squared (OOB) %: NA
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 100
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 2
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.439
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0.001
+R-squared (OOB) %: -5.914
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 92.69
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 3
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.84
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 19.998
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 92.05
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 4
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.335
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 24.455
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 90.182
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 5
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.252
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 28.35
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.471
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 6
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.547
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 28.133
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.711
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 7
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.413
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 28.891
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.422
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 8
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.203
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 31.035
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 86.864
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 9
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.241
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 30.095
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.462
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 10
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.163
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 30.079
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.194
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 11
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.348
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 29.006
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.136
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 12
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.235
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 30.978
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.506
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 13
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.574
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 29.79
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.581
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 14
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.101
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 31.33
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.753
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 15
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.432
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 31.793
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.674
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 16
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.37
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 31.764
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.753
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 17
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.485
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 31.075
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.692
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 18
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.201
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 33.835
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.175
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 19
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.637
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 32.636
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.003
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 20
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.021
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 34.069
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.249
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 21
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.125
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 32.861
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.014
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 22
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.259
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 34.205
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.12
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 23
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.629
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 33.818
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.844
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 24
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.276
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 32.86
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.861
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 25
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.037
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 33.867
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.908
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 26
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.208
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 35.45
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.55
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 27
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.231
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 35.927
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.624
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 28
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.437
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 35.538
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.543
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 29
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.88
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 34.702
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.435
+
+Number of Observations: 2458
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 30
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 87.43
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 35.291
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.717
+
+Number of Observations: 3070
+Number of Independent Variables: 15
+Kernel: Adaptive
+Neightbours: 12
+Number of Variables: 15
+
+--------------- Global Model Summary ---------------
+
+
+Importance:
+
+
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.47
+
+--------------- Local Model Summary ---------------
+
+
+Residuals OOB:
+
+
+Residuals Predicted:
+
+
+%IncMSE:
+
+
+%IncNodePurity: 
+
+
+Residual Sum of Squares (OOB): 0
+R-squared (OOB) %: 34.248
+Residual Sum of Squares (Predicted): 0
+R-squared (Predicted) %: 88.034
+497/509                                 
+498/509 [unnamed-chunk-194]             
+499/509                                 
+500/509 [unnamed-chunk-195]             
+`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'
+501/509                                 
+502/509 [unnamed-chunk-196]             
+503/509                                 
+504/509 [unnamed-chunk-197]             
+505/509                                 
+506/509 [unnamed-chunk-198]             
+507/509                                 
+508/509 [unnamed-chunk-199]             
+509/509                                 
+output file: Risk_SupplementalA_rev4.knit.md
+
+/opt/rstudio-server/bin/pandoc/pandoc +RTS -K512m -RTS Risk_SupplementalA_rev4.knit.md --to latex --from markdown+autolink_bare_uris+tex_math_single_backslash --output Risk_SupplementalA_rev4.tex --lua-filter /opt/modules/devel/R/4.0.5/lib64/R/library/rmarkdown/rmarkdown/lua/pagebreak.lua --lua-filter /opt/modules/devel/R/4.0.5/lib64/R/library/rmarkdown/rmarkdown/lua/latex-div.lua --self-contained --table-of-contents --toc-depth 2 --highlight-style tango --pdf-engine pdflatex --variable graphics --include-in-header /tmp/Rtmp41aV1d/rmarkdown-str1384424e97644f.html --variable 'geometry:margin=1in' --include-in-header /tmp/Rtmp41aV1d/rmarkdown-str1384425177f5b6.html 
+
+Output created: Risk_SupplementalA_rev4.pdf
+There were 50 or more warnings (use warnings() to see the first 50)
+> #nohup R CMD BATCH /mnt/ceph/erichs/git/IMCI-covid-riskfinal/src/risk_Rmd_commandline.R &
+> 
+> proc.time()
+    user   system  elapsed 
+7329.779  214.370 7912.121 
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCKnode -> unserialize
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
+Execution halted
