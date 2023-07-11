@@ -10,6 +10,10 @@ July 2023
 
 The following github repository provides all code and data for generating analyses and supplemental materials for the aforementioned manuscript, submitted to Scientific Reports. 
 
+## How do I re-generate the Supplemental Appendix?
+
+- a pdf is provided of the supplemental, within the /Rmd folder.  If you want to generate the pdf on your own, you may run the Supplemental_AppendixA.Rmd.  All of the folders and datasets support running the supplemnental .Rmd.
+
 ## Folder Descriptions
 
 - /Rmd  -  core folder which contains Risk_SupplementalA.Rmd.
@@ -24,4 +28,8 @@ The following github repository provides all code and data for generating analys
 ## Data Descriptions
 
 Within the /data folder, there are a number of datasets.  Each dataset is described below, with key field names and usage.
+
+- sevenday_combined.csv: This csv contains daily cases and deaths for all United States counties, for each day from January 2020 to April 2022.  Given the large size of this .csv, it is split into TWO zip files, and is automatically merged together and loaded as the Risk_SupplementalA.Rmd is run.
+- deaths_nationwide_cumulative.csv: This csv provides daily deaths for all United States counties, as well as cumulative deaths.  The .csv is zipped - and is uncompressed and loaded as the Risk_SupplementalA.Rmd is run.
+- 
 
