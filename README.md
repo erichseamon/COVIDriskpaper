@@ -33,33 +33,33 @@ Within the /data folder, there are a number of datasets.  Each dataset is descri
 
 Column descriptions:
 
-County: county name
-state: state name
-size: population count (raw population number)
-fips: fips number (five digit unique county ID)
-cuml.cases: cumulative cases per county (counts)
-past.cases: past cases per county (counts)
-new.cases: new cases per county (counts)
-daily.cases: cases for that day, per county
-act.pt: frequency calculations (not used)
-act.low: frequency calculations (not used)
-act.hi: frequency calculations (not used)
-freq.act: frequency calculations (not used)
-freq.act.low: frequency calculations (not used)
-freq.act.hi: frequency calculations (not used)
-one_act: frequency calculations (not used)
-one.act.low: frequency calculations (not used)
-one.act.hi: frequency calculations (not used)
-trans.pt: frequency calculations (not used)
-trans.pt.low: frequency calculations (not used)
-trans.pt.hi: frequency calculations (not used)
-freq.trans_low: frequency calculations (not used)
-freq.trans_hi: frequency calculations (not used)
-one.trans: frequency calculations (not used)
-one.trans_low: frequency calculations (not used)
-one.trans_hi: frequency calculations (not used)
-county2: lowercase county name
-date: date (YYYY-MM-DD)
+  - County: county name
+- state: state name
+- size: population count (raw population number)
+- fips: fips number (five digit unique county ID)
+- cuml.cases: cumulative cases per county (counts)
+- past.cases: past cases per county (counts)
+- new.cases: new cases per county (counts)
+- daily.cases: cases for that day, per county
+- act.pt: frequency calculations (not used)
+- act.low: frequency calculations (not used)
+- act.hi: frequency calculations (not used)
+- freq.act: frequency calculations (not used)
+- freq.act.low: frequency calculations (not used)
+- freq.act.hi: frequency calculations (not used)
+- one_act: frequency calculations (not used)
+- one.act.low: frequency calculations (not used)
+- one.act.hi: frequency calculations (not used)
+- trans.pt: frequency calculations (not used)
+- trans.pt.low: frequency calculations (not used)
+- trans.pt.hi: frequency calculations (not used)
+- freq.trans_low: frequency calculations (not used)
+- freq.trans_hi: frequency calculations (not used)
+- one.trans: frequency calculations (not used)
+- one.trans_low: frequency calculations (not used)
+- one.trans_hi: frequency calculations (not used)
+- county2: lowercase county name
+- date: date (YYYY-MM-DD)
 
 
 
