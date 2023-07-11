@@ -30,6 +30,39 @@ The following github repository provides all code and data for generating analys
 Within the /data folder, there are a number of datasets.  Each dataset is described below, with key field names and usage.
 
 - sevenday_combined.csv: This csv contains daily cases and deaths for all United States counties, for each day from January 2020 to April 2022.  Given the large size of this .csv, it is split into TWO zip files, and is automatically merged together and loaded as the Risk_SupplementalA.Rmd is run.
+
+Column descriptions:
+
+County: county name
+state: state name
+size: population count (raw population number)
+fips: fips number (five digit unique county ID)
+cuml.cases: cumulative cases per county (counts)
+past.cases: past cases per county (counts)
+new.cases: new cases per county (counts)
+daily.cases: cases for that day, per county
+act.pt: frequency calculations (not used)
+act.low: frequency calculations (not used)
+act.hi: frequency calculations (not used)
+freq.act: frequency calculations (not used)
+freq.act.low: frequency calculations (not used)
+freq.act.hi: frequency calculations (not used)
+one_act: frequency calculations (not used)
+one.act.low: frequency calculations (not used)
+one.act.hi: frequency calculations (not used)
+trans.pt: frequency calculations (not used)
+trans.pt.low: frequency calculations (not used)
+trans.pt.hi: frequency calculations (not used)
+freq.trans_low: frequency calculations (not used)
+freq.trans_hi: frequency calculations (not used)
+one.trans: frequency calculations (not used)
+one.trans_low: frequency calculations (not used)
+one.trans_hi: frequency calculations (not used)
+county2: lowercase county name
+date: date (YYYY-MM-DD)
+
+
+
 - deaths_nationwide_cumulative.csv: This csv provides daily deaths for all United States counties, as well as cumulative deaths.  The .csv is zipped - and is uncompressed and loaded as the Risk_SupplementalA.Rmd is run.
 - voting_nationwide_liberal.csv: This .csv contains voting data from the 2020 general election, using the Biden/Trump voter breakdown.  The voting percentage refers to the % of people, per county, who voted for Biden.
 - age65_over.csv: This .csv contains the population of adults over the age of 65, per county (2020 US Census).
