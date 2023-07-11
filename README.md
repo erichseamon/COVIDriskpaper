@@ -3,8 +3,7 @@
 Submitted to Scientific Reports July 2023
 
 Erich Seamon, Jennifer Johnson-Leung, Craig R. Miller, Benjamin J. Ridenhour
-
-July 2023
+University of Idaho, July 2023
 
 ## Overview:
 
@@ -61,9 +60,26 @@ Column descriptions:
 - county2: lowercase county name
 - date: date (YYYY-MM-DD)
 
+deaths_nationwide_cumulative.csv: This csv provides daily deaths for all United States counties, as well as cumulative deaths.  
 
+Column descriptions
 
-deaths_nationwide_cumulative.csv: This csv provides daily deaths for all United States counties, as well as cumulative deaths.  The .csv is zipped - and is uncompressed and loaded as the Risk_SupplementalA.Rmd is run.
+- date: date (YYYY-MM-DD)
+- FIPS: fips number (five digit unique county ID)
+- deaths: number of cumulative deaths (raw count)
+- daily_deaths: number of daily deaths for a specific date (raw count)
+
+vaccinationrate.csv: This .csv provides vaccination rates as collected by the Centers for Disease Control and Prevention (CDC). 
+
+Column descriptions:
+
+- Date: date (DD/MM/YYYY)
+- FIPS: fips number (five diget unique county ID)
+- MMWR_week: week within the year
+- Recip_County: county
+- Recip_State: state
+- Series_Complete_Pop_Pct: vaccination rate (percentage)
+- 
 voting_nationwide_liberal.csv: This .csv contains voting data from the 2020 general election, using the Biden/Trump voter breakdown.  The voting percentage refers to the % of people, per county, who voted for Biden.
 age65_over.csv: This .csv contains the population of adults over the age of 65, per county (2020 US Census).
 broadband.csv: This .csv contains the number of peopler per county who have access to broadband, by county.
