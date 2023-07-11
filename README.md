@@ -29,11 +29,11 @@ The following github repository provides all code and data for generating analys
 
 Within the /data folder, there are a number of datasets.  Each dataset is described below, with key field names and usage.
 
-- sevenday_combined.csv: This csv contains daily cases and deaths for all United States counties, for each day from January 2020 to April 2022.  Given the large size of this .csv, it is split into TWO zip files, and is automatically merged together and loaded as the Risk_SupplementalA.Rmd is run.
+sevenday_combined.csv: This csv contains daily cases and deaths for all United States counties, for each day from January 2020 to April 2022.  Given the large size of this .csv, it is split into TWO zip files, and is automatically merged together and loaded as the Risk_SupplementalA.Rmd is run.
 
 Column descriptions:
 
-  - County: county name
+- County: county name
 - state: state name
 - size: population count (raw population number)
 - fips: fips number (five digit unique county ID)
@@ -63,13 +63,13 @@ Column descriptions:
 
 
 
-- deaths_nationwide_cumulative.csv: This csv provides daily deaths for all United States counties, as well as cumulative deaths.  The .csv is zipped - and is uncompressed and loaded as the Risk_SupplementalA.Rmd is run.
-- voting_nationwide_liberal.csv: This .csv contains voting data from the 2020 general election, using the Biden/Trump voter breakdown.  The voting percentage refers to the % of people, per county, who voted for Biden.
-- age65_over.csv: This .csv contains the population of adults over the age of 65, per county (2020 US Census).
-- broadband.csv: This .csv contains the number of peopler per county who have access to broadband, by county.
-- countyrankings_refined.csv: This .csv file contains county level health rankings that are taken from the University of Wisconsin's Population Health Institute.
-- Population-Density By County.csv: This .csv contains the population counts and density for each county in the United States, as derived from US Census 2020 data.
-- SVI2018_US_COUNTY.csv: This .csv contains social vulnerability indices (SVI) at the county level, taken from the Centers for Disease Control and Prevention (CDC).
-- /counties: This folder contains a shapefile and associated data for county mapping data - UScounties_conus.shp.
-- /states: This folder contains a shapefile and associated data for state mapping data - states.shp.
+deaths_nationwide_cumulative.csv: This csv provides daily deaths for all United States counties, as well as cumulative deaths.  The .csv is zipped - and is uncompressed and loaded as the Risk_SupplementalA.Rmd is run.
+voting_nationwide_liberal.csv: This .csv contains voting data from the 2020 general election, using the Biden/Trump voter breakdown.  The voting percentage refers to the % of people, per county, who voted for Biden.
+age65_over.csv: This .csv contains the population of adults over the age of 65, per county (2020 US Census).
+broadband.csv: This .csv contains the number of peopler per county who have access to broadband, by county.
+countyrankings_refined.csv: This .csv file contains county level health rankings that are taken from the University of Wisconsin's Population Health Institute.
+Population-Density By County.csv: This .csv contains the population counts and density for each county in the United States, as derived from US Census 2020 data.
+SVI2018_US_COUNTY.csv: This .csv contains social vulnerability indices (SVI) at the county level, taken from the Centers for Disease Control and Prevention (CDC).
+/counties: This folder contains a shapefile and associated data for county mapping data - UScounties_conus.shp.
+/states: This folder contains a shapefile and associated data for state mapping data - states.shp.
 
