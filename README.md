@@ -9,7 +9,7 @@ University of Idaho, July 2023
 
 The following github repository provides all code and data for generating analyses and supplemental materials for the aforementioned manuscript, submitted to Scientific Reports. 
 
-## How do I re-generate the Supplemental Appendix?
+## How do I regenerate the Supplemental Appendix?
 
 - a pdf is provided of the supplemental, within the /Rmd folder.  If you want to generate the pdf on your own, you may run the Supplemental_AppendixA.Rmd.  All of the folders and datasets support running the supplemnental .Rmd.
 
