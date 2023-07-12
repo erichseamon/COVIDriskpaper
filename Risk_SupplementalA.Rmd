@@ -136,13 +136,13 @@ age65 <- read.csv("./data/age65_over.csv")
 age65$FIPS <- str_pad(age65$FIPS, 5, pad = "0")
 
 combined_refined <- combined[,c(5, 6, 7,23, 9,10,30)]
-SVI <- read.csv("./data/SVI2018_US_COUNTY.csv")
+SVI_refined <- read.csv("./data/svi.csv")
 
 #broadband
 broadband <- read.csv("./data/broadband.csv")
 broadband$FIPS <- str_pad(broadband$FIPS, 5, pad = "0")
 
-SVI_refined <- SVI[,c(5,79,85,89,96)]
+#SVI_refined <- SVI[,c(5,79,85,89,96)]
 SVI_refined$FIPS <- str_pad(SVI_refined$FIPS, 5, pad = "0")
 
 
@@ -166,9 +166,9 @@ daily_combined <- merge(daily_combined, SVI_refined, by="FIPS" )
 new_voting <- read.csv("./data/voting_nationwide_liberal.csv")
 new_voting$FIPS <- str_pad(new_voting$FIPS, 5, pad = "0")
 
-density <- read.csv("./data/Population-Density By County.csv")
-density <- density[5:7]
-colnames(density) <- c("FIPS", "name", "density")
+density <- read.csv("./data/population_density.csv")
+#density <- density[5:7]
+#colnames(density) <- c("FIPS", "name", "density")
 density$FIPS <- str_pad(density$FIPS, 5, pad = "0")
 
 fulldata <- merge(daily_combined, new_voting, by="FIPS")
@@ -214,7 +214,7 @@ combined <- rbind(combined_1, combined_2)
 #combined <- read.csv("https://folders.hpc.uidaho.edu/index.php/s/9E5I1nbq4Tlrlyb/download")
 
 combined_refined <- combined[,c(5, 6, 7,23, 9,10,30)]
-SVI <- read.csv("./data/SVI2018_US_COUNTY.csv")
+SVI_refined <- read.csv("./data/svi.csv")
 
 #age65 and over
 age65 <- read.csv("./data/age65_over.csv")
@@ -225,7 +225,7 @@ broadband <- read.csv("./data/broadband.csv")
 broadband$FIPS <- str_pad(broadband$FIPS, 5, pad = "0")
 
 #SVI
-SVI_refined <- SVI[,c(5,79,85,89,96)]
+#SVI_refined <- SVI[,c(5,79,85,89,96)]
 SVI_refined$FIPS <- str_pad(SVI_refined$FIPS, 5, pad = "0")
 
 daily_deaths <- read.csv("./data/deaths_nationwide_cumulative.csv")
@@ -245,9 +245,9 @@ daily_combined <- merge(daily_combined, SVI_refined, by="FIPS" )
 new_voting <- read.csv("./data/voting_nationwide_liberal.csv")
 new_voting$FIPS <- str_pad(new_voting$FIPS, 5, pad = "0")
 
-density <- read.csv("./data/Population-Density By County.csv")
-density <- density[5:7]
-colnames(density) <- c("FIPS", "name", "density")
+density <- read.csv("./data/population_density.csv")
+#density <- density[5:7]
+#colnames(density) <- c("FIPS", "name", "density")
 density$FIPS <- str_pad(density$FIPS, 5, pad = "0")
 
 fulldata <- merge(daily_combined, new_voting, by="FIPS")
