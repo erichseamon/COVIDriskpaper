@@ -16,11 +16,9 @@ The following github repository provides all code and data for generating analys
 ## Folder Descriptions
 
 - /Rmd  -  core folder which contains Risk_SupplementalA.Rmd.
-- /data  - folder which contains all data accessed as part of Risk_SupplementalA.Rmd
+- /data  - folder which contains all data accessed as part of Risk_SupplementalA.Rmd.  Descriptions of datasets are noted below under "Data Descriptions".
 - /figures - contains .png image files that are used in the Risk_SupplementalA.Rmd
 - /html - contains regression output tables for each United States Health and Human Services regions.  Each of the tables is embedded in the Risk_SupplementalA.Rmd.
-- /linear_models - contains regression model outputs as .RDS files for each United States Health and Human Services Region, for three different dependent variable model outputs: cases, deaths, and deaths over age 65.
-- /outputs - contains interim data preparation outputs for alpha, delta, and omicron wave models.
 - /region_pngs - contains .png images of regional Health and Human Services maps.
 
 
@@ -79,11 +77,67 @@ Column descriptions:
 - Recip_County: county
 - Recip_State: state
 - Series_Complete_Pop_Pct: vaccination rate (percentage)
-- 
+  
 voting_nationwide_liberal.csv: This .csv contains voting data from the 2020 general election, using the Biden/Trump voter breakdown.  The voting percentage refers to the % of people, per county, who voted for Biden.
+
+Column descriptions:
+
+- FIPS: fips number (five diget unique county ID)
+- lname: name of candidate
+- votes: number of votes cast for candidate
+- totalvotes: total votes cast for all candidates
+- state: state where votes were cast
+- county: county where votes were cast
+- pct: democratic voting percentage (percentage)
+
 age65_over.csv: This .csv contains the population of adults over the age of 65, per county (2020 US Census).
+
+Column descriptions:
+
+- FIPS: fips number (five diget unique county ID)
+- Age_over_65 - the raw number of adults age 65+
+
 broadband.csv: This .csv contains the number of peopler per county who have access to broadband, by county.
-countyrankings_refined.csv: This .csv file contains county level health rankings that are taken from the University of Wisconsin's Population Health Institute.
+
+- FIPS: fips number (five diget unique county ID)
+- State: state name
+- County: county name
+- broadband_access: percentage of households that have broadband access (percentage)
+
+
+countyrankings_refined.csv: This .csv file contains county level health rankings that are taken from the University of Wisconsin's Population Health Institute.  For this analysis, we only use a limited number of these variables in our final analysis.
+
+- FIPS: fips number (five diget unique county ID)
+- State: state name
+- County: county name
+- Smoking: percentage of people who smoke (percentage)
+- Obesity: percentage of people who are obese (percentage)
+- FEI: The food environment index combines two measures of food access: the percentage of the population that is low-income and has low access to a grocery store, and the percentage of the population that did not have access to a reliable source of food during the past year (food insecurity)
+- Excessive_Drinking: percentage of people who excessively drink (percentage)
+- Uninsured: percentage of adults who are uninsured (percentage)
+- Flu_Vaccination: percentage of people who have had a flu vaccination (percentage)
+- HS_graduation: percentage of people who graduated HS (percentage)
+- Some_College: percentage of people who have some college (percentage)
+- Unemployed: percentage of people who are unemployed (percentage)
+- Children_in_Poverty: percentage of children listed as in poverty (percentage)
+- Income_Ratio: percentage of people who smoke (percentage)
+- Single_Parent: percentage of people who are single parents (percentage)
+- Associations: percentage of people who engage in social associations/clubs (percentage)
+- Violent_Crime: percentage of violent crime (percentage)
+- Severe_Housing_Problems: percentage of people who have housing problems (percentage)
+- Diabetes: percentage of people who have diabetes (percentage)
+- Food_Insecurity: percentage of people who are food insecure (percentage)
+- Uninsured_Adults: percentage of adults who are uninsured (percentage)
+- African_Americans: percentage of African_Americans (percentage)
+- American_Native: percentage of American_Native (percentage)
+- Asian: percentage of Asian (percentage)
+- Pacific_Islander: percentage of Pacific_Islander (percentage)
+- Hispanic: percentage of Hispanic (percentage)
+- Non_Hispanic_White: percentage of Non_Hispanic_White (percentage)
+
+
+
+
 Population-Density By County.csv: This .csv contains the population counts and density for each county in the United States, as derived from US Census 2020 data.
 SVI2018_US_COUNTY.csv: This .csv contains social vulnerability indices (SVI) at the county level, taken from the Centers for Disease Control and Prevention (CDC).
 /counties: This folder contains a shapefile and associated data for county mapping data - UScounties_conus.shp.
