@@ -11,11 +11,10 @@ The following github repository provides all code and data for generating analys
 
 ## How do I regenerate the Supplemental Appendix?
 
-- a pdf is provided of the supplemental, within the /Rmd folder.  If you want to generate the pdf on your own, you may run the Supplemental_AppendixA.Rmd.  All of the folders and datasets support running the supplemnental .Rmd.
+- a pdf is provided of the supplemental, at the root level.  If you want to generate the pdf on your own, you may run the Supplemental_AppendixA.Rmd (also at the root level).  All of the folders and datasets support running the supplemnental .Rmd.
 
 ## Folder Descriptions
 
-- /Rmd  -  core folder which contains Risk_SupplementalA.Rmd.
 - /data  - folder which contains all data accessed as part of Risk_SupplementalA.Rmd.  Descriptions of datasets are noted below under "Data Descriptions".
 - /figures - contains .png image files that are used in the Risk_SupplementalA.Rmd
 - /html - contains regression output tables for each United States Health and Human Services regions.  Each of the tables is embedded in the Risk_SupplementalA.Rmd.
