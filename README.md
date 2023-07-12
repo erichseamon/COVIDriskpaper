@@ -151,10 +151,10 @@ svi.csv: This .csv contains social vulnerability indices (SVI) at the county lev
 Column descriptions:
 
 - FIPS: fips number (five diget unique county ID)
-- RPL_THEME1: Social vulnerability CDC index - Socioeconomic status
-- RPL_THEME2: Social vulnerability CDC index - Household Type
-- RPL_THEME3: Social vulnerability CDC index - Minority Status and Language
-- RPL_THEME4: Social vulnerability CDC index - Housing and Transportation
+- RPL_THEME1: Social vulnerability CDC index - Socioeconomic status (percentage)
+- RPL_THEME2: Social vulnerability CDC index - Household Type (percentage)
+- RPL_THEME3: Social vulnerability CDC index - Minority Status and Language (percentage)
+- RPL_THEME4: Social vulnerability CDC index - Housing and Transportation (percentage)
 
 /counties: This folder contains a shapefile and associated data for county mapping data - UScounties_conus.shp.
 /states: This folder contains a shapefile and associated data for state mapping data - states.shp.
