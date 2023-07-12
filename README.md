@@ -97,11 +97,11 @@ Column descriptions:
 - FIPS: fips number (five diget unique county ID)
 - Age_over_65 - the raw number of adults age 65+
 
-broadband.csv: This .csv contains the number of peopler per county who have access to broadband, by county.
+broadband.csv: This .csv contains the number of people per county who have access to broadband, by county.
 
 Column descriptions:
 
-- FIPS: fips number (five diget unique county ID)
+- FIPS: fips number (five digit unique county ID)
 - State: state name
 - County: county name
 - broadband_access: percentage of households that have broadband access (percentage)
