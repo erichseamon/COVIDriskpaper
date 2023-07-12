@@ -99,13 +99,16 @@ Column descriptions:
 
 broadband.csv: This .csv contains the number of peopler per county who have access to broadband, by county.
 
+Column descriptions:
+
 - FIPS: fips number (five diget unique county ID)
 - State: state name
 - County: county name
 - broadband_access: percentage of households that have broadband access (percentage)
 
-
 countyrankings_refined.csv: This .csv file contains county level health rankings that are taken from the University of Wisconsin's Population Health Institute.  For this analysis, we only use a limited number of these variables in our final analysis.
+
+Column descriptions:
 
 - FIPS: fips number (five diget unique county ID)
 - State: state name
@@ -135,11 +138,24 @@ countyrankings_refined.csv: This .csv file contains county level health rankings
 - Hispanic: percentage of Hispanic (percentage)
 - Non_Hispanic_White: percentage of Non_Hispanic_White (percentage)
 
+population_density.csv: This .csv contains the population counts and density for each county in the United States, as derived from US Census 2020 data.
 
+Column descriptions:
 
+- FIPS: fips number (five diget unique county ID)
+- name: county name
+- density: population density percentage (percentage)
 
-Population-Density By County.csv: This .csv contains the population counts and density for each county in the United States, as derived from US Census 2020 data.
-SVI2018_US_COUNTY.csv: This .csv contains social vulnerability indices (SVI) at the county level, taken from the Centers for Disease Control and Prevention (CDC).
+svi.csv: This .csv contains social vulnerability indices (SVI) at the county level, taken from the Centers for Disease Control and Prevention (CDC).
+
+Column descriptions:
+
+- FIPS: fips number (five diget unique county ID)
+- RPL_THEME1: Social vulnerability CDC index - Socioeconomic status
+- RPL_THEME2: Social vulnerability CDC index - Household Type
+- RPL_THEME3: Social vulnerability CDC index - Minority Status and Language
+- RPL_THEME4: Social vulnerability CDC index - Housing and Transportation
+
 /counties: This folder contains a shapefile and associated data for county mapping data - UScounties_conus.shp.
 /states: This folder contains a shapefile and associated data for state mapping data - states.shp.
 
