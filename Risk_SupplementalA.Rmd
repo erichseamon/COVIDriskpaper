@@ -1,5 +1,5 @@
 ---
-title: 'Spatiotemporal Impacts of Ideology and Social Vulnerability on COVID-19: Supplemental
+title: 'Spatiotemporal Impacts of Ideology and Social Vulnerability on COVID-19 for the United States: Supplemental
   Appendix'
 author: "Erich Seamon, Jennifer-Johnson Leung, Craig Miller, Ben Ridenhour"
 date: "07/06/2023"
@@ -96,7 +96,7 @@ For the initial portion of our analysis, we examine COVID-19 cases and deaths fo
 
 <center>
 
-![](../figures/hhs_regions.png){#id .class width=100% height=100%}  
+![](./figures/hhs_regions.png){#id .class width=100% height=100%}  
 
 </center>
 
@@ -142,7 +142,7 @@ SVI_refined <- read.csv("./data/svi.csv")
 broadband <- read.csv("./data/broadband.csv")
 broadband$FIPS <- str_pad(broadband$FIPS, 5, pad = "0")
 
-#SVI_refined <- SVI[,c(5,79,85,89,96)]
+#SVI_refined <- SVI_refined[,c(5,79,85,89,96)]
 SVI_refined$FIPS <- str_pad(SVI_refined$FIPS, 5, pad = "0")
 
 
@@ -225,7 +225,7 @@ broadband <- read.csv("./data/broadband.csv")
 broadband$FIPS <- str_pad(broadband$FIPS, 5, pad = "0")
 
 #SVI
-#SVI_refined <- SVI[,c(5,79,85,89,96)]
+#SVI_refined <- SVI_refined[,c(5,79,85,89,96)]
 SVI_refined$FIPS <- str_pad(SVI_refined$FIPS, 5, pad = "0")
 
 daily_deaths <- read.csv("./data/deaths_nationwide_cumulative.csv")
@@ -313,7 +313,7 @@ Using this framework, we constructed three (3) temporal model time frames:
 
 <center>
 
-![](../figures/model.png){#id .class width=100% height=100%}  
+![](./figures/model.png){#id .class width=100% height=100%}  
 
 </center>
 \newpage
@@ -936,73 +936,73 @@ list_models_ideology_deaths65_omicron = lapply(regionlist4_list_ideology_deaths6
 list_models_noideology_deaths65_omicron = lapply(regionlist4_list_noideology_deaths65, get)
 
 
-# #save models - ideology deaths
-# model_names <- regionlist1_list_ideology_deaths
-# model_ideology_deaths = lapply(model_names, get)
-# saveRDS(model_ideology_deaths, file="./linear_models/model_ideology_deaths.RDS")
-# 
-# model_names <- regionlist2_list_ideology_deaths
-# model_ideology_deaths_latter = lapply(model_names, get)
-# saveRDS(model_ideology_deaths_latter, file="./linear_models/model_ideology_deaths_latter.RDS")
-# 
-# model_names <- regionlist3_list_ideology_deaths
-# model_ideology_deaths_delta = lapply(model_names, get)
-# saveRDS(model_ideology_deaths_delta, file="./linear_models/model_ideology_deaths_delta.RDS")
-# 
-# model_names <- regionlist4_list_ideology_deaths
-# model_ideology_deaths_omicron = lapply(model_names, get)
-# saveRDS(model_ideology_deaths_omicron, file="./linear_models/model_ideology_deaths_omicron.RDS")
-# 
-# #save models - no ideology deaths
-# model_names <- regionlist1_list_noideology_deaths
-# model_noideology_deaths = lapply(model_names, get)
-# saveRDS(model_noideology_deaths, file="./linear_models/model_noideology_deaths.RDS")
-# 
-# model_names <- regionlist2_list_noideology_deaths
-# model_noideology_deaths_latter = lapply(model_names, get)
-# saveRDS(model_noideology_deaths_latter, file="./linear_models/model_noideology_deaths_latter.RDS")
-# 
-# model_names <- regionlist3_list_noideology_deaths
-# model_noideology_deaths_delta = lapply(model_names, get)
-# saveRDS(model_noideology_deaths_delta, file="./linear_models/model_noideology_deaths_delta.RDS")
-# 
-# model_names <- regionlist4_list_noideology_deaths
-# model_noideology_deaths_omicron = lapply(model_names, get)
-# saveRDS(model_noideology_deaths_omicron, file="./linear_models/model_noideology_deaths_omicron.RDS")
-# 
-# #save models - ideology deaths 65+
-# model_names <- regionlist1_list_ideology_deaths65
-# model_ideology_deaths65 = lapply(model_names, get)
-# saveRDS(model_ideology_deaths65, file="./linear_models/model_ideology_deaths65.RDS")
-# 
-# model_names <- regionlist2_list_noideology_deaths65
-# model_ideology_deaths65_latter = lapply(model_names, get)
-# saveRDS(model_ideology_deaths65_latter, file="./linear_models/model_ideology_deaths65_latter.RDS")
-# 
-# model_names <- regionlist3_list_noideology_deaths65
-# model_ideology_deaths65_delta = lapply(model_names, get)
-# saveRDS(model_ideology_deaths65_delta, file="./linear_models/model_ideology_deaths65_delta.RDS")
-# 
-# model_names <- regionlist4_list_noideology_deaths65
-# model_ideology_deaths65_omicron = lapply(model_names, get)
-# saveRDS(model_ideology_deaths65_omicron, file="./linear_models/model_ideology_deaths65_omicron.RDS")
-# 
-# #save models - no ideology deaths 65+
-# model_names <- regionlist1_list_ideology_deaths65
-# model_noideology_deaths65 = lapply(model_names, get)
-# saveRDS(model_noideology_deaths65, file="./linear_models/model_noideology_deaths65.RDS")
-# 
-# model_names <- regionlist2_list_noideology_deaths65
-# model_noideology_deaths65_latter = lapply(model_names, get)
-# saveRDS(model_noideology_deaths65_latter, file="./linear_models/model_noideology_deaths65_latter.RDS")
-# 
-# model_names <- regionlist3_list_noideology_deaths65
-# model_noideology_deaths65_delta = lapply(model_names, get)
-# saveRDS(model_noideology_deaths65_delta, file="./linear_models/model_noideology_deaths65_delta.RDS")
-# 
-# model_names <- regionlist4_list_noideology_deaths65
-# model_noideology_deaths65_omicron = lapply(model_names, get)
-# saveRDS(model_noideology_deaths65_omicron, file="./linear_models/model_noideology_deaths65_omicron.RDS")
+#save models - ideology deaths
+model_names <- regionlist1_list_ideology_deaths
+model_ideology_deaths = lapply(model_names, get)
+#saveRDS(model_ideology_deaths, file="./linear_models/model_ideology_deaths.RDS")
+
+model_names <- regionlist2_list_ideology_deaths
+model_ideology_deaths_latter = lapply(model_names, get)
+#saveRDS(model_ideology_deaths_latter, file="./linear_models/model_ideology_deaths_latter.RDS")
+
+model_names <- regionlist3_list_ideology_deaths
+model_ideology_deaths_delta = lapply(model_names, get)
+#saveRDS(model_ideology_deaths_delta, file="./linear_models/model_ideology_deaths_delta.RDS")
+
+model_names <- regionlist4_list_ideology_deaths
+model_ideology_deaths_omicron = lapply(model_names, get)
+#saveRDS(model_ideology_deaths_omicron, file="./linear_models/model_ideology_deaths_omicron.RDS")
+
+#save models - no ideology deaths
+model_names <- regionlist1_list_noideology_deaths
+model_noideology_deaths = lapply(model_names, get)
+#saveRDS(model_noideology_deaths, file="./linear_models/model_noideology_deaths.RDS")
+
+model_names <- regionlist2_list_noideology_deaths
+model_noideology_deaths_latter = lapply(model_names, get)
+#saveRDS(model_noideology_deaths_latter, file="./linear_models/model_noideology_deaths_latter.RDS")
+
+model_names <- regionlist3_list_noideology_deaths
+model_noideology_deaths_delta = lapply(model_names, get)
+#saveRDS(model_noideology_deaths_delta, file="./linear_models/model_noideology_deaths_delta.RDS")
+
+model_names <- regionlist4_list_noideology_deaths
+model_noideology_deaths_omicron = lapply(model_names, get)
+#saveRDS(model_noideology_deaths_omicron, file="./linear_models/model_noideology_deaths_omicron.RDS")
+
+#save models - ideology deaths 65+
+model_names <- regionlist1_list_ideology_deaths65
+model_ideology_deaths65 = lapply(model_names, get)
+#saveRDS(model_ideology_deaths65, file="./linear_models/model_ideology_deaths65.RDS")
+
+model_names <- regionlist2_list_noideology_deaths65
+model_ideology_deaths65_latter = lapply(model_names, get)
+#saveRDS(model_ideology_deaths65_latter, file="./linear_models/model_ideology_deaths65_latter.RDS")
+
+model_names <- regionlist3_list_noideology_deaths65
+model_ideology_deaths65_delta = lapply(model_names, get)
+#saveRDS(model_ideology_deaths65_delta, file="./linear_models/model_ideology_deaths65_delta.RDS")
+
+model_names <- regionlist4_list_noideology_deaths65
+model_ideology_deaths65_omicron = lapply(model_names, get)
+#saveRDS(model_ideology_deaths65_omicron, file="./linear_models/model_ideology_deaths65_omicron.RDS")
+
+#save models - no ideology deaths 65+
+model_names <- regionlist1_list_ideology_deaths65
+model_noideology_deaths65 = lapply(model_names, get)
+#saveRDS(model_noideology_deaths65, file="./linear_models/model_noideology_deaths65.RDS")
+
+model_names <- regionlist2_list_noideology_deaths65
+model_noideology_deaths65_latter = lapply(model_names, get)
+#saveRDS(model_noideology_deaths65_latter, file="./linear_models/model_noideology_deaths65_latter.RDS")
+
+model_names <- regionlist3_list_noideology_deaths65
+model_noideology_deaths65_delta = lapply(model_names, get)
+#saveRDS(model_noideology_deaths65_delta, file="./linear_models/model_noideology_deaths65_delta.RDS")
+
+model_names <- regionlist4_list_noideology_deaths65
+model_noideology_deaths65_omicron = lapply(model_names, get)
+#saveRDS(model_noideology_deaths65_omicron, file="./linear_models/model_noideology_deaths65_omicron.RDS")
 
 
 #write csvs
@@ -1017,117 +1017,117 @@ list_models_noideology_deaths65_omicron = lapply(regionlist4_list_noideology_dea
 
 #creates heatmap for significance table.  commented out as not inserted into supplemental.  ES 06.30.2023
 
-# library(gplots)
-# 
-# cf1 <- coef(summary(model_ideology_deaths[[1]]))
-# cf2 <- coef(summary(model_ideology_deaths[[2]]))
-# cf3 <- coef(summary(model_ideology_deaths[[3]]))
-# cf4 <- coef(summary(model_ideology_deaths[[4]]))
-# cf5 <- coef(summary(model_ideology_deaths[[5]]))
-# cf6 <- coef(summary(model_ideology_deaths[[6]]))
-# cf7 <- coef(summary(model_ideology_deaths[[7]]))
-# cf8 <- coef(summary(model_ideology_deaths[[8]]))
-# cf9 <- coef(summary(model_ideology_deaths[[9]]))
-# cf10 <- coef(summary(model_ideology_deaths[[10]]))
-# 
-# cf1_delta <- coef(summary(model_ideology_deaths_delta[[1]]))
-# cf2_delta <- coef(summary(model_ideology_deaths_delta[[2]]))
-# cf3_delta <- coef(summary(model_ideology_deaths_delta[[3]]))
-# cf4_delta <- coef(summary(model_ideology_deaths_delta[[4]]))
-# cf5_delta <- coef(summary(model_ideology_deaths_delta[[5]]))
-# cf6_delta <- coef(summary(model_ideology_deaths_delta[[6]]))
-# cf7_delta <- coef(summary(model_ideology_deaths_delta[[7]]))
-# cf8_delta <- coef(summary(model_ideology_deaths_delta[[8]]))
-# cf9_delta <- coef(summary(model_ideology_deaths_delta[[9]]))
-# cf10_delta <- coef(summary(model_ideology_deaths_delta[[10]]))
-# 
-# cf1_omicron <- coef(summary(model_ideology_deaths_omicron[[1]]))
-# cf2_omicron <- coef(summary(model_ideology_deaths_omicron[[2]]))
-# cf3_omicron <- coef(summary(model_ideology_deaths_omicron[[3]]))
-# cf4_omicron <- coef(summary(model_ideology_deaths_omicron[[4]]))
-# cf5_omicron <- coef(summary(model_ideology_deaths_omicron[[5]]))
-# cf6_omicron <- coef(summary(model_ideology_deaths_omicron[[6]]))
-# cf7_omicron <- coef(summary(model_ideology_deaths_omicron[[7]]))
-# cf8_omicron <- coef(summary(model_ideology_deaths_omicron[[8]]))
-# cf9_omicron <- coef(summary(model_ideology_deaths_omicron[[9]]))
-# cf10_omicron <- coef(summary(model_ideology_deaths_omicron[[10]]))
-# 
-# 
-# #continue on for all 30 models...
-# library(dplyr)
-# 
-# newpvals_coef <- cbind.data.frame(cf1[,1], cf1_delta[,1], cf1_omicron[,1],cf2[,1], cf2_delta[,2], cf2_omicron[,2],cf3[,1], cf3_delta[,1], cf3_omicron[,3],cf4[,1], cf4_delta[,1], cf4_omicron[,1],cf5[,1], cf5_delta[,1], cf5_omicron[,1],cf6[,1], cf6_delta[,1], cf6_omicron[,1],cf7[,1], cf7_delta[,1], cf7_omicron[,1],cf8[,1], cf8_delta[,1], cf8_omicron[,1],cf9[,1], cf9_delta[,1], cf9_omicron[,1],cf10[,1], cf10_delta[,1], cf10_omicron[,1])
-#                                   
-#                                   
-#                                   
-# newpvals_coef_test <- cbind.data.frame(cf1[,1],cf2[,1], cf3[,1], cf4[,1], cf5[,1], cf6[,1], cf7[,1], cf8[,1], cf9[,1], cf10[,1], cf1_delta[,1], cf2_delta[,1], cf3_delta[,1], cf4_delta[,1], cf5_delta[,1], cf6_delta[,1], cf7_delta[,1], cf8_delta[,1], cf9_delta[,1], cf10_delta[,1], cf1_omicron[,1], cf2_omicron[,1], cf3_omicron[,1], cf4_omicron[,1], cf5_omicron[,1], cf6_omicron[,1], cf7_omicron[,1], cf8_omicron[,1], cf9_omicron[,1], cf10_omicron[,1])
-# 
-# newpvals_coef_matrix <- as.matrix(newpvals_coef)
-# 
-# newpvals_p <- p.adjust(c(cf1[,4], cf2[,4], cf3[,4], cf4[,4], cf5[,4], cf6[,4], cf7[,4], cf8[,4], cf9[,4], cf10[,4], cf1_delta[,4], cf2_delta[,4], cf3_delta[,4], cf4_delta[,4], cf5_delta[,4], cf6_delta[,4], cf7_delta[,4], cf8_delta[,4], cf9_delta[,4], cf10_delta[,4], cf1_omicron[,4], cf2_omicron[,4], cf3_omicron[,4], cf4_omicron[,4], cf5_omicron[,4], cf6_omicron[,4], cf7_omicron[,4], cf8_omicron[,4], cf9_omicron[,4], cf10_omicron[,4]))
-# 
-# m1 <- matrix(newpvals_p, ncol=16, byrow=TRUE)
-# 
-# newpvals_coef_matrix[m1 > .05] <- NA
-# 
-# newpvals_coef_refined <- as.matrix(newpvals_coef)
-# 
-# newpvals_coef_refined2 <- newpvals_coef_refined
-# 
-# 
-# colnames(newpvals_coef_refined2) <- c("US_Alpha", "US_Delta", "US_Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Region5_Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron")
-# 
-# newpvals_coef_refined3 <- newpvals_coef_refined2[c(1,2,3,15,4,13,14,10,9,16,5,11,8,6,12,7),]
-# 
-# rownames(newpvals_coef_refined3) <- c("Intercept", "Socioeconomics", "Housing Composition", "Minority Status", "Housing Type", "Voting", "Vaccination Rate", "Population Density", "Obesity", "Uninsured Adults", "Unemployed", "Social Associations", "Diabetes", "Food Insecurity", "Age over 65", "Broadband Access")
-# 
-# 
-# my_palette <- colorRampPalette(c("blue", "white", "red"))(n = 5)
-# 
-# # heatmap.2(newpvals_coef_refined3[-1,-c(1:3)], scale = "none", col = my_palette, 
-# #           trace = "none", density.info = "none", dendrogram = 'none', Colv = FALSE, Rowv = FALSE, cexCol = 1, cexRow = 1, colsep=c(1:30), rowsep=c(1:15), key=FALSE, margins=c(5,3),tracecol="#303030", lwid=c(0.1,4), lhei=c(0.1,4))
-# 
-# 
-# newpvals <- p.adjust(c(cf1[,4], cf2[,4], cf3[,4], cf4[,4], cf5[,4], cf6[,4], cf7[,4], cf8[,4], cf9[,4], cf10[,4], cf1_delta[,4], cf2_delta[,4], cf3_delta[,4], cf4_delta[,4], cf5_delta[,4], cf6_delta[,4], cf7_delta[,4], cf8_delta[,4], cf9_delta[,4], cf10_delta[,4], cf1_omicron[,4], cf2_omicron[,4], cf3_omicron[,4], cf4_omicron[,4], cf5_omicron[,4], cf6_omicron[,4], cf7_omicron[,4], cf8_omicron[,4], cf9_omicron[,4], cf10_omicron[,4]))
-# 
-# newpvals_coef[newpvals > .05,] <- NA
-# 
-# cf1[,4] <- newpvals[1:16]
-# cf2[,4] <- newpvals[17:32]
-# cf3[,4] <- newpvals[33:48]
-# cf4[,4] <- newpvals[49:64]
-# cf5[,4] <- newpvals[65:80]
-# cf6[,4] <- newpvals[81:96]
-# cf7[,4] <- newpvals[97:112]
-# cf8[,4] <- newpvals[113:128]
-# cf9[,4] <- newpvals[129:144]
-# cf10[,4] <- newpvals[145:160]
-# 
-# cf1_delta[,4] <- newpvals[161:176]
-# cf2_delta[,4] <- newpvals[177:192]
-# cf3_delta[,4] <- newpvals[193:208]
-# cf4_delta[,4] <- newpvals[209:224]
-# cf5_delta[,4] <- newpvals[225:240]
-# cf6_delta[,4] <- newpvals[241:256]
-# cf7_delta[,4] <- newpvals[257:272]
-# cf8_delta[,4] <- newpvals[273:288]
-# cf9_delta[,4] <- newpvals[289:304]
-# cf10_delta[,4] <- newpvals[305:320]
-# 
-# cf1_omicron[,4] <- newpvals[321:336]
-# cf2_omicron[,4] <- newpvals[337:352]
-# cf3_omicron[,4] <- newpvals[353:368]
-# cf4_omicron[,4] <- newpvals[369:384]
-# cf5_omicron[,4] <- newpvals[385:400]
-# cf6_omicron[,4] <- newpvals[401:416]
-# cf7_omicron[,4] <- newpvals[417:432]
-# cf8_omicron[,4] <- newpvals[433:448]
-# cf9_omicron[,4] <- newpvals[449:464]
-# cf10_omicron[,4] <- newpvals[465:480]
-# 
-# coef_list <- list(cf1, cf2, cf3, cf4, cf5, cf6, cf7, cf8, cf9, cf10, cf1_delta, cf2_delta, cf3_delta, cf4_delta, cf5_delta, cf6_delta, cf7_delta, cf8_delta, cf9_delta, cf10_delta, cf1_omicron, cf2_omicron, cf3_omicron, cf4_omicron, cf5_omicron, cf6_omicron, cf7_omicron, cf8_omicron, cf9_omicron, cf10_omicron)
-# 
-# #--coefficents
+library(gplots)
+
+cf1 <- coef(summary(model_ideology_deaths[[1]]))
+cf2 <- coef(summary(model_ideology_deaths[[2]]))
+cf3 <- coef(summary(model_ideology_deaths[[3]]))
+cf4 <- coef(summary(model_ideology_deaths[[4]]))
+cf5 <- coef(summary(model_ideology_deaths[[5]]))
+cf6 <- coef(summary(model_ideology_deaths[[6]]))
+cf7 <- coef(summary(model_ideology_deaths[[7]]))
+cf8 <- coef(summary(model_ideology_deaths[[8]]))
+cf9 <- coef(summary(model_ideology_deaths[[9]]))
+cf10 <- coef(summary(model_ideology_deaths[[10]]))
+
+cf1_delta <- coef(summary(model_ideology_deaths_delta[[1]]))
+cf2_delta <- coef(summary(model_ideology_deaths_delta[[2]]))
+cf3_delta <- coef(summary(model_ideology_deaths_delta[[3]]))
+cf4_delta <- coef(summary(model_ideology_deaths_delta[[4]]))
+cf5_delta <- coef(summary(model_ideology_deaths_delta[[5]]))
+cf6_delta <- coef(summary(model_ideology_deaths_delta[[6]]))
+cf7_delta <- coef(summary(model_ideology_deaths_delta[[7]]))
+cf8_delta <- coef(summary(model_ideology_deaths_delta[[8]]))
+cf9_delta <- coef(summary(model_ideology_deaths_delta[[9]]))
+cf10_delta <- coef(summary(model_ideology_deaths_delta[[10]]))
+
+cf1_omicron <- coef(summary(model_ideology_deaths_omicron[[1]]))
+cf2_omicron <- coef(summary(model_ideology_deaths_omicron[[2]]))
+cf3_omicron <- coef(summary(model_ideology_deaths_omicron[[3]]))
+cf4_omicron <- coef(summary(model_ideology_deaths_omicron[[4]]))
+cf5_omicron <- coef(summary(model_ideology_deaths_omicron[[5]]))
+cf6_omicron <- coef(summary(model_ideology_deaths_omicron[[6]]))
+cf7_omicron <- coef(summary(model_ideology_deaths_omicron[[7]]))
+cf8_omicron <- coef(summary(model_ideology_deaths_omicron[[8]]))
+cf9_omicron <- coef(summary(model_ideology_deaths_omicron[[9]]))
+cf10_omicron <- coef(summary(model_ideology_deaths_omicron[[10]]))
+
+
+#continue on for all 30 models...
+library(dplyr)
+
+newpvals_coef <- cbind.data.frame(cf1[,1], cf1_delta[,1], cf1_omicron[,1],cf2[,1], cf2_delta[,2], cf2_omicron[,2],cf3[,1], cf3_delta[,1], cf3_omicron[,3],cf4[,1], cf4_delta[,1], cf4_omicron[,1],cf5[,1], cf5_delta[,1], cf5_omicron[,1],cf6[,1], cf6_delta[,1], cf6_omicron[,1],cf7[,1], cf7_delta[,1], cf7_omicron[,1],cf8[,1], cf8_delta[,1], cf8_omicron[,1],cf9[,1], cf9_delta[,1], cf9_omicron[,1],cf10[,1], cf10_delta[,1], cf10_omicron[,1])
+
+
+
+newpvals_coef_test <- cbind.data.frame(cf1[,1],cf2[,1], cf3[,1], cf4[,1], cf5[,1], cf6[,1], cf7[,1], cf8[,1], cf9[,1], cf10[,1], cf1_delta[,1], cf2_delta[,1], cf3_delta[,1], cf4_delta[,1], cf5_delta[,1], cf6_delta[,1], cf7_delta[,1], cf8_delta[,1], cf9_delta[,1], cf10_delta[,1], cf1_omicron[,1], cf2_omicron[,1], cf3_omicron[,1], cf4_omicron[,1], cf5_omicron[,1], cf6_omicron[,1], cf7_omicron[,1], cf8_omicron[,1], cf9_omicron[,1], cf10_omicron[,1])
+
+newpvals_coef_matrix <- as.matrix(newpvals_coef)
+
+newpvals_p <- p.adjust(c(cf1[,4], cf2[,4], cf3[,4], cf4[,4], cf5[,4], cf6[,4], cf7[,4], cf8[,4], cf9[,4], cf10[,4], cf1_delta[,4], cf2_delta[,4], cf3_delta[,4], cf4_delta[,4], cf5_delta[,4], cf6_delta[,4], cf7_delta[,4], cf8_delta[,4], cf9_delta[,4], cf10_delta[,4], cf1_omicron[,4], cf2_omicron[,4], cf3_omicron[,4], cf4_omicron[,4], cf5_omicron[,4], cf6_omicron[,4], cf7_omicron[,4], cf8_omicron[,4], cf9_omicron[,4], cf10_omicron[,4]))
+
+m1 <- matrix(newpvals_p, ncol=16, byrow=TRUE)
+
+newpvals_coef_matrix[m1 > .05] <- NA
+
+newpvals_coef_refined <- as.matrix(newpvals_coef)
+
+newpvals_coef_refined2 <- newpvals_coef_refined
+
+
+colnames(newpvals_coef_refined2) <- c("US_Alpha", "US_Delta", "US_Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Region5_Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron", "Alpha", "Delta", "Omicron")
+
+newpvals_coef_refined3 <- newpvals_coef_refined2[c(1,2,3,15,4,13,14,10,9,16,5,11,8,6,12,7),]
+
+rownames(newpvals_coef_refined3) <- c("Intercept", "Socioeconomics", "Housing Composition", "Minority Status", "Housing Type", "Voting", "Vaccination Rate", "Population Density", "Obesity", "Uninsured Adults", "Unemployed", "Social Associations", "Diabetes", "Food Insecurity", "Age over 65", "Broadband Access")
+
+
+my_palette <- colorRampPalette(c("blue", "white", "red"))(n = 5)
+
+# heatmap.2(newpvals_coef_refined3[-1,-c(1:3)], scale = "none", col = my_palette,
+#           trace = "none", density.info = "none", dendrogram = 'none', Colv = FALSE, Rowv = FALSE, cexCol = 1, cexRow = 1, colsep=c(1:30), rowsep=c(1:15), key=FALSE, margins=c(5,3),tracecol="#303030", lwid=c(0.1,4), lhei=c(0.1,4))
+
+
+newpvals <- p.adjust(c(cf1[,4], cf2[,4], cf3[,4], cf4[,4], cf5[,4], cf6[,4], cf7[,4], cf8[,4], cf9[,4], cf10[,4], cf1_delta[,4], cf2_delta[,4], cf3_delta[,4], cf4_delta[,4], cf5_delta[,4], cf6_delta[,4], cf7_delta[,4], cf8_delta[,4], cf9_delta[,4], cf10_delta[,4], cf1_omicron[,4], cf2_omicron[,4], cf3_omicron[,4], cf4_omicron[,4], cf5_omicron[,4], cf6_omicron[,4], cf7_omicron[,4], cf8_omicron[,4], cf9_omicron[,4], cf10_omicron[,4]))
+
+newpvals[newpvals > .05] <- NA
+
+cf1[,4] <- newpvals[1:16]
+cf2[,4] <- newpvals[17:32]
+cf3[,4] <- newpvals[33:48]
+cf4[,4] <- newpvals[49:64]
+cf5[,4] <- newpvals[65:80]
+cf6[,4] <- newpvals[81:96]
+cf7[,4] <- newpvals[97:112]
+cf8[,4] <- newpvals[113:128]
+cf9[,4] <- newpvals[129:144]
+cf10[,4] <- newpvals[145:160]
+
+cf1_delta[,4] <- newpvals[161:176]
+cf2_delta[,4] <- newpvals[177:192]
+cf3_delta[,4] <- newpvals[193:208]
+cf4_delta[,4] <- newpvals[209:224]
+cf5_delta[,4] <- newpvals[225:240]
+cf6_delta[,4] <- newpvals[241:256]
+cf7_delta[,4] <- newpvals[257:272]
+cf8_delta[,4] <- newpvals[273:288]
+cf9_delta[,4] <- newpvals[289:304]
+cf10_delta[,4] <- newpvals[305:320]
+
+cf1_omicron[,4] <- newpvals[321:336]
+cf2_omicron[,4] <- newpvals[337:352]
+cf3_omicron[,4] <- newpvals[353:368]
+cf4_omicron[,4] <- newpvals[369:384]
+cf5_omicron[,4] <- newpvals[385:400]
+cf6_omicron[,4] <- newpvals[401:416]
+cf7_omicron[,4] <- newpvals[417:432]
+cf8_omicron[,4] <- newpvals[433:448]
+cf9_omicron[,4] <- newpvals[449:464]
+cf10_omicron[,4] <- newpvals[465:480]
+
+coef_list <- list(cf1, cf2, cf3, cf4, cf5, cf6, cf7, cf8, cf9, cf10, cf1_delta, cf2_delta, cf3_delta, cf4_delta, cf5_delta, cf6_delta, cf7_delta, cf8_delta, cf9_delta, cf10_delta, cf1_omicron, cf2_omicron, cf3_omicron, cf4_omicron, cf5_omicron, cf6_omicron, cf7_omicron, cf8_omicron, cf9_omicron, cf10_omicron)
+
+#--coefficents
 # 
 # cf1[,4] <- newpvals_coef[1:16]
 # cf2[,4] <- newpvals_coef[17:32]
@@ -1418,7 +1418,7 @@ plotrf <- grid.arrange(cumulative_deaths_adjusted,cumulative_deaths_adjusted_del
 
 ## Figure S4: Correlation HeatMap
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r datapanel_correlation, echo=FALSE, message=FALSE, warning=FALSE}
 
 library(reshape2)
  
@@ -1459,7 +1459,7 @@ geom_text(aes(Var2, Var1, label = value),
 
 # Part 3: Data Analysis and Regression: United States
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_regressionUS, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 #All states 
 risk <- subset(risk, county != "dona ana")
@@ -1475,7 +1475,7 @@ pb <- ggplot(risk_noloving, aes(x=cuml.cases_adjusted, y = deaths_adjusted, colo
 
 ## Figure S5: Fatality Rate vs. Population Density
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_fatalityUS, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 pa
 
@@ -1483,14 +1483,14 @@ pa
 
 ## Figure S6: County Level Cumulative Cases vs. Cumulative Deaths
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_cases_deathsUS, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 pb
 
 ```
 
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_cases_deathsUS_2, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 fulldata1 <- subset(fulldata, vote_discrete == c("Very Conservative", "Moderately Conservative"))
 
@@ -1505,21 +1505,21 @@ p3 <- ggplot(fulldata2, aes(x=cuml.cases_adjusted, y = deaths_adjusted, color = 
 ```
 
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_cases_deathsUS_3, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 #p2
 
 ```
 
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_cases_deathsUS_4, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 #p3
 
 ```
 
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_cases_deathsUS_5, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 fulldata_agg <- fulldata_revised
 fulldata_agg$vote_discrete <- as.factor(fulldata_agg$vote_discrete)
@@ -1548,7 +1548,7 @@ p6a <- ggplot(fulldata_agg_combined_deaths, aes(x=date, y = deaths/population, c
 ```
 
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_cases_deathsUS_6, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 #p5
 
@@ -1556,14 +1556,14 @@ p6a <- ggplot(fulldata_agg_combined_deaths, aes(x=date, y = deaths/population, c
 
 <!-- ## Figure S7: Population Adjusted Deaths vs Ideology over time -->
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_cases_deathsUS_7, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 #p6a
 
 ```
 
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_cases_deathsUS_8, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 fulldata_agg2 <- fulldata_agg
 fulldata_agg2$daily_deaths[fulldata_agg2$daily_deaths < 0] <- 0
@@ -1590,7 +1590,7 @@ p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/popula
 
 ```
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_cases_deathsUS_9, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 #p7
 
@@ -1598,7 +1598,7 @@ p7 <- ggplot(fulldata_agg_combined_cuml_cases, aes(x=date, y = cuml.cases/popula
 
 ## Figure S7: Population Adjusted Cumulative Deaths vs Ideology over time
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_cases_deathsUS_10, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 p6
 
@@ -1607,7 +1607,7 @@ p6
 
 
 
-```{r echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+```{r datapanel_cases_deathsUS_11, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 #LM including cumulative cases (as of 4/11), SVI, and voting percentage for Biden
 withmodel <- lm(cuml.cases_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4 + divergence + pct.x + Series_Complete_Pop_Pct + density + policy, REML=FALSE, data = linear_risk_final)
@@ -1624,14 +1624,14 @@ withoutmodel_deaths <- lm(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3
 
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, datapanel_cases_deathsUS_12, echo=FALSE, message=FALSE, warning=FALSE}
 
 ```
 
 ## Table T2: United States: Regression Model Results
 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, datapanel_cases_deathsUS_table, echo=FALSE, message=FALSE, warning=FALSE}
 library(dplyr)
 library(knitr)
 library(kableExtra)
@@ -1668,9 +1668,9 @@ colnames(USlist1) <- c("Estimates", "Adjusted P values",  "Estimates", "Adjusted
 
 ```
 
-![](../html/USlist1.jpeg){#id .class width=100% height=100%}
+![](./html/USlist1.jpeg){#id .class width=100% height=100%}
 
-![](../html/USlist1_R.jpeg){#id .class width=35% height=35%}
+![](./html/USlist1_R.jpeg){#id .class width=35% height=35%}
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -1937,9 +1937,9 @@ colnames(USlist1) <- c("Estimates", "Adjusted P values",  "Estimates", "Adjusted
 
 ```
 
-![](../html/USlist2.jpeg){#id .class width=100% height=100%}
+![](./html/USlist2.jpeg){#id .class width=100% height=100%}
 
-![](../html/USlist2_R.jpeg){#id .class width=35% height=35%}
+![](./html/USlist2_R.jpeg){#id .class width=35% height=35%}
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -2167,9 +2167,9 @@ colnames(USlist1) <- c("Estimates", "Adjusted P values",  "Estimates", "Adjusted
 
 ```
 
-![](../html/USlist3.jpeg){#id .class width=100% height=100%}
+![](./html/USlist3.jpeg){#id .class width=100% height=100%}
 
-![](../html/USlist3_R.jpeg){#id .class width=35% height=35%}
+![](./html/USlist3_R.jpeg){#id .class width=35% height=35%}
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -2401,9 +2401,9 @@ colnames(USlist1) <- c("Estimates", "Adjusted P values",  "Estimates", "Adjusted
 ```
 
 
-![](../html/USlist4.jpeg){#id .class width=100% height=100%}
+![](./html/USlist4.jpeg){#id .class width=100% height=100%}
 
-![](../html/USlist4_R.jpeg){#id .class width=35% height=35%}
+![](./html/USlist4_R.jpeg){#id .class width=35% height=35%}
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -2627,9 +2627,9 @@ colnames(USlist1) <- c("Estimates", "Adjusted P values",  "Estimates", "Adjusted
 ```
 
 
-![](../html/USlist5.jpeg){#id .class width=100% height=100%}
+![](./html/USlist5.jpeg){#id .class width=100% height=100%}
 
-![](../html/USlist5_R.jpeg){#id .class width=35% height=35%}
+![](./html/USlist5_R.jpeg){#id .class width=35% height=35%}
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -2857,9 +2857,9 @@ colnames(USlist1) <- c("Estimates", "Adjusted P values",  "Estimates", "Adjusted
 ```
 
 
-![](../html/USlist6.jpeg){#id .class width=100% height=100%}
+![](./html/USlist6.jpeg){#id .class width=100% height=100%}
 
-![](../html/USlist6_R.jpeg){#id .class width=35% height=35%}
+![](./html/USlist6_R.jpeg){#id .class width=35% height=35%}
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -3084,9 +3084,9 @@ colnames(USlist1) <- c("Estimates", "Adjusted P values",  "Estimates", "Adjusted
 ```
 
 
-![](../html/USlist7.jpeg){#id .class width=100% height=100%}
+![](./html/USlist7.jpeg){#id .class width=100% height=100%}
 
-![](../html/USlist7_R.jpeg){#id .class width=35% height=35%}
+![](./html/USlist7_R.jpeg){#id .class width=35% height=35%}
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -3321,9 +3321,9 @@ colnames(USlist1) <- c("Estimates", "Adjusted P values",  "Estimates", "Adjusted
 ```
 
 
-![](../html/USlist8.jpeg){#id .class width=100% height=100%}
+![](./html/USlist8.jpeg){#id .class width=100% height=100%}
 
-![](../html/USlist8_R.jpeg){#id .class width=35% height=35%}
+![](./html/USlist8_R.jpeg){#id .class width=35% height=35%}
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -3562,9 +3562,9 @@ colnames(USlist1) <- c("Estimates", "Adjusted P values",  "Estimates", "Adjusted
 ```
 
 
-![](../html/USlist9.jpeg){#id .class width=100% height=100%}
+![](./html/USlist9.jpeg){#id .class width=100% height=100%}
 
-![](../html/USlist9_R.jpeg){#id .class width=35% height=35%}
+![](./html/USlist9_R.jpeg){#id .class width=35% height=35%}
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -3792,9 +3792,9 @@ colnames(USlist1) <- c("Estimates", "Adjusted P values",  "Estimates", "Adjusted
 ```
 
 
-![](../html/USlist10.jpeg){#id .class width=100% height=100%}
+![](./html/USlist10.jpeg){#id .class width=100% height=100%}
 
-![](../html/USlist10_R.jpeg){#id .class width=35% height=35%}
+![](./html/USlist10_R.jpeg){#id .class width=35% height=35%}
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 # modeloutput_US <- sjPlot::tab_model(eval(parse(text=regionlist1_list_ideology_deaths[10])), eval(parse(text=regionlist3_list_ideology_deaths[10])),  eval(parse(text=regionlist4_list_ideology_deaths[10])), dv.labels = c("Alpha Wave Deaths", "Delta Wave Deaths", "Omicron Wave Deaths"), pred.labels =  c("Intercept", "Socioeconomic", "Household Composition & Disability", "Minority Status & Language", "Housing Type & Transportation", "Political Divergence", "Democratic Voting Pct","Vaccination Rate","Population Density",  "Obesity",  "Uninsured Adults",   "Unemployed",  "Diabetes", "Food Insecurity",  "Social Associations", "Age over 65", "Broadband Access"), show.ci = FALSE, file="/mnt/ceph/erichs/git/COVIDriskpaper/html/modeloutput_PNW.html")
@@ -3828,9 +3828,9 @@ library(ggplot2)
 library(kableExtra)
 library(plyr)
 
-model_ideology_deaths <-readRDS("/mnt/ceph/erichs/git/COVIDriskpaper/linear_models/model_ideology_deaths.RDS")
-model_ideology_deaths_delta <-readRDS("/mnt/ceph/erichs/git/COVIDriskpaper/linear_models/model_ideology_deaths_delta.RDS")
-model_ideology_deaths_omicron <-readRDS("/mnt/ceph/erichs/git/COVIDriskpaper/linear_models/model_ideology_deaths_omicron.RDS")
+#model_ideology_deaths <-readRDS("/mnt/ceph/erichs/git/COVIDriskpaper/linear_models/model_ideology_deaths.RDS")
+#model_ideology_deaths_delta <-readRDS("/mnt/ceph/erichs/git/COVIDriskpaper/linear_models/model_ideology_deaths_delta.RDS")
+#model_ideology_deaths_omicron <-readRDS("/mnt/ceph/erichs/git/COVIDriskpaper/linear_models/model_ideology_deaths_omicron.RDS")
 
 #padjust additions
 
@@ -5513,10 +5513,10 @@ library(sjPlot)
 library(RcppRoll)
 library(spdep)
 
-# linear_risk_final2 <- read.csv("./outputs/linear_risk_final.csv")
-# linear_risk_final_latter2 <- read.csv("./outputs/linear_risk_final_latter.csv")
-# linear_risk_final_delta2 <- read.csv("./outputs/linear_risk_final_delta.csv")
-# linear_risk_final_omicron2 <- read.csv("./outputs/linear_risk_final_omicron.csv")
+#linear_risk_final2 <- read.csv("./outputs/linear_risk_final.csv")
+#linear_risk_final_latter2 <- read.csv("./outputs/linear_risk_final_latter.csv")
+#linear_risk_final_delta2 <- read.csv("./outputs/linear_risk_final_delta.csv")
+#linear_risk_final_omicron2 <- read.csv("./outputs/linear_risk_final_omicron.csv")
 # risk_final <- read.csv("./outputs/risk_final.csv")
 
 #deal with duplicates
@@ -5531,6 +5531,19 @@ linear_risk_final <- linear_risk_final2
 linear_risk_final_latter <- linear_risk_final2
 linear_risk_final_delta <- linear_risk_final_delta2
 linear_risk_final_omicron <- linear_risk_final_omicron2
+
+#fixing extra values in core data files
+
+#linear_risk_final
+
+linear_risk_final <- linear_risk_final[,-51] 
+linear_risk_final_delta <- linear_risk_final_delta[,-c(1,51)] 
+linear_risk_final_omicron <- linear_risk_final_omicron[,-c(1,51)] 
+
+linear_risk_final2 <- linear_risk_final2[,-51] 
+linear_risk_final_delta2 <- linear_risk_final_delta2[,-c(1,51)] 
+linear_risk_final_omicron2 <- linear_risk_final_omicron2[,-c(1,51)] 
+
 
 
   states <- readShapePoly('./data/states/states.shp',
