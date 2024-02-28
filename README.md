@@ -1,13 +1,13 @@
-## Supplemental Materials: Spatiotemporal Impacts of Ideology and Social Vulnerability on COVID-19
+## Supplemental Materials: Spatial Modeling for Social Determinants of COVID-19 Mortality
 
-Submitted to Scientific Reports July 2023
+Submitted to Microorganisms February 2024
 
-Erich Seamon, Jennifer Johnson-Leung, Craig R. Miller, Benjamin J. Ridenhour
-University of Idaho, July 2023
+Erich Seamon, Benjamin J. Ridenhour, Craig R. Miller, Jennifer Johnson-Leung
+University of Idaho, February 2024
 
 ## Overview:
 
-The following github repository provides all code and data for generating analyses and supplemental materials for the aforementioned manuscript, submitted to Scientific Reports. 
+The following github repository provides all code and data for generating analyses and supplemental materials for the aforementioned manuscript, submitted to the journal, MicroOrganisms. 
 
 ## How do I regenerate the Supplemental Appendix?
 
