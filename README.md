@@ -1,4 +1,4 @@
-## Supplemental Materials: Spatial Modeling for Social Determinants of COVID-19 Mortality
+## Supplemental Materials: Spatial Modeling of Sociodemographic Risk for COVID-19 Mortality
 
 Submitted to Microorganisms February 2024
 
@@ -11,13 +11,13 @@ The following github repository provides all code and data for generating analys
 
 ## How do I regenerate the Supplemental Appendix?
 
-- a pdf is provided of the supplemental, at the root level.  If you want to generate the pdf on your own, you may run the Supplemental_AppendixA.Rmd (also at the root level).  All of the folders and datasets support running the supplemnental .Rmd.
+- a pdf is provided of the supplemental, at the root level.  If you want to generate the pdf on your own, you may run the Supplemental.Rmd (also at the root level).  All of the folders and datasets support running the Supplemnental.Rmd.
 
 ## Folder Descriptions
 
-- /data  - folder which contains all data accessed as part of Risk_SupplementalA.Rmd.  Descriptions of datasets are noted below under "Data Descriptions".
-- /figures - contains .png image files that are used in the Risk_SupplementalA.Rmd
-- /html - contains regression output tables for each United States Health and Human Services regions.  Each of the tables is embedded in the Risk_SupplementalA.Rmd.
+- /data  - folder which contains all data accessed as part of Supplemental.Rmd.  Descriptions of datasets are noted below under "Data Descriptions".
+- /figures - contains .png image files that are used in the Supplemental.Rmd
+- /html - contains regression output tables for each United States Health and Human Services regions.  Each of the tables is embedded in the Supplemental.Rmd.
 - /region_pngs - contains .png images of regional Health and Human Services maps.
 
 
@@ -25,7 +25,7 @@ The following github repository provides all code and data for generating analys
 
 Within the /data folder, there are a number of datasets.  Each dataset is described below, with key field names and usage.
 
-sevenday_combined.csv: This csv contains daily cases and deaths for all United States counties, for each day from January 2020 to April 2022.  Given the large size of this .csv, it is split into TWO zip files, and is automatically merged together and loaded as the Risk_SupplementalA.Rmd is run.
+sevenday_combined.csv: This csv contains daily cases and deaths for all United States counties, for each day from January 2020 to April 2022.  Given the large size of this .csv, it is split into TWO zip files, and is automatically merged together and loaded as the Supplemental.Rmd is run.
 
 Column descriptions:
 
