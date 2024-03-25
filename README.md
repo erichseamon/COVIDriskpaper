@@ -1,13 +1,13 @@
 ## Supplemental Materials: Spatial Modeling of Sociodemographic Risk for COVID-19 Mortality
 
-Submitted to Microorganisms February 2024
+Submitted February 2024
 
 Erich Seamon, Benjamin J. Ridenhour, Craig R. Miller, Jennifer Johnson-Leung
 University of Idaho, February 2024
 
 ## Overview:
 
-The following github repository provides all code and data for generating analyses and supplemental materials for the aforementioned manuscript, submitted to the journal, MicroOrganisms. 
+The following github repository provides all code and data for generating analyses and supplemental materials for the aforementioned manuscript.
 
 ## How do I regenerate the Supplemental Appendix?
 
