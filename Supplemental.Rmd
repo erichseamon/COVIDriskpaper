@@ -1,7 +1,7 @@
 ---
-title: 'Supplement to Spatial Modeling of Sociodemographic Risk for COVID-19 Mortality'
+title: "Supplement to Spatial Modeling of Sociodemographic Risk for COVID-19 Mortality"
 author: "Erich Seamon, Benjamin J. Ridenhour, Craig R. Miller, Jennifer-Johnson Leung"
-date: "02/20/2024"
+date: "09/4/2024"
 always_allow_html: yes
 output:
   pdf_document:
@@ -287,7 +287,8 @@ maxdate <- "2022-04-01"
 
 # Part 2: Datasets and Modeling Framework
 
-We utilize fifteen (15) independent variables and one (1) dependent variable for our analysis, which are as follows:
+We utilize fifteen (15) independent variables and one (1) dependent variable for our analysis.
+
 
 ## Table T1: Variable Descriptions
 
@@ -295,7 +296,7 @@ We utilize fifteen (15) independent variables and one (1) dependent variable for
 library(knitr)
 library(kableExtra)
 df <- data.frame(Variables = c("Socioeconomic Status", "Household Composition and Disability", "Minority Status", "Housing Type and Transportation", "Obesity", "Unemployment", "Uninsured Adults", "Social Associations", "Diabetes", "Food Insecurity", "Broadband Access", "Population Density", "Population Age 65+", "Democratic Voting Percentage", "Vaccination Rate", "Population adjusted COVID-19 deaths*"), Description = linebreak(c("Index which represents income, poverty, employment, and education.", "Index with represents age, single parenting, and disability.", "Index which represents race and ethnicity.","Index which represents housing structure, crowding and vehicle access.", "Number of people who are obese, at a county level.","Number of unemployed adults per county.", "Number of uninsured adults per county.", "Number of people who are members of a social organization (churches, clubs, etc).","Number of people with diabetes at a county level.", "Index indicating the relative level of food insecurity in a county.", "Number of people without broadband access.", "Population density at a county level.", "Number of people age 65 or older in a county.", "Represents voting outcomes from the 2020 presidential general election.","CDC data for two dose vaccination rates at a county level, ending in April 1, 2022.", "Population-adjusted COVID-19 deaths per county.")), Source = linebreak(c("Social Vulnerability Indices (SVI) taken from the US Census agency for toxic substances and disease registry (ATSDR)", "Social Vulnerability Indices (SVI) taken from the US Census agency for toxic substances and disease registry (ATSDR)", "Social Vulnerability Indices (SVI) taken from the US Census agency for toxic substances and disease registry (ATSDR)", "Social Vulnerability Indices (SVI) taken from the US Census agency for toxic substances and disease registry (ATSDR)", "University of Wisconsin's Population Health Institute", "University of Wisconsin's Population Health Institute","University of Wisconsin's Population Health Institute", "University of Wisconsin's Population Health Institute","University of Wisconsin's Population Health Institute", "University of Wisconsin's Population Health Institute","University of Wisconsin's Population Health Institute","2020 US Census", "2020 US Census","Massachusettes Institute of Technology's (MIT) Election Lab","US Centers for Disease Control (CDC)", "US Centers for Disease Control (CDC)")))
-kable(df, col.names = c("Variables", "Description", "Data Source"), escape = F, caption = "Table T1: Variable Descriptions. * = dependent variable") %>% column_spec(3, width = "3in") %>% column_spec(c(1:2), width = "2in") %>% kable_styling(full_width = FALSE,latex_options = c("hold_position", "scale_down"), font_size = 10) %>% collapse_rows(columns = 3) %>% kable_classic_2(full_width = F)
+kable(df, col.names = c("Variables", "Description", "Data Source"), escape = F, caption = "Table T1: Variable Descriptions. * = dependent variable") %>% column_spec(3, width = "3in") %>% column_spec(c(1:2), width = "1.75in") %>% kable_styling(full_width = FALSE,latex_options = c("hold_position", "scale_down"), font_size = 8) %>% collapse_rows(columns = 3) %>% kable_classic_2(full_width = F)
 
 ```
 
@@ -320,17 +321,20 @@ Using this framework, we constructed three (3) temporal model time frames:
 ```{r Linear_models, echo=FALSE, results='hide',message=FALSE, warning=FALSE, fig.cap = "State Categorization by Legislative and Governorship Alignment."}
 
 
-library(rgdal)
-library(rgeos)
-library(maptools)
+#library(rgdal)
+#library(rgeos)
+#library(maptools)
 library(spdep)
 library(sp)
+library(sf)
 
+states <- sf::read_sf("./data/states/states.shp")
+states <- as_Spatial(states)
 
-  states <- readShapePoly('./data/states/states.shp',
-                          proj4string=CRS
-                          ("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
-  projection = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
+  # states <- readShapePoly('./data/states/states.shp',
+  #                         proj4string=CRS
+  #                         ("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+  # projection = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
 
 states <- subset(states, STATE_NAME != "Alaska")
 states <- subset(states, STATE_NAME != "Hawaii")
@@ -343,10 +347,13 @@ states$policy <- policy
 states$policy <- as.factor(states$policy)
 col=c("red","blue","green")
 
-  counties <- readShapePoly('./data/counties/UScounties_conus.shp',
-                            proj4string=CRS
-                            ("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
-  projection = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
+counties <- sf::read_sf("./data/counties/UScounties_conus.shp")
+counties <- as_Spatial(counties)
+
+  # counties <- readShapePoly('./data/counties/UScounties_conus.shp',
+  #                           proj4string=CRS
+  #                           ("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+  # projection = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
   
   new_voting_removed_na <- new_voting[!(is.na(new_voting$pct)), ]
 
@@ -1186,7 +1193,7 @@ data_counties@data$divergence.x <- log(data_counties@data$divergence.x)
 data_counties_deaths_age65_ratio <- data_counties[order(-data_counties$deaths_age65_ratio), ]
 data_counties_deaths_age65_ratio@data[1,30] <- .055
 
-
+data_counties$FIPS <- as.numeric(data_counties$FIPS)
 data_counties <- data_counties[order(-data_counties$FIPS), ]
 
 levels(data_counties$policy) <- c("D", "R", "Split")
@@ -1208,6 +1215,7 @@ data_counties2 <- data_counties2[order(-data_counties2$deaths_adjusted), ]
 data_counties2@data[1,26] <- .007
 data_counties2@data[2,26] <- .007
 
+data_counties2$FIPS <- as.numeric(data_counties2$FIPS)
 data_counties2 <- data_counties2[order(-data_counties2$FIPS), ]
 
 data_counties3 <- merge(counties_merged, linear_risk_final_delta, by="FIPS", duplicateGeoms = TRUE)
@@ -1279,10 +1287,26 @@ breaks <- (1.0 - 0)/5
 lab    <- round(seq(0.0, 1.0, by = breaks), 1)
 
 socioeconomic <- spplot(data_counties, zcol="RPL_THEME1", col='transparent', main='Socioeconomic', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
+
+socioeconomic_png <- spplot(data_counties, zcol="RPL_THEME1", col='transparent', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 4, family="arial")))
+
 household_composition  <- spplot(data_counties, zcol="RPL_THEME2", col='transparent', main='Household Composition', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
+
+household_composition_png  <- spplot(data_counties, zcol="RPL_THEME2", col='transparent',  col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 4, family="arial")))
+
 minority_status <- spplot(data_counties, zcol="RPL_THEME3", col='transparent', main='Minority Status', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
+
+minority_status_png <- spplot(data_counties, zcol="RPL_THEME3", col='transparent',  col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 4, family="arial")))
+
+
 housing_type <- spplot(data_counties, zcol="RPL_THEME4", col='transparent', main='Housing Type', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
+
+housing_type_png <- spplot(data_counties, zcol="RPL_THEME4", col='transparent',  col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 4, family="arial")))
+
+
 political_divergence <- spplot(data_counties, zcol="adjacent_ideology.x", col='transparent', main='Political Divergence', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(labels = list( labels = c("0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8"), width = 2, cex = 2)))
+
+political_divergence_png <- spplot(data_counties, zcol="adjacent_ideology.x", col='transparent',  col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(labels = list( labels = c("0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8"), width = 2, cex = 4, family="arial")))
 
 
 breaks <- (1.0 - 0)/5
@@ -1290,28 +1314,45 @@ lab    <- round(seq(0.0, 1.0, by = breaks), 1)
 
 democratic_vote_pct <- spplot(data_counties, zcol="pct.x", col='transparent', main='Democratic Vote Pct', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
 
+democratic_vote_pct_png <- spplot(data_counties, zcol="pct.x", col='transparent',  col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 4, family="arial")))
 
 policy <- spplot(data_counties, zcol="policy", col='transparent', main='Policy', col.regions=col.palette.t(100), sp.layout=spState)
+
+policy_png <- spplot(data_counties, zcol="policy", col='transparent', main='Policy', col.regions=col.palette.t(100), sp.layout=spState)
+
 vaccination_rate_prevac <- spplot(data_counties, zcol="Series_Complete_Pop_Pct_scaled", col='transparent', main='Vaccination Rate as of 05.01.02021', col.regions=col.palette.t(100), at=seq(0, 1.0, length.out=100), sp.layout=spState,  colorkey = list(labels = list( labels = c("0.0", "0.2", "0.4", "0.6",  "0.8",  "1.0"), width = 2, cex = 2)))
+
+vaccination_rate_prevac_png <- spplot(data_counties, zcol="Series_Complete_Pop_Pct_scaled", col='transparent',  col.regions=col.palette.t(100), at=seq(0, 1.0, length.out=100), sp.layout=spState,  colorkey = list(labels = list( labels = c("0.0", "0.2", "0.4", "0.6",  "0.8",  "1.0"), width = 2, cex = 4, family="arial")))
+
 
 breaks <- (max(na.omit(data_counties@data$Series_Complete_Pop_Pct_scaled)+.03) - min(na.omit(data_counties@data$Series_Complete_Pop_Pct_scaled)+.03))/6 
 lab    <- round(seq(min(na.omit(data_counties@data$Series_Complete_Pop_Pct_scaled)+.03), max(na.omit(data_counties@data$Series_Complete_Pop_Pct_scaled)+.03), by = breaks), 2)
 
 vaccination_rate_postvac <- spplot(data_counties, zcol="Series_Complete_Pop_Pct_scaled", col='transparent', main='Vaccination Rate as of 04.01.2022', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, .9, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
 
+vaccination_rate_postvac_png <- spplot(data_counties, zcol="Series_Complete_Pop_Pct_scaled", col='transparent',  col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, .9, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 4, family="arial")))
+
+
 breaks <- (1.0 - 0)/5
 lab    <- round(seq(0.0, 1.0, by = breaks), 1)
 
 population_density <- spplot(data_counties, zcol="density_scaled", col='transparent', main='Population Density', col.regions=col.palette.t(100), sp.layout=spState, colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
+
+population_density_png <- spplot(data_counties, zcol="density_scaled", col='transparent',  col.regions=col.palette.t(100), sp.layout=spState, colorkey = list(at = seq(0, 1.0, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 4, family="arial")))
+
 
 breaks <- (max(na.omit(data_counties@data$age65_ratio)+.02) - min(na.omit(data_counties@data$age65_ratio)+.02))/5 
 lab    <- round(seq(min(na.omit(data_counties@data$age65_ratio)+.02), max(na.omit(data_counties@data$age65_ratio)+.02), by = breaks), 2)
 
 population_age65 <- spplot(data_counties, zcol="age65_ratio", col='transparent', main='Population Over 65', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, .65, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
 
+population_age65_png <- spplot(data_counties, zcol="age65_ratio", col='transparent',  col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, .65, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 4, family="arial")))
+
 
 population_age65_ratio <- spplot(data_counties_deaths_age65_ratio, zcol="deaths_age65_ratio", col='transparent', main='Deaths per Age65+ - 12.01.2019 - 05.01.2021', col.regions=col.palette.t(100), sp.layout=spState)
+
 population_age65_ratio_delta <- spplot(data_counties_deaths_age65_ratio2, zcol="deaths_age65_ratio", col='transparent', main='Deaths per Age65+ - 05.01.2021 - 12.01.2022', col.regions=col.palette.t(100), sp.layout=spState)
+
 population_age65_ratio_omicron <- spplot(data_counties_deaths_age65_ratio3, zcol="deaths_age65_ratio", col='transparent', main='Deaths per Age65+ - 12.01.2021 - 04.01.2022', col.regions=col.palette.t(100), sp.layout=spState)
 
 breaks <- (max(na.omit(data_counties@data$Obesity)) - min(na.omit(data_counties@data$Obesity)))/6 
@@ -1323,6 +1364,8 @@ breaks <- (max(na.omit(data_counties@data$Uninsured_Adults)+.01) - min(na.omit(d
 lab    <- round(seq(min(na.omit(data_counties@data$Uninsured_Adults)+.01), max(na.omit(data_counties@data$Uninsured_Adults)+.01), by = breaks), 2)
 
 uninsured_adults <- spplot(data_counties, zcol="Uninsured_Adults", col='transparent', main='Uninsured', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, .42, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
+
+uninsured_adults_png <- spplot(data_counties, zcol="Uninsured_Adults", col='transparent',  col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, .42, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 4, family="arial")))
 
 
 smoking <- spplot(data_counties, zcol="Smoking", col='transparent', main='Smoking', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(labels = list( labels = c("0.05", "0.10", "0.15", "0.20", "0.25", "0.30", "0.35", "0.40"), width = 2, cex = 2)))
@@ -1342,11 +1385,14 @@ lab    <- round(seq(min(na.omit(data_counties@data$Diabetes)), max(na.omit(data_
 
 diabetes <- spplot(data_counties, zcol="Diabetes", col='transparent', main='Diabetes', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, .21, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
 
+diabetes_png <- spplot(data_counties, zcol="Diabetes", col='transparent',  col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, .21, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 4, family="arial")))
 
 breaks <- (max(na.omit(data_counties@data$Food_Insecurity)+.02) - min(na.omit(data_counties@data$Food_Insecurity)+.02))/5 
 lab    <- round(seq(min(na.omit(data_counties@data$Food_Insecurity)+.02), max(na.omit(data_counties@data$Food_Insecurity)+.02), by = breaks), 2)
 
 food_insecurity <- spplot(data_counties, zcol="Food_Insecurity", col='transparent', main='Food Insecurity', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, .40, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
+
+food_insecurity_png <- spplot(data_counties, zcol="Food_Insecurity", col='transparent',  col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, .40, by=.010), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 4, family="arial")))
 
 
 breaks <- (max(na.omit(data_counties@data$Associations)+.01) - min(na.omit(data_counties@data$Associations)))/6 
@@ -1380,6 +1426,61 @@ lab    <- round(seq(0, .004, by = breaks), 3)
 
 cumulative_deaths_adjusted_omicron <- spplot(data_counties4, zcol="deaths_adjusted", col='transparent', main='Cumulative Deaths Adjusted - 12.01.2021 - 04.01.2022', col.regions=col.palette.t(100), sp.layout=spState,  colorkey = list(at = seq(0, .004, length.out=100), labels = list(at=lab, labels = format(lab, nsmall=2), width = 2, cex = 2)))
 
+
+```
+
+```{r datapanel_images, include=FALSE, echo=FALSE, message=FALSE, warning=FALSE}
+
+#produce high res images for manuscript
+
+png("figures/Fig2a_Socio.png", width = 465, height = 225, units='mm', res = 300)
+socioeconomic_png
+dev.off()
+png("figures/minority_status.png", width = 465, height = 225, units='mm', res = 300)
+minority_status_png
+dev.off()
+png("figures/Fig2b_Household_Composition.png", width = 465, height = 225, units='mm', res = 300)
+household_composition_png
+dev.off()
+png("figures/Fig2c_Democratic_Vote.png", width = 465, height = 225, units='mm', res = 300)
+democratic_vote_pct_png
+dev.off()
+png("figures/Fig2d_Vaccination_Rate.png", width = 465, height = 225, units='mm', res = 300)
+vaccination_rate_postvac_png
+dev.off()
+png("figures/population_density.png", width = 465, height = 225, units='mm', res = 300)
+population_density_png
+dev.off()
+png("figures/unemployed.png", width = 465, height = 225, units='mm', res = 300)
+unemployed
+dev.off()
+png("figures/Fig2f_Uninsured.png", width = 465, height = 225, units='mm', res = 300)
+uninsured_adults_png
+dev.off()
+png("figures/associations.png", width = 465, height = 225, units='mm', res = 300)
+associations
+dev.off()
+png("figures/Fig2h_Diabetes.png", width = 465, height = 225, units='mm', res = 300)
+diabetes_png
+dev.off()
+png("figures/Fig2e_Food_Insecurity.png", width = 465, height = 225, units='mm', res = 300)
+food_insecurity_png
+dev.off()
+png("figures/broadband.png", width = 465, height = 225, units='mm', res = 300)
+broadband
+dev.off()
+png("figures/Fig2g_Age65+.png", width = 465, height = 225, units='mm', res = 300)
+population_age65_png
+dev.off()
+png("figures/cumulative_deaths_adjusted.png", width = 465, height = 225, units='mm', res = 300)
+cumulative_deaths_adjusted
+dev.off()
+png("figures/cumulative_deaths_adjusted_delta.png", width = 465, height = 225, units='mm', res = 300)
+cumulative_deaths_adjusted_delta
+dev.off()
+png("figures/cumulative_deaths_adjusted_omicron.png", width = 465, height = 225, units='mm', res = 300)
+cumulative_deaths_adjusted_omicron
+dev.off()
 
 ```
 
@@ -4545,6 +4646,7 @@ library(grid)         # plot
 library(gridExtra)    # Multiple plot
 library(ggplot2)      # Multiple plot
 library(gtable)
+library(ggpubr)
 #library(SpatialML)    # Geographically weigted regression
 
 linear_risk_final_delta[is.na(linear_risk_final_delta)] <- 0
@@ -4600,6 +4702,28 @@ p2 <- qplot(test_new2$deaths_adjusted, 1-test_new2$pct, geom='smooth', span =0.5
 ggarrange(p, p2, ncol = 1, nrow = 2, heights = c(2, 0.7)) 
 
 ```
+
+```{r covidrisk_GWRF4_png, include=FALSE, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+#---print
+
+p2 <- qplot(test_new2$deaths_adjusted, 1-test_new2$pct, geom='smooth', span =0.5, se=TRUE) + theme_minimal() + theme(text = element_text(size = 36, family="serif")) + labs(y = "Voting", x = "Population Adjusted Deaths") + theme(plot.margin = unit(c(0,.2,0,.8), "cm"), axis.title.y = element_text(vjust=3))
+
+mt <- moran.test(counties_merged2$deaths_adjusted, lw, zero.policy = TRUE)
+
+p <- ggplot(deaths_mp, aes(x=x, y=wx, color = counties_merged2$pct)) + geom_point(shape=19, colour = counties_merged2$pctrampcols, size = 3) + 
+geom_smooth(formula=y ~ x, method="lm") + 
+geom_hline(yintercept=mean(deaths_mp$wx), lty=2) + 
+geom_vline(xintercept=mean(deaths_mp$x), lty=2) + theme_minimal() + 
+geom_point(data=deaths_mp[deaths_mp$is_inf,], aes(x=x, y=wx, size = 3), shape=1, color = "gray", show.legend = FALSE) +
+  xlab("") + ylab("Lagged Values") + theme(text = element_text(size = 36, family="serif"))  + theme(legend.position="top", legend.key.width = unit(2.5, 'cm')) + sc + geom_text(color="black", family="serif", x=.00325, y=.0002, size=14, check_overlap = TRUE, label=paste("Moran's I = ", round(mt$estimate[1], 3), sep=''))
+
+png("figures/Fig3a_delta_deaths_moran.png", width = 465, height = 225, units='mm', res = 300)
+ggarrange(p, p2, ncol = 1, nrow = 2, heights = c(2, 1)) 
+dev.off()
+
+```
+
 
 ## Figure S20: Morans I results: United States - Delta Wave, Independent Variables
 
@@ -4883,11 +5007,36 @@ test_new <- counties_merged2[order(counties_merged2$RPL_THEME2, decreasing = FAL
 test_new2 <- subset(test_new, pct !=0)
 p2 <- qplot(test_new2$RPL_THEME2, test_new2$deaths_adjusted, geom='smooth', span =0.5, se=TRUE) + theme_minimal() + theme(text = element_text(size = 28, family = "serif")) + labs(y = "Deaths", x = "Minority Status") + theme(plot.margin = unit(c(0,.2,0,.8), "cm"), axis.title.y = element_text(vjust=3))
 
-ggarrange(minority_mp_map, p2, ncol = 1, nrow = 2, heights = c(2, 0.7)) 
-
+ggarrange(minority_mp_map, p2, ncol = 1, nrow = 2, heights = c(2, 0.7))
 
 ```
+
+```{r covidrisk_moran_map1d_png, include=FALSE,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+
+#---print
+
+p2 <- qplot(test_new2$RPL_THEME1, test_new2$deaths_adjusted, geom='smooth', span =0.5, se=TRUE) + theme_minimal() + theme(text = element_text(size = 36, family = "serif")) + labs(y = "Deaths", x = "Socioeconomic Status") + theme(plot.margin = unit(c(0,.2,0,.8), "cm"), axis.title.y = element_text(vjust=3))
+
+mt <- moran.test(counties_merged2$RPL_THEME2, lw, zero.policy = TRUE)
+
+minority_mp_map <-ggplot(minority_mp, aes(x=x, y=wx, color=counties_merged2$deaths_adjusted)) + geom_point(shape=19, colour = counties_merged2$pctrampcols_das, size=3) + 
+geom_smooth(formula=y ~ x, method="lm") + 
+geom_hline(yintercept=mean(minority_mp$wx), lty=2) + 
+geom_vline(xintercept=mean(minority_mp$x), lty=2) + theme_minimal() + 
+geom_point(data=minority_mp[minority_mp$is_inf,], aes(x=x, y=wx, size = 3), shape=1, color = "gray", show.legend = FALSE)  + 
+theme(legend.position  = "top", legend.key.width = unit(2.5, 'cm')) +
+  xlab("") + ylab("Spatially Lagged Values")+ sc +  theme(text = element_text(size = 36, family = "serif")) + geom_text(color="black", family="serif", x=.8, y=.05, size=14, check_overlap = TRUE, label=paste("Moran's I = ", round(mt$estimate[1], 3), sep=''))
+
+
+png("figures/Fig3c_delta_minority_moran.png", width = 465, height = 225, units='mm', res = 300)
+ggarrange(minority_mp_map, p2, ncol = 1, nrow = 2, heights = c(2, 1)) 
+dev.off()
+
+```
+
 \newpage
+
 ```{r covidrisk_moran_map2d, echo=FALSE, results='hide',message=FALSE, warning=FALSE}
 
 test_new <- counties_merged2[order(counties_merged2$RPL_THEME3, decreasing = FALSE), ] 
@@ -4902,7 +5051,27 @@ p2 <- qplot(test_new2$RPL_THEME4, test_new2$deaths_adjusted, geom='smooth', span
 
 ggarrange(housing_mp_map, p2, ncol = 1, nrow = 2, heights = c(2, 0.7)) 
 
+```
 
+```{r covidrisk_moran_map2d_png, include=FALSE,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+#---print
+
+p2 <- qplot(test_new2$RPL_THEME4, test_new2$deaths_adjusted, geom='smooth', span =0.5, se=TRUE) + theme_minimal() + theme(text = element_text(size = 36, family = "serif")) + labs(y = "Deaths", x = "Housing Type") + theme(plot.margin = unit(c(0,.2,0,.8), "cm"), axis.title.y = element_text(vjust=3))
+
+mt <- moran.test(counties_merged2$RPL_THEME3, lw, zero.policy = TRUE)
+
+household_mp_map <-ggplot(household_mp, aes(x=x, y=wx, color=counties_merged2$deaths_adjusted)) + geom_point(shape=19, colour = counties_merged2$pctrampcols_das, size=3) + 
+geom_smooth(formula=y ~ x, method="lm") + 
+geom_hline(yintercept=mean(household_mp$wx), lty=2) + 
+geom_vline(xintercept=mean(household_mp$x), lty=2) + theme_minimal() + 
+geom_point(data=household_mp[household_mp$is_inf,], aes(x=x, y=wx, size = 3), shape=1, color = "gray", show.legend = FALSE)  + 
+theme(legend.position  = "top", legend.key.width = unit(2.5, 'cm')) +
+  xlab("") + ylab("Spatially Lagged Values")+sc +  theme(text = element_text(size = 36, family = "serif")) + geom_text(color="black", family="serif", x=.8, y=.05, size=14, check_overlap = TRUE, label=paste("Moran's I = ", round(mt$estimate[1], 3), sep=''))
+
+png("figures/Fig3b_delta_household_moran.png", width = 465, height = 225, units='mm', res = 300)
+ggarrange(household_mp_map, p2, ncol = 1, nrow = 2, heights = c(2, 1)) 
+dev.off()
 
 ```
 \newpage
@@ -4975,7 +5144,27 @@ p2 <- qplot(test_new2$Diabetes, test_new2$deaths_adjusted, geom='smooth', span =
 
 ggarrange(diabetes_mp_map, p2, ncol = 1, nrow = 2, heights = c(2, 0.7)) 
 
+```
 
+```{r covidrisk_moran_map6d_png, include=FALSE,echo=FALSE, results='hide',message=FALSE, warning=FALSE}
+
+#---print
+
+p2 <- qplot(test_new2$Diabetes, test_new2$deaths_adjusted, geom='smooth', span =0.5, se=TRUE) + theme_minimal() + theme(text = element_text(size = 36, family = "serif")) + labs(y = "Deaths", x = "Diabetes") + theme(plot.margin = unit(c(0,.2,0,.8), "cm"), axis.title.y = element_text(vjust=3))
+
+mt <- moran.test(counties_merged2$Diabetes, lw, zero.policy = TRUE)
+
+diabetes_mp_map <-ggplot(diabetes_mp, aes(x=x, y=wx, color=counties_merged2$deaths_adjusted)) + geom_point(shape=19, colour = counties_merged2$pctrampcols_das, size=3) + 
+geom_smooth(formula=y ~ x, method="lm") + 
+geom_hline(yintercept=mean(diabetes_mp$wx), lty=2) + 
+geom_vline(xintercept=mean(diabetes_mp$x), lty=2) + theme_minimal() + 
+geom_point(data=diabetes_mp[diabetes_mp$is_inf,], aes(x=x, y=wx, size = 3), shape=1, color = "gray", show.legend = FALSE)  + 
+theme(legend.position  = "top", legend.key.width = unit(2.5, 'cm')) +
+  xlab("") + ylab("Spatially Lagged Values")+ sc + theme(text = element_text(size = 36, family = "serif")) + geom_text(color="black", family="serif", x=.75, y=.1, size=14, check_overlap = TRUE, label=paste("Moran's I = ", round(mt$estimate[1], 3), sep=''))
+
+png("figures/Fig3d_delta_diabetes_moran.png", width = 465, height = 225, units='mm', res = 300)
+ggarrange(diabetes_mp_map, p2, ncol = 1, nrow = 2, heights = c(2, 1)) 
+dev.off()
 
 ```
 \newpage
@@ -5500,7 +5689,7 @@ ggarrange(ageover65_mp_map, p2, ncol = 1, nrow = 2, heights = c(2, 0.7))
 
 #read datasets from initial EDA R
 
-library(maptools)
+#library(maptools)
 library(stringr)
 library(dplyr)
 library(lmerTest)
@@ -5512,10 +5701,10 @@ library(sjPlot)
 library(RcppRoll)
 library(spdep)
 
-#linear_risk_final2 <- read.csv("./outputs/linear_risk_final.csv")
-#linear_risk_final_latter2 <- read.csv("./outputs/linear_risk_final_latter.csv")
-#linear_risk_final_delta2 <- read.csv("./outputs/linear_risk_final_delta.csv")
-#linear_risk_final_omicron2 <- read.csv("./outputs/linear_risk_final_omicron.csv")
+# linear_risk_final <- read.csv("./outputs/linear_risk_final.csv")
+# linear_risk_final_latter <- read.csv("./outputs/linear_risk_final_latter.csv")
+# linear_risk_final_delta <- read.csv("./outputs/linear_risk_final_delta.csv")
+# linear_risk_final_omicron <- read.csv("./outputs/linear_risk_final_omicron.csv")
 # risk_final <- read.csv("./outputs/risk_final.csv")
 
 #deal with duplicates
@@ -5543,12 +5732,13 @@ linear_risk_final2 <- linear_risk_final2[,-51]
 linear_risk_final_delta2 <- linear_risk_final_delta2[,-c(1,51)] 
 linear_risk_final_omicron2 <- linear_risk_final_omicron2[,-c(1,51)] 
 
+states <- sf::read_sf("./data/states/states.shp")
+states <- as_Spatial(states)
 
-
-  states <- readShapePoly('./data/states/states.shp',
-                          proj4string=CRS
-                          ("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
-  projection = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
+  # states <- readShapePoly('./data/states/states.shp',
+  #                         proj4string=CRS
+  #                         ("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+  # projection = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
 
 states <- subset(states, STATE_NAME != "Alaska")
 states <- subset(states, STATE_NAME != "Hawaii")
@@ -5559,11 +5749,13 @@ policy <- c(1,3,1,2,2,2,3,2,3,3,1,3,2,3,2,1,3,1,1,1,2,1,2,1,2,1,1,2,3,1,3,3,1,2,
 states$policy <- policy
 states$policy <- as.factor(states$policy)
 
+counties <- sf::read_sf("./data/counties/UScounties_conus.shp")
+counties <- as_Spatial(counties)
 
-  counties <- readShapePoly('./data/counties/UScounties_conus.shp',
-                            proj4string=CRS
-                            ("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
-  projection = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
+  # counties <- readShapePoly('./data/counties/UScounties_conus.shp',
+  #                           proj4string=CRS
+  #                           ("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+  # projection = CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0")
   
 
 new_voting <- read.csv("./data/voting_nationwide_liberal.csv")
@@ -5795,7 +5987,7 @@ lw4 <- as.data.frame(lw4)
 for (i in 1:30) {
 risk_final_test$policy <- as.numeric(risk_final_test$policy)
 
-grf.model <- grf(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y,
+grf.model <- SpatialML::grf(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_THEME4  + pct.x + Series_Complete_Pop_Pct + density + Obesity  + Uninsured_Adults + Unemployed + Diabetes + Food_Insecurity + Associations + Age_over_65 + broadband_access.y,
                  dframe=lw4,
                  bw=i,              # a positive number, in the case of an "adaptive kernel" or a real in the case of a "fixed kernel".
                  ntree=50,          # n integer referring to the number of trees to grow for each of the local random forests.
@@ -5841,6 +6033,7 @@ output_MAE[i,] <- c(model_predict_grf1_MAE, model_predict_grf2_MAE, model_predic
 }
 
 
+
 bw2 <- which.min(output_RMSE[3:30,2])
 bw3 <- which.min(output_RMSE[3:30,3])
 bw4 <- which.min(output_RMSE[3:30,4])
@@ -5858,7 +6051,6 @@ grf.model <- grf(deaths_adjusted ~ RPL_THEME1 + RPL_THEME2 + RPL_THEME3 + RPL_TH
                  ntree=500,          # n integer referring to the number of trees to grow for each of the local random forests.
                  kernel="adaptive",  # the kernel to be used in the regression. Options are "adaptive" or "fixed".
                  forests = TRUE,     # a option to save and export (TRUE) or not (FALSE) all the local forests
-                 importance = TRUE,
                  coords=Coord_original)      # a numeric matrix or data frame of two columns giving the X,Y coordinates of the observations
 
 ### Global Variable Importance
@@ -6021,6 +6213,8 @@ local_r2_residuals4 <- spplot(risk_final5, zcol="deaths_adjusted", col='transpar
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
+
+
 par(mfrow=c(1,2))
 matplot(output_RMSE, type = "b",pch=1,col = 1:5, xlab = "Bandwidth", ylab = "RMSE", main = "Deaths RMSE: Bandwidth x Weighting Models")
 legend("topright", legend = c("L0, G1", "L.25, G.75", "L.50, G.50", "L.75, G.25", "L1, G0"), col=1:5, pch=1)
@@ -6038,13 +6232,52 @@ par(mfrow=c(1,1))
 ggplot(risk_final5@data, aes(x=risk_final5@data$LM_yfitPred, y=risk_final5@data$LM_ResPred)) + geom_point() + geom_smooth(aes(method = "loess")) + theme_bw() + scale_x_continuous(name="Predicted") + scale_y_continuous(name="Residuals")  + ggtitle("Residuals vs. Prediction") 
 #geom_smooth(method = "loess", n = 50, se = FALSE)
 
-cor.test(risk_final5@data$deaths_adjusted, risk_final5@data$LM_ResPred, method= "pearson")
+cortest <- cor.test(risk_final5@data$deaths_adjusted, risk_final5@data$LM_ResPred, method= "pearson")
+
+
+cortest2 <- c((paste("t = ", cortest$statistic, sep="")),paste("Degrees of Freedom = ", cortest$parameter, sep=""),paste(".05 Confidence Interval = ", cortest$conf.int[1], sep=""),paste(".95 Confidence Interval = ", cortest$conf.int[2], sep=""),paste("p-value < 0.00000000000000022", sep=""))
+
+cortest3 <- as.data.frame(cortest2)
+
+kable(cortest3, col.names = NULL, longtable = T, booktabs = T, align="c")%>%
+  add_header_above(c("Pearson's product-moment correlation" = 1))
+
 
 ```
 
 \newpage
 
 ## Figure S25: GWRF Alpha Wave: Model Prediction Results
+
+```{r, include=FALSE,echo=FALSE, message=FALSE, warning=FALSE}
+
+lab_png    <- round(seq(-.60, .80, by = .2), 3)
+
+local_r2_png <- spplot(risk_final5, zcol="LM_Rsq100", col='transparent', col.regions=col.palette.t(100), sp.layout=list(polys),  colorkey = list(at = seq(-.60, .80, length.out=100), labels = list(at=lab_png, labels = format(lab_png, nsmall=2), width = 2, cex = 4)))
+
+
+lab_png    <- round(seq(0, .008, by = .001), 3)
+
+local_r2_residuals3_png <- spplot(risk_final5, zcol="LM_yfitPred", col='transparent', col.regions=col.palette.t(100), sp.layout=list(polys),  colorkey = list(at = seq(0, .008, length.out=100), labels = list(at=lab_png, labels = format(lab_png, nsmall=2), width = 2, cex = 4)))
+
+
+lab_png    <- round(seq(0, .008, by = .001), 3)
+
+local_r2_residuals4_png <- spplot(risk_final5, zcol="deaths_adjusted", col='transparent',   col.regions=col.palette.t(100), sp.layout=list(polys),  colorkey = list(at = seq(0, .008, length.out=100), labels = list(at=lab_png, labels = format(lab_png, nsmall=2), width = 2, cex = 4)))
+
+
+
+png("figures/Fig5a_Alpha_localR2.png", width = 465, height = 225, units='mm', res = 300)
+local_r2_png
+dev.off()
+png("figures/Fig5b_Alpha_global.png", width = 465, height = 225, units='mm', res = 300)
+local_r2_residuals3_png
+dev.off()
+png("figures/Fig5c_Alpha_actual.png", width = 465, height = 225, units='mm', res = 300)
+local_r2_residuals4_png
+dev.off()
+
+```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -6404,21 +6637,104 @@ par(mfrow=c(1,1))
 ggplot(risk_final5@data, aes(x=risk_final5@data$LM_yfitPred, y=risk_final5@data$LM_ResPred)) + geom_point() + geom_smooth(aes(method = "loess")) + theme_bw() + scale_x_continuous(name="Predicted") + scale_y_continuous(name="Residuals")  + ggtitle("Residuals vs. Prediction") 
 #geom_smooth(method = "loess", n = 50, se = FALSE)
 
-cor.test(risk_final5@data$deaths_adjusted, risk_final5@data$LM_ResPred, method= "pearson")
+cortest <- cor.test(risk_final5@data$deaths_adjusted, risk_final5@data$LM_ResPred, method= "pearson")
 
+
+cortest2 <- c((paste("t = ", cortest$statistic, sep="")),paste("Degrees of Freedom = ", cortest$parameter, sep=""),paste(".05 Confidence Interval = ", cortest$conf.int[1], sep=""),paste(".95 Confidence Interval = ", cortest$conf.int[2], sep=""),paste("p-value < 0.00000000000000022", sep=""))
+
+cortest3 <- as.data.frame(cortest2)
+
+kable(cortest3, col.names = NULL, longtable = T, booktabs = T, align="c")%>%
+  add_header_above(c("Pearson's product-moment correlation" = 1))
 ```
 
 \newpage
 
 ## Figure S29: GWRF Delta Wave: Model Prediction Results
 
+```{r, include=FALSE,echo=FALSE, message=FALSE, warning=FALSE}
+
+
+lab_png    <- round(seq(-.60, .80, by = .2), 3)
+
+local_r2_png <- spplot(risk_final5, zcol="LM_Rsq100", col='transparent', col.regions=col.palette.t(100), sp.layout=list(polys),  colorkey = list(at = seq(-.60, .80, length.out=100), labels = list(at=lab_png, labels = format(lab_png, nsmall=2), width = 2, cex = 4)))
+
+
+lab_png    <- round(seq(0, .008, by = .001), 3)
+
+local_r2_residuals3_png <- spplot(risk_final5, zcol="LM_yfitPred", col='transparent', col.regions=col.palette.t(100), sp.layout=list(polys),  colorkey = list(at = seq(0, .008, length.out=100), labels = list(at=lab_png, labels = format(lab_png, nsmall=2), width = 2, cex = 4)))
+
+
+lab_png    <- round(seq(0, .008, by = .001), 3)
+
+local_r2_residuals4_png <- spplot(risk_final5, zcol="deaths_adjusted", col='transparent',   col.regions=col.palette.t(100), sp.layout=list(polys),  colorkey = list(at = seq(0, .008, length.out=100), labels = list(at=lab_png, labels = format(lab_png, nsmall=2), width = 2, cex = 4)))
+
+
+
+png("figures/Fig5d_Delta_localR2.png", width = 465, height = 225, units='mm', res = 300)
+local_r2_png
+dev.off()
+png("figures/Fig5e_Delta_global.png", width = 465, height = 225, units='mm', res = 300)
+local_r2_residuals3_png
+dev.off()
+png("figures/Fig5f_Delta_actual.png", width = 465, height = 225, units='mm', res = 300)
+local_r2_residuals4_png
+dev.off()
+
+```
+
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
 
 plotrf <- grid.arrange(local_r2, local_r2_residuals2,local_r2_residuals3,local_r2_residuals4, nrow = 2, ncol=2, heights = c(1000,1000),  top = textGrob("Model Predictions",gp=gpar(fontsize=25)))
 
 ```
 
 ## Figure S30: GWRF Delta Wave: Model Feature Importance
+
+```{r, include=FALSE,echo=FALSE, message=FALSE, warning=FALSE}
+
+
+
+lab    <- round(seq(-5, 10, by = 5), 0)
+#lab <- c(-5, 0, 5, 10, 15)
+lab2 <- c("-5%", "0%", "5%", "10%")
+
+voting_png <- spplot(risk_final4, zcol="pct.x", col='transparent',   col.regions=col.palette.t(100), sp.layout=list(polys), colorkey = list(at = seq(-5, 10, length.out=16), labels = list(at=lab, labels = format(lab2, nsmall=2), width = 2, cex = 4)))
+
+lab    <- round(seq(-5, 10, by = 5), 0)
+#lab <- c(-5, 0, 5, 10, 15)
+lab2 <- c("-5%", "0%", "5%", "10%")
+
+RPL_THEME2_png <- spplot(risk_final4, zcol="RPL_THEME2", col='transparent',   col.regions=col.palette.t(100), sp.layout=list(polys), colorkey = list(at = seq(-5, 10, length.out=16), labels = list(at=lab, labels = format(lab2, nsmall=2), width = 2, cex = 4)))
+
+lab    <- round(seq(-5, 15, by = 5), 0)
+#lab <- c(-5, 0, 5, 10, 15)
+lab2 <- c("-5%", "0%", "5%", "10%", "15%")
+
+RPL_THEME3_png <- spplot(risk_final4, zcol="RPL_THEME3", col='transparent', col.regions=col.palette.t(100), sp.layout=list(polys), colorkey = list(at = seq(-5, 15, length.out=16), labels = list(at=lab, labels = format(lab2, nsmall=2), width = 2, cex = 4)))
+
+lab    <- round(seq(-5, 15, by = 5), 0)
+#lab <- c(-5, 0, 5, 10, 15)
+lab2 <- c("-5%", "0%", "5%", "10%", "15%")
+
+diabetes_png <- spplot(risk_final4, zcol="Diabetes", col='transparent',   col.regions=col.palette.t(100), sp.layout=list(polys), colorkey = list(at = seq(-5, 15, length.out=16), labels = list(at=lab, labels = format(lab2, nsmall=2), width = 2, cex = 4)))
+
+
+png("figures/Fig6a_voting_FI_delta.png", width = 465, height = 225, units='mm', res = 300)
+voting_png
+dev.off()
+png("figures/Fig6b_household_FI_delta.png", width = 465, height = 225, units='mm', res = 300)
+RPL_THEME2_png
+dev.off()
+png("figures/Fig6c_minority_FI_delta.png", width = 465, height = 225, units='mm', res = 300)
+RPL_THEME3_png
+dev.off()
+png("figures/Fig6d_diabetes_FI_delta.png", width = 465, height = 225, units='mm', res = 300)
+diabetes_png
+dev.off()
+
+```
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
@@ -6785,14 +7101,55 @@ par(mfrow=c(1,1))
 ggplot(risk_final5@data, aes(x=risk_final5@data$LM_yfitPred, y=risk_final5@data$LM_ResPred)) + geom_point() + geom_smooth(aes(method = "loess")) + theme_bw() + scale_x_continuous(name="Predicted") + scale_y_continuous(name="Residuals")  + ggtitle("Residuals vs. Prediction") 
 #geom_smooth(method = "loess", n = 50, se = FALSE)
 
-cor.test(risk_final5@data$deaths_adjusted, risk_final5@data$LM_ResPred, method= "pearson")
+cortest <- cor.test(risk_final5@data$deaths_adjusted, risk_final5@data$LM_ResPred, method= "pearson")
+
+
+cortest2 <- c((paste("t = ", cortest$statistic, sep="")),paste("Degrees of Freedom = ", cortest$parameter, sep=""),paste(".05 Confidence Interval = ", cortest$conf.int[1], sep=""),paste(".95 Confidence Interval = ", cortest$conf.int[2], sep=""),paste("p-value < 0.00000000000000022", sep=""))
+
+cortest3 <- as.data.frame(cortest2)
+
+kable(cortest3, col.names = NULL, longtable = T, booktabs = T, align="c")%>%
+  add_header_above(c("Pearson's product-moment correlation" = 1))
+
 ```
 
 \newpage
 
 ## Figure S33: GWRF Omicron Wave: Model Prediction Results
 
+```{r, include=FALSE,echo=FALSE, message=FALSE, warning=FALSE}
+
+
+lab_png    <- round(seq(-.60, .80, by = .2), 3)
+
+local_r2_png <- spplot(risk_final5, zcol="LM_Rsq100", col='transparent', col.regions=col.palette.t(100), sp.layout=list(polys),  colorkey = list(at = seq(-.60, .80, length.out=100), labels = list(at=lab_png, labels = format(lab_png, nsmall=2), width = 2, cex = 4)))
+
+
+lab_png    <- round(seq(0, .008, by = .001), 3)
+
+local_r2_residuals3_png <- spplot(risk_final5, zcol="LM_yfitPred", col='transparent', col.regions=col.palette.t(100), sp.layout=list(polys),  colorkey = list(at = seq(0, .008, length.out=100), labels = list(at=lab_png, labels = format(lab_png, nsmall=2), width = 2, cex = 4)))
+
+
+lab_png    <- round(seq(0, .008, by = .001), 3)
+
+local_r2_residuals4_png <- spplot(risk_final5, zcol="deaths_adjusted", col='transparent',   col.regions=col.palette.t(100), sp.layout=list(polys),  colorkey = list(at = seq(0, .008, length.out=100), labels = list(at=lab_png, labels = format(lab_png, nsmall=2), width = 2, cex = 4)))
+
+
+
+png("figures/Fig5g_Omicron_localR2.png", width = 465, height = 225, units='mm', res = 300)
+local_r2_png
+dev.off()
+png("figures/Fig5h_Omicron_global.png", width = 465, height = 225, units='mm', res = 300)
+local_r2_residuals3_png
+dev.off()
+png("figures/Fig5i_Omicron_actual.png", width = 465, height = 225, units='mm', res = 300)
+local_r2_residuals4_png
+dev.off()
+
+```
+
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
 
 plotrf <- grid.arrange(local_r2, local_r2_residuals2,local_r2_residuals3,local_r2_residuals4, nrow = 2, ncol=2, heights = c(1000,1000),  top = textGrob("Model Predictions",gp=gpar(fontsize=25)))
 
