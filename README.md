@@ -16,7 +16,7 @@ The following github repository provides all code and data for generating analys
 ## Folder Descriptions
 
 - /data  - folder which contains all data accessed as part of Supplemental.Rmd.  Descriptions of datasets are noted below under "Data Descriptions".
-- /figures - contains .png image files that are used in the Supplemental.Rmd
+- /figures - contains .png image files that are used in the Supplemental.Rmd (example: FigS1_hhs_regions.png), as well as high resolution figures that are included in the manuscript (example: Fig1_methods.png).
 - /html - contains regression output tables for each United States Health and Human Services regions.  Each of the tables is embedded in the Supplemental.Rmd.
 - /region_pngs - contains .png images of regional Health and Human Services maps.
 
