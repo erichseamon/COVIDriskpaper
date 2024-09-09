@@ -1,9 +1,9 @@
 ## Supplemental Materials: Spatial Modeling of Sociodemographic Risk for COVID-19 Mortality
 
-Submitted February 2024
+Submitted February 2024 - Revision submitted September 2024
 
 Erich Seamon, Benjamin J. Ridenhour, Craig R. Miller, Jennifer Johnson-Leung
-University of Idaho, February 2024
+University of Idaho, September 2024
 
 ## Overview:
 
