@@ -11,12 +11,12 @@ The following github repository provides all code and data for generating analys
 
 ## How do I regenerate the Supplemental Appendix?
 
-- a pdf is provided of the supplemental, at the root level.  If you want to generate the pdf on your own, you may run the Supplemental.Rmd (also at the root level).  All of the folders and datasets support running the Supplemnental.Rmd.
+- If you want to generate the supplemental appendix pdf on your own, you may run the Supplemental.Rmd (also at the root level).  All of the folders and datasets support running the Supplemnental.Rmd.  The published manuscript from the journal provides the fully compiled Supplemental Appendix pdf.
 
 ## Folder Descriptions
 
 - /data  - folder which contains all data accessed as part of Supplemental.Rmd.  Descriptions of datasets are noted below under "Data Descriptions".
-- /figures - contains .png image files that are used in the Supplemental.Rmd (example: FigS1_hhs_regions.png), as well as high resolution figures that are included in the manuscript (example: Fig1_methods.png).
+- /figures - contains .png image files that are used in the Supplemental.Rmd.  
 - /html - contains regression output tables for each United States Health and Human Services regions.  Each of the tables is embedded in the Supplemental.Rmd.
 - /region_pngs - contains .png images of regional Health and Human Services maps.
 

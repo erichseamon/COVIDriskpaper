@@ -1,7 +1,7 @@
 ---
-title: "Supplement to Spatial Modeling of Sociodemographic Risk for COVID-19 Mortality"
+title: "Supplemental Materials: Predictive Spatial Modeling of Sociodemographic Risk for COVID-19 Mortality"
 author: "Erich Seamon, Benjamin J. Ridenhour, Craig R. Miller, Jennifer-Johnson Leung"
-date: "09/4/2024"
+date: "01/10/2025"
 always_allow_html: yes
 output:
   pdf_document:
